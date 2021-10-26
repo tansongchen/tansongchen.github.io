@@ -1,6 +1,6 @@
 module.exports = {
   siteMetadata: {
-    siteUrl: "https://tansongchen.com",
+    siteUrl: "https://tansongchen.github.io",
     title: "Songchen Tan Personal Website",
   },
   plugins: [
