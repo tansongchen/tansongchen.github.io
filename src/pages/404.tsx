@@ -1,29 +1,23 @@
 import React from "react"
 import { Link } from "gatsby"
+import Layout from "../components/Layout"
+import { Helmet } from "react-helmet"
 
 const NotFound = () => {
   return (
-    <main>
-      <title>Not found</title>
-      <h1>Page not found</h1>
-      <p>
-        Sorry{" "}
-        <span role="img" aria-label="Pensive emoji">
-          😔
-        </span>{" "}
-        we couldn’t find what you were looking for.
-        <br />
-        {process.env.NODE_ENV === "development" ? (
-          <>
-            <br />
-            Try creating a page in <code>src/pages/</code>.
-            <br />
-          </>
-        ) : null}
-        <br />
-        <Link to="/">Go home</Link>.
-      </p>
-    </main>
+    <Layout current="/404/">
+      <Helmet>
+        <title>正在建设中</title>
+      </Helmet>
+      <main className="section">
+        <div className="container is-max-desktop content has-text-centered">
+          <h1>未找到页面</h1>
+          <p>
+            您访问的页面目前还没有被创建。<Link to="/">返回主页</Link>。
+          </p>
+        </div>
+      </main>
+    </Layout>
   )
 }
 

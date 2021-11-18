@@ -1,0 +1,439 @@
+---
+title: 非平衡模拟：拿什么拯救你，我的自由能变？
+date: 2019-07-19
+tags: [物理, 化学]
+cover: https://cdn.jsdelivr.net/gh/tansongchen/images@master/free-energy.webp
+abstract: Jarzynski 等式与 Crooks 定理的推导和应用。
+---
+
+# 引言
+
+在分子模拟中，自由能变（*ΔF*，有时也记作 *ΔA*）的计算具有重要的地位，它能够给出分子动力学的有价值的信息，例如在药物设计中计算配体的亲合能力。与此同时，自由能的计算又是分子模拟中最有挑战性的物理量之一，在计算自由能的过程中发展了诸如热力学积分和自由能微扰等等有价值的方法，而这些方法都依赖于平衡态或准平衡态的采样。而对于连接初态和末态的非平衡过程，我们熟知热力学第二定律的以下推论： ⟨*W*⟩ ≥ *ΔF* 其中 ⟨*W*⟩ 统计平均的含义是，对于按正则系综生成的每一个初态分布，我们计算演化过程中的功，然后取它的系综平均。然而令人惊讶的是，Jarzynski 于 1997 年所提出的等式 ⟨*e* − *βW*⟩ = *e* − *βΔF* 指出我们可以利用非平衡过程的功的指数平均来计算自由能变。Jarzynski 等式具有非同一般的价值，这是因为它是「远离平衡态」的非平衡态理论，它对于初末态之间任意快速（从而具有任意强的非平衡性）的过程都成立。1999 年，Crooks 利用随机热力学的方法证明这一等式的成立不限于 Hamilton 系统，而是对任意 Markovian 的、微观可逆的系统都成立。
+
+Jarzynski 等式与 Crooks 定理开启了计算自由能的新领域。在本文中，我们将在第二节回顾这两个关系的推导过程，在第三节指出 Jarzynski 等式中的指数平均具有怎样的概率论特性，在第四节讨论使这个平均加速收敛的计算方法，在第五节讨论一个典型的生物分子中的应用，最后进行总结与展望。
+
+# Jarzynski 等式与 Crooks 功涨落定理
+
+## Jarzynski 等式
+
+我们考虑经典、有限且与恒温热源接触的系统经历了某任意的过程，花费时间为 *τ*。在任一时刻，这样的系统可以由一个相空间坐标 **x** = (**q**, **p**) 和过程标度参数 *λ* ∈ [0, 1] 描述（可以想像为某种外场），因此这一过程可以用函数 **x**(*t*), *λ*(*t*) 描述。在这个过程中系统的 Hamiltonian 发生了变化，因此用 *Hλ* 描述，相应的配分函数和自由能是 *Zλ*, *Fλ*。
+
+对于某一特定的过程，对体系做的功是： $$
+W=\int_{0}^{\tau} \frac{\partial H_\lambda}{\partial \lambda} \frac{\mathrm d\lambda }{\mathrm d t} \mathrm d t
+$$
+
+### 微正则情况
+
+现在想象存在一个「过程的系综」，这些过程的初态符合恒温 *T* 时的正则系综分布。
+
+先考虑让体系的初态与热源达成平衡后撤掉热源（从而成为孤立系统）的情况，这个孤立系统的演化完全由 Hamilton 正则方程确定，体系的相空间分布函数满足 *f*(**x**, 0) = *e* − *βH*0(**x**)/*Z*0
+
+$$
+\frac{\partial f}{\partial t}+\left\{ f,H_\lambda \right\}=0
+$$
+
+由于体系的演化是完全确定性的，在某一时刻通过相空间内某一点的轨迹是唯一的，可以对这一点定义一个「累积功」函数 *w*(**x**, *t*)，它是「*t* 时刻演化到 **z** 点的轨迹上累积做的功」。那么，做功的指数平均就是 ⟨*e* − *βW*⟩ = ∫*d***x***f*(**x**,*τ*)exp [−*βw*(**x**,*τ*)] 由于体系是孤立的，做功是初末态能量之差， *w*(**x**, *τ*) = *H*1(**x**) − *H*0(**x**0) 另外 Liouville 定理表明相空间分布函数沿轨迹不变 *f*(**x**, *t*) = *f*(**x**0, 0)，因此 ⟨*e* − *βW*⟩ = *Z*0 − 1∫*d***x**exp [−*βH*1(**x**)] = *Z*1/*Z*0 所以我们就推出了 Jarzynski 在微正则情况下成立： ⟨*e* − *βW*⟩ = *e* − *βΔF*
+
+### 正则情况
+
+此时系统与热源构成一个更大的孤立系统，可以用坐标 **X** = (**x**, **x***b*) 描述，相应的 Hamiltonian 为系统、热源和相互作用项组成： ℋ = *H* + *Hb* + *Hi* 相应的配分函数是 𝒵。如果相互作用不显著，我们重复上述推导可以得到 ⟨*e* − *βW*⟩ = 𝒵1/𝒵0 但这说明等式右侧只与初末态有关，而与过程变化速度无关。考虑到当过程无限慢时等式左端等于系统的自由能变，因此任意条件下都有 ⟨*e* − *βW*⟩ = *e* − *βΔF*
+
+## Crooks 功涨落定理
+
+Crooks 用类似的分析方法得出了，对于一个经典、有限且与恒温热源接触的系统，经历一个产熵的过程，满足 $$
+\frac{P_{\mathrm{F}}(+\omega)}{P_{\mathrm{R}}(-\omega)}=e^{+\omega}
+$$ 其中 *PF*( + *ω*) 是正过程产熵 *ω* 的概率，*PR*( − *ω*) 是逆过程产熵  − *ω* 的概率。这个等式表明 ⟨*e* − *ω*⟩ = ∫ − ∞ + ∞*PF*( + *ω*)*e* − *ωdω* = ∫ − ∞ + ∞*PR*( − *ω*)*dω* = 1 而在那些初态为平衡态的系统中，产熵是 *ω* =  − *βΔF* + *βW*。因此 ⟨*e* − *βW*⟩ = *e* − *βΔF* 也即 Crooks 功涨落定理蕴含着 Jarzynski 等式。
+
+# 指数平均的概率论特性
+
+Jarzynski 等式表明，给定体系的初态和末态，我们可以计算连接它们的任意路径的功并做指数平均来得到体系的自由能变。由于这样的非平衡过程可以任意地快，因此相比于模拟准静态过程而言，利用 Jarzynski 等式使我们可以只需要计算那些时间非常短的轨迹。
+
+但是，准静态过程理论上只需要计算一条轨迹，而这里的快速过程需要计算很多条轨迹并取平均。如果平均值不能随着轨迹数目快速收敛，则效率将不及准静态过程的模拟。因此，我们需要了解一下 Jarzynski 等式中的指数（非线性）平均将会带来什么结果。
+
+## 「典型」轨迹与「主导」轨迹
+
+对于连接给定初末态的不同轨迹，我们可以定义一个功的分布函数
+
+*ρ*
+
+(
+
+*W*
+
+)，使得功的指数平均可以表示为：
+
+⟨
+
+*e*
+
+− *βW*
+
+⟩ = ∫
+
+*d*
+
+*W*
+
+*ρ*
+
+(
+
+*W*
+
+)
+
+*e*
+
+− *βW*
+
+≡ ∫
+
+*d*
+
+*W*
+
+*g*
+
+(
+
+*W*
+
+)
+
+这样，对整个积分的贡献较大的轨迹并非来于
+
+*ρ*
+
+(
+
+*W*
+
+) 较大处（「典型」轨迹），而是来自于
+
+*g*
+
+(
+
+*W*
+
+) 较大处（「主导」轨迹）。为了定量描述这一点，假设
+
+*ρ*
+
+(
+
+*W*
+
+) 符合 Gaussian 分布：
+
+$$
+\rho(W)=Ae^{-\alpha(W-\overline W)^2}
+$$
+
+那么
+
+*g*
+
+(
+
+*W*
+
+) 将也能写成类似的 Gaussian 分布形式：
+
+*g*
+
+(
+
+*W*
+
+) =
+
+*A*
+
+′
+
+*e*
+
+− *α*(*W* − *W*†)2
+
+![http://ww4.sinaimg.cn/large/006tNc79gy1g4vwaab3cqj30mu0ggt8t.jpg](http://ww4.sinaimg.cn/large/006tNc79gy1g4vwaab3cqj30mu0ggt8t.jpg)
+
+这里 $$
+W^\dagger=\overline W-\frac{\beta}{2\alpha}
+$$ 假设我们直接按 *ρ*(*W*) 进行采样，则那些对自由能贡献最大的轨迹采到的概率将是 *ρ*(*W*†) = *Ae* − *β*2/4*α* 稍加分析，我们便能看出这意味着我们的直接计算是极度不利的。如果系统远离平衡态，那么功的分布将高度离散 *α* → 0，上式概率将以 *e* − 1/*x* 快速衰减，以至于几乎无法采到。而一旦采到，这些对自由能贡献大的轨迹将使得自由能有阶梯式下降：
+
+![http://ww3.sinaimg.cn/large/006tNc79gy1g4vwd71qvqj312u0q00to.jpg](http://ww3.sinaimg.cn/large/006tNc79gy1g4vwd71qvqj312u0q00to.jpg)
+
+样本数增长时，自由能变的阶梯式下降行为
+
+这是不利于收敛的。即使收敛，上面的分析表明我们几乎总是高估自由能，造成明显的误差。
+
+## Jarzynski 收敛定理与典型性定理
+
+基于以上原因，Jarzynski 本人经过一定的分析，得出了收敛所需要的轨迹个数[1](about:blank#fn1)：
+
+$$
+N\sim e^{\beta \overline W_d^*}
+$$
+
+其中 $\overline W_d^*$ 是从末态返回到初态时的平均耗散功。因此直接采样的轨迹个数随非平衡性指数增加，表明我们有必要寻找某些更高效的计算方法。
+
+如何寻找这样的计算方法？Jarzynski 又指出，正过程的主导轨迹是那些逆过程的典型轨迹的时间反演。作为形象的比喻，Jarzynski 表示
+
+> 在那些对自由能贡献最大的轨迹中，系统的行为看起来好像是我们录下了逆过程的一个典型过程，然后将录像倒带时的景象。
+>
+
+这表明如果我们希望找到正过程的主导轨迹，最好尝试那些能产生接近于逆过程的典型轨迹的方法。这对以下的几种加速收敛的计算方法有重要影响。
+
+# 加速收敛的计算方法
+
+## 累积量展开方法
+
+### 原理
+
+统计学定理表明，一个随机变量的指数函数的期望的对数可以展开成幂级数： $$
+\ln \langle e^{tX} \rangle=\sum_{n=1}^{+\infty}\frac{\kappa_nt^n}{n!}
+$$ 其中 *t* 各幂次的系数是 *n* 阶累积量（culumants），它和随机变量的 *n* 阶矩（moments）*μn* 的关系是： $$
+\begin{aligned} \mu_{1} &=\kappa_{1} \\ \mu_{2} &=\kappa_{2}+\kappa_{1}^{2} \\ \mu_{3} &=\kappa_{3}+3 \kappa_{2} \kappa_{1}+\kappa_{1}^{3} \\ \mu_{4} &=\kappa_{4}+4 \kappa_{3} \kappa_{1}+3 \kappa_{2}^{2}+6 \kappa_{2} \kappa_{1}^{2}+\kappa_{1}^{4} \\
+&...
+\end{aligned}
+$$ 特别是前两阶累积量有明确的统计学意义：
+
+- *κ* = *μ* = *μ* 为期望；
+
+    1
+
+    1
+
+- *κ* = *μ* − *μ* = *σ* 为方差。
+
+    2
+
+    2
+
+    1
+
+    2
+
+    2
+
+
+因此相应地，自由能可以写为 $$
+F=\langle W\rangle-\frac\beta 2\sigma^2+\text{higher order cumulants}
+$$ 对上式的含义我们分两个角度来讨论：
+
+### 近平衡线性响应理论。
+
+根据一般的近平衡线性响应理论，自由能变与功的期望的差值，在近平衡区域内可以用功的方差近似[2](about:blank#fn2)。也即 $$
+F=\langle W\rangle-\frac\beta 2\sigma^2
+$$
+
+这说明在近平衡区域内，自由能的累积量展开截断到第二项后仍然是无偏估计。
+
+### 功分布函数的 Gaussian 特性。
+
+如果随机变量符合 Gaussian 分布 $$
+\rho(X)=Ae^{-\frac{(x-\mu)^2}{2\sigma^2}}
+$$ 那么它的累积量展开将只有两项，高于三阶的累积量全部为 0。因此如果功满足这个条件，也有 $$
+F=\langle W\rangle-\frac\beta 2\sigma^2
+$$
+
+### 两者的关系。
+
+Jarzynski 提出[3](about:blank#fn3)，从半定量的角度解释，当过程比较慢（近平衡）时，体系的关联时间比较短，因而总过程可以切分成多个分过程使得每个分过程的时间仍然远大于体系关联时间，那么每个分过程的分功是近似独立的。根据统计学上的中心极限定理，无论分功符合什么样的概率分布，总功都将符合 Gaussian 分布。而在过程比较快（远离平衡）时，切分的时间段数量不够多，中心极限定理不成立，总功未必符合 Gaussian 分布。
+
+因此，如果体系是近平衡的，那么过程的功一定是 Gaussian 分布的；但如果体系是远离平衡的，过程的功不一定不是 Gaussian 分布的。在引导分子动力学（Steered Molecular Dynamics, SMD）中，利用 Langevin 动力学可以证明[4](about:blank#fn4)，在特定条件下无论以多快的速度进行非平衡过程，功仍然是 Gaussian 分布的。
+
+### 应用
+
+在 SMD 中计算平均力势时，发现[5](about:blank#fn5)展开到二阶的累积量相比于原始的计算方法存在着比较大的优势。但估计的准确度并不能通过增加阶数来提高，这是因为三阶、四阶的累积量本身也存在着比较大的非线性性，有时它的不确定度甚至高于指数平均本身。
+
+对于非 Gaussian 分布的功，如果已经知道它服从的其他分布类型（如 Gamma 分布），也有可能通过参数统计的办法求出精确的自由能。例如，如果功服从如下的 Gamma 分布： $$
+\frac{\lambda^{\alpha}}{\Gamma(\alpha)} W^{\alpha-1} e^{-\lambda W}
+$$ 则自由能变可以表示为 $$
+\Delta F=\alpha \ln \left(\frac{\lambda+1}{\lambda}\right)
+$$ 其中 *α*, *λ* 可以看成是 Gaussian 分布中 *μ*, *σ* 双参数的类比。这两个参数可以用极大似然法求出： $$
+L\left(\theta_{1}, \theta_{2}\right)=\prod_{i=1}^{N} f\left(W_{i} ; \theta_{1}, \theta_{2}\right)
+$$
+
+$$
+0=\sum_{i=1}^{N} \frac{\partial}{\partial \theta_{1}} \ln f\left(W_{i} ; \hat{\theta}_{1}, \hat{\theta}_{2}\right) ; \quad \text { and } \quad 0=\sum_{i=1}^{N} \frac{\partial}{\partial \theta_{2}} \ln f\left(W_{i} ; \hat{\theta}_{1}, \hat{\theta}_{2}\right)
+$$
+
+从而这一方法对于任何的双参数分布都有效。在已知分布的情况下，这种方法比（不做任何假定的）非参数方法有更高的效率。[6](about:blank#fn6)但无论是何种分布，都需要我们预先对体系耗散功的性质有充分的了解，从而限制了他们的应用。
+
+## 重要采样方法
+
+### 原理
+
+如果我们将 Jarzynki 等式中的 ⟨ ⋅ ⟩ 显式地写出来，那么它是通过如下的轨迹（泛函）积分实现对功的计算： $$
+\mathrm{e}^{-\beta \Delta F}=\frac{\int \mathcal{D}\mathbf x(t) \mathcal{P}[\mathbf x(t)] \mathrm{e}^{-\beta W[\mathbf x(t)]}}{\int \mathcal{D}\mathbf x(t) \mathcal{P}[\mathbf x(t)]}
+$$ 其中 ∫𝒟**x**(*t*) 是对所有可能的轨迹求积，𝒫[**x**(*t*)] 是轨迹的概率密度。而 Jarzynski 等式采样收敛慢的特性来源于 *e* − *βW*[**x**(*t*)] 在不同的轨迹处差异很大，使得按 𝒫[**x**(*t*)] 采样时无法对贡献大的轨迹充分采样。为了解决这个问题，我们引入一个偏倚采样泛函 *π*[**x**(*t*)]，则自由能可以表示为 $$
+\begin{aligned} \mathrm{e}^{-\beta \Delta F} &=\frac{\int \mathcal{D}\mathbf x(t) \mathcal{P}[\mathbf x(t)] \pi[\mathbf x(t)]\left[\mathrm{e}^{-\beta W[\mathbf x(t)]} / \pi[\mathbf x(t)]\right]}{\int \mathcal{D}\mathbf  x(t) \mathcal{P}[\mathbf x(t)] \pi[\mathbf x(t)][1 / \pi[\mathbf x(t)]]} \\ &=\frac{\left\langle\mathrm{e}^{-\beta W[\mathbf x(t)]} / \pi[\mathbf x(t)]\right\rangle_{\pi}}{\langle 1 / \pi[\mathbf x(t)]\rangle_{\pi}} \end{aligned}
+$$ 这里 ⟨ ⋅ ⟩*π* 意味着按 𝒫 ⋅ *π* 的偏倚系综采样。显然，如果 *e* − *βW*[**x**(*t*)]/*π*[**x**(*t*)] 在不同轨迹处的涨落小于 *e* − *βW*[**x**(*t*)]，那么我们可以期望上式中分子的计算有着更高的效率。不过，同时考虑到分母，这个偏倚采样泛函必须也使得 ⟨1/*π*[**x**(*t*)]⟩*π* 易于计算。
+
+### 应用
+
+在实际应用中，发现如下三种可能的偏倚采样泛函，它们都仅仅是功的函数（功是轨迹的泛函，这意味着偏倚采样泛函不额外地依赖于轨迹）：
+
+### *π*(*W*) = *e* − *βW*/2。[7](about:blank#fn7)
+
+这是一个显然的做法，意在将分子的计算压力分担一半给分母。等效地，这相当于在原始温度的二倍条件下进行计算，因而观察到了比较好的效率提升。
+
+### *π*(*W*) = *P* − 1(*W*)。[8](about:blank#fn8)
+
+这个偏倚采样泛函意在将原有的功分布函数拉平（见 2.1），这样取到那些对自由能贡献大的（主导的）功的概率就相应增加了。
+
+### *π*(*W*) = |*e* − *β*(*W* − *ΔF*) − 1|。[9](about:blank#fn9)
+
+这个偏倚分布函数使耗散功接近于零的轨迹被弱化，而特别强调了耗散功为负的轨迹。作者通过细致的分析证明了它是理论上「最优」（即，使均方涨落最低）的偏倚采样泛函。从下图中可以直观地认识该偏倚分布函数的特点，经过它的调节后功分布函数既与 *Pe* − *βW* 接近，又与 *P* 接近，这意味着分子分母的采样效率都很高。
+
+![http://ww2.sinaimg.cn/large/006tNc79ly1g4ww1327fxj30ri0ia409.jpg](http://ww2.sinaimg.cn/large/006tNc79ly1g4ww1327fxj30ri0ia409.jpg)
+
+经过偏倚分布函数调节后的分布函数与 *P* 和 *Pe* − *βW* 都很接近
+
+在另一种形式上不同、但也具有重要采样本质的方法中，定义了函数 *f*(*α*)：[10](about:blank#fn10) *e* − *βf*(*α*) ≡ ∫𝒟**x**(*t*)𝒫[**x**(*t*)]*e* − *βαW*[**x**(*t*)] 注意 *f*(0) = 0, *f*(1) = *ΔF*，因此 *ΔF* = ∫01*f*′(*α*)*dα* 其中 $$
+f'(\alpha)=\frac{\int \mathcal{D} \mathbf x(t) \mathcal{P}[\mathbf x(t)] \mathrm{e}^{-\beta \alpha W[\mathbf x(t)]} W[\mathbf x(t)]}{\int \mathcal{D} \mathbf x(t) \mathcal{P}[\mathbf x(t)] \mathrm{e}^{-\beta \alpha W[\mathbf x(t)]}}
+$$ 到目前为止，该结果是精确的。在上式中，当 *α* 从 0 连续地变至 1 时，所进行采样的概率分布函数连续地从 𝒫 变化到 𝒫*e* − *βW*，这说明积分的效果如同增加了一个偏倚采样泛函一样，使得那些主导的轨迹采到的概率大大增加了。
+
+至于该积分的具体求积，可以采用一般的数值积分方法。例如，梯形公式： $$
+\Delta F\approx \frac12 [f'(0)+f'(1)]
+$$ 以及带二阶导数的近似公式： $$
+\Delta F\approx f'(0)+\frac12 f''(0)
+$$ 非常有意思的是，我们从 *f*′(*α*) 的定义式中不难计算出 *f*″(0) 就等于功的方差的相反数  − *σ*2。因此利用该近似公式完全等价于二阶累积量展开。取决于不同的数值精度要求，不同的数值积分方法可以用于该公式的计算以系统地提高精度。
+
+## 最优标度协议方法
+
+### 原理
+
+所谓标度协议，就是指标度参数 *λ*(*t*) 随 *t* 的函数关系。Jarzynski 等式与 *λ*(*t*) 的具体选取方式无关，在前述方法中，出于方便 *λ* 一般取为 *t* 的线性函数，即 *λ*(*t*) = *t*/*τ*。
+
+但轨迹的功（进而，自由能的精确度）却与 *λ* 有很大关系，因而巧妙地选取 *λ*(*t*) 有可能提高自由能计算的精度。
+
+### 应用
+
+我们仍然从自由能的轨迹积分表达式出发，并假定轨迹的概率密度是归一化的： *e* − *βΔF* = ∫𝒟**x**(*t*)𝒫[**x**(*t*)]*e* − *βW*[**x**(*t*), *λ*(*t*)] 在两边同时对标度协议进行泛函积分 ∫𝒟*λ*(*t*)*e* − *βΔF* = ∫𝒟**x**(*t*)∫𝒟*λ*(*t*)𝒫[**x**(*t*)]*e* − *βW*[**x**(*t*), *λ*(*t*)] 在等式的左方，自由能与标度协议无关，因此可以直接积出 𝒞 = ∫𝒟*λ*(*t*)；而等式的右方应用鞍点近似 ∫𝒟*λ*(*t*)𝒫[**x**(*t*)]*e* − *βW*[**x**(*t*), *λ*(*t*)] ≈ 𝒫[**x**(*t*)]*e* − *βW*[**x**(*t*), *λ**(*t*)]∫𝒟*λ*(*t*) 其中 *λ** 满足变分方程，使功取得最小值： $$
+\left.\frac{\delta W}{\delta \lambda}\right|_{\lambda^{*}}=0
+$$ 上式的物理意义是：对于某个确定的轨迹 **x**(*t*)，选取一个合适的标度协议 *λ**(*t*) 使功最小化，此时耗散功降到最低。若我们对所有的轨迹都这样做（所有轨迹未必遵守相同的标度协议），则统计出的自由能也是受耗散功影响最小的，因此可以期待这样的计算方法收敛性较好。[11](about:blank#fn11)
+
+但最小化功的期望不一定能使自由能的误差最小化，通过具体分析可以看出[12](about:blank#fn12)，误差与耗散功的指数期望直接相关，所以实际上应该最小化的是 *e* − 2*βW*。 $$
+\left\langle\left(\Delta \overline{F}_{N}-\Delta F\right)^{2}\right\rangle=\frac{k^{2} T^{2}}{N}\left\{\left\langle\exp \left(-2 \beta W_{\mathrm{diss}}\right)\right\rangle- 1\right\}
+$$ 同时为了获得更大的关于标度协议的自由度，可以在时间演化的每一步（共 *N* 步）都使用不同的 *λ*，使得标度协议如图所示：
+
+![http://ww3.sinaimg.cn/large/006tNc79ly1g4x1cs2q3wj30o20eat97.jpg](http://ww3.sinaimg.cn/large/006tNc79ly1g4x1cs2q3wj30o20eat97.jpg)
+
+分段常数的标度协议示意图
+
+这样，*e* − 2*βW* 将是这个 *N* 维参数空间的函数，根据一般的多元函数最优化方法（如最速下降法、共轭梯度法等）可以对每个轨迹对应的 *e* − 2*βW* 进行优化，最终得到均方误差最小化的结果。
+
+## 双向采样方法
+
+### 原理
+
+双向采样实际是 Crooks 功涨落定理的直接应用。由 Crooks 功涨落定理不难推出： $$
+\Delta F=\frac{1}{\beta} \ln \frac{\left\langle f\left[\beta\left(W_{\mathrm{R}}+C\right)\right]\right\rangle_{\mathrm{R}}}{\left\langle f\left[\beta\left(W_{\mathrm{F}}-C\right)\right]\right\rangle_{\mathrm{F}}}+C
+$$ 其中 *f* 是 Fermi 函数 *f*(*x*) = (1 + *ex*) − 1，*WF*, *WR* 是正向和逆向过程的功，*C* 是任意的偏移量（用于减小指数平均在数值上的不均匀性）。通过一定的分析[13](about:blank#fn13)可以得出最佳的 *C* 满足 $$
+C=\Delta F+\frac1 \beta \ln \frac {N_{\mathrm{R}}}{ N_{\mathrm{F}}}
+$$
+
+其中 *NF*, *NR* 是正向和逆向过程的轨迹数目。这种方法有时视为平衡模拟的 Barnett accept ratio 方法在非平衡模拟中的推广。
+
+### 应用
+
+不过，由于自由能变在计算之前是未知的，这一方法需要迭代求解，即先使用其他方法计算出 *ΔF*，然后得到 *C* 的估计，从而得到更精确的 *ΔF*。这也等价于求解如下的非线性方程： $$
+\sum_{i=1}^{N_{\mathrm F}} \frac{1}{1+\frac{N_{\mathrm F}}{N_{\mathrm R}} e^{\beta\left(W_{\mathrm F,i}-\Delta F\right)}}=\sum_{i=1}^{N_{\mathrm R}} \frac{1}{1+\frac{N_{\mathrm R}}{N_{\mathrm F}} e^{\beta\left(W_{\mathrm R,i}+\Delta F\right)}}
+$$ 这种方法是同时利用双向采样的数据进行直接计算的最优方法。
+
+## 外推方法
+
+### 原理
+
+正如我们此前讨论的那样，对采样得到的功直接进行平均得到的是有偏估计，而且偏差的首项与 *N* − 1/2 成正比。由于偏差的具体表达式（见 3.3.2）与所求自由能有关，故无法直接对偏差进行修正，但如果我们可以找到 *ΔF* ∼ *N* 的关系，那么我们可以将其外推至 *N* → ∞ 的极限来得到更好的结果。
+
+### 应用
+
+对于得到的一组功的数据来说，自由能的估计量是「阶梯式下降」的，无法直接应用外推。但通过分块平均的办法[14](about:blank#fn14)，可以得到一个相对光滑的函数 *ΔF*(*N*)。
+
+![http://ww1.sinaimg.cn/large/006tNc79gy1g4x3ab2myhj30rk0ikq61.jpg](http://ww1.sinaimg.cn/large/006tNc79gy1g4x3ab2myhj30rk0ikq61.jpg)
+
+通过分块平均法得到 *ΔF* 期望值随样本数平滑下降
+
+分块平均的算法为：设总样本量为 *K*，为了获得 *ΔF*(*N*) 的数据，我们在总样本中随机抽取 *N* 个数据进行指数平均，总共抽取 *M* 次，*M* ≈ 100*K*/*N*。将这 *M* 次平均的结果再进行平均，就得到了 *ΔF*(*N*)，显然这将是一条平滑的曲线。
+
+得到该曲线后，再令 *χ* = *N* − 1/2，则 *χ* ∈ (0, 1]，将曲线外推至 *χ* = 0 即可。文中提供了两种可行的外推方法：
+
+### 线性外推。
+
+在 *χ* 较大时，该函数是线性的（对应于偏差的主部），取其斜率外推至 0 即可。但总体上 *ΔF*(*χ*) 是凸函数，因此这样做会带来一些正偏差。
+
+### 积分外推。
+
+$$
+I(\alpha) \equiv \int_{\alpha}^{1} \mathrm d \chi\left(\Delta F\left(\chi\right)-\left(1-\chi\right) \frac{\mathrm d \Delta F\left(\chi\right)}{\mathrm d \chi}\right)
+$$
+
+通过分部积分容易知道 *I*(0) = *ΔF*(0)。这种方法能比较好地利用所有数据，进而带来更接近于无穷大样本极限的结果。
+
+# 典型应用——以平均力势的计算为例
+
+设有一 *N* 粒子经典分子，它的相空间坐标由 6*N* 维向量 (**r**, **p**) 指定，体系的 Hamiltonian *H*(**r**, **p**)。在它的反应过程中可以定义一个反应坐标 *ξ*(**r**)，定义关于这个坐标的平均力势（PMF，Potential of Mean Force）为 exp [−*βΦ*(*ξ*)] = ∫*d***r***d***p***δ*[*ξ*(**r**)−*ξ*]exp [ − *βH*(**r**, **p**)] 现在我们希望可以利用 Jarzynski 等式计算 *Φ*(*ξ*)，则我们需要将「分子在反应坐标上的移动」与「过程标度参数 *λ* 的变化」联系起来。不失一般地，我们假设反应坐标是无量纲的，在反应初态取 0，反应末态取 1。现我们给体系加上一个引导势： $$
+\mathcal H(\mathbf r,\mathbf p;\lambda)=H(\mathbf r,\mathbf p)+\frac k2(\xi(\mathbf r)-\lambda)^2
+$$ 当 *λ* 取某一个特定值时，体系的自由能为 exp [ − *βF*(*λ*)] = ∫*d***r***d***p**exp [ − *β*ℋ(**r**, **p**; *λ*)] 当 k 很大时，根据鞍点近似容易看出 *F*(*λ*) = *Φ*(*λ*)，因此平均力势的变化可以由 Jarzynski 等式计算出： $$
+\Phi(1)=\Phi(0)-\frac1\beta\ln\langle e^{-\beta W} \rangle
+$$ 通过直接计算或者应用以上的各种加速收敛的计算方法，就能计算出该分子的平均力势，绘制反应势能面。
+
+![http://ww1.sinaimg.cn/large/006tNc79ly1g4xfpwddrpj30q80q8mz0.jpg](http://ww1.sinaimg.cn/large/006tNc79ly1g4xfpwddrpj30q80q8mz0.jpg)
+
+十聚丙氨酸的螺旋-卷曲转变，分子两端的间距可作为反应坐标 *ξ*(**r**)
+
+# 总结与展望
+
+## 总结
+
+Jarzynski 等式与 Crooks 功涨落定理提出已二十年有余，它们将自由能计算扩展到非平衡模拟领域的特性使得它们得到了广泛的应用。特别是考虑到直接指数平均所蕴含的不利的统计学特性，大量的具有启发意义的加速收敛的计算方法在实际应用过程中被提出并收获了高于直接指数平均数倍甚至数十倍的效率。
+
+不过，这些加速收敛的计算方法的应用并不是没有条件的。下面我们简要概括它们的适用范围：
+
+- 累积量展开方法。当我们已知体系的功符合 Gaussian 分布或其他简单分布时，可以通过合理的截断提高计算效率。这种了解要么来自于体系的近平衡线性响应特性，要么来自于体系非平衡过程的某些内在性质。
+- 重要采样方法。当体系的功的分布不完全清楚，但可以了解大致的统计学特性时，可以设计合理的偏倚采样泛函（通常是功的简单函数）提高采样效率。
+- 最优标度协议方法。如果体系的功和其他必要物理量关于标度协议（等效地，决定标度协议的各个变量）的导数方便求得，则可以运用最优化方法选择合适的协议，但其中额外的优化计算是需要注意的。
+- 双向采样方法。这种方法相对而言是非经验的，不包含对体系特殊性质的认识。对于陌生体系而言，它作为一种初始的尝试通常可以取得较好的效果。
+
+## 展望
+
+纵观非平衡模拟的演化历史，我们可以找出几条比较清晰的脉络，它们对其今后的发展也有启示作用：
+
+### 从经验优化到基于均方偏差的系统推导
+
+我们关于经典热力学和统计力学的一些经验积累，在最初发展一种方法时可以给我们提供一些思路，但如果希望这种方法达到最优，则需要我们估计自由能变的偏差，例如均方偏差，并检验它关于我们优化自由度的极值（变分）行为。例如，偏差关于偏倚采样泛函的变分得到了最优偏倚采样泛函，关于双向采样偏移量的变分得到了 Barnett accept ratio 方法，关于标度协议的变分（在分段常数的变分空间内）得到了最速下降方法。
+
+有趣的是，重要采样方法和双向采样方法尽管出发点不同，但它们推导出的最优偏移量含有相同的因子：*eβ*(*W* − *ΔF*)；而这个因子恰好是 Crooks 功涨落定理中的产熵量。这意味着非平衡过程中的耗散功与 Crooks 定理具有紧密而普适的联系。
+
+### 从一般方法到关于特定体系的方法
+
+发展一般的方法固然是重要的，但如果能对特定体系的非平衡过程产生深入的理解，就有机会发展针对特定体系的高效计算方法。引导分子动力学的 Gaussian 特性来自于引导势的谐振子本质，而对于非 Gaussian 体系，如果能用 Langevin 动力学解析讨论它们轨迹上做的功，进而得到关于功的分布信息，则也有机会找到优化自由能变计算的方法。
+
+### 对非平衡过程本身的认识
+
+文中所述方法大部分基于数值分析与随机方法中熟知的结论，鉴于功和自由能的关系可以被概率论比较好地刻画，直接应用这些方法可以获得较好的结果。但在应用它们的过程中，我们对于非平衡过程物理图像的理解并没有太多增加，对于部分变分所得到的最优结果的物理意义也没有进一步加以阐释。
+
+尽管耗散功已经可以由概率论描述，但我们还要问，非平衡过程中耗散功究竟是怎么产生的？我们将可以看到，既然 Jarzynski 等式中的指数平均起源于耗散功的存在，对于耗散功产生模式的认识可以指导我们设计一些更有效的方法。通过实时计算耗散功[15](about:blank#fn15)的方法，可以实现中断那些积累了较多耗散功的轨迹以增强采样效率。另外，如果假定耗散功是局域的[16](about:blank#fn16)，我们可以对部分构象进行冻结，从而减少耗散功的产生。
+
+---
+
+1. Jarzynski, C. (2006). Rare events and the convergence of exponentially averaged work values. *Physical Review E*, *73*(4), P09005–10. http://doi.org/10.1103/PhysRevE.73.046105[↩](about:blank#fnref1)
+2. Robert Zwanzig, *Nonequilibrium Statistical Mechanics*, Oxford University Press, 2002.[↩](about:blank#fnref2)
+3. Hendrix, D. A., & Jarzynski, C. (2001). A “fast growth” method of computing free energy differences. *The Journal of Chemical Physics*, *114*(14), 5974–5981. http://doi.org/10.1063/1.1353552[↩](about:blank#fnref3)
+4. Park, S., & Schulten, K. (2004). Calculating potentials of mean force from steered molecular dynamics simulations. *The Journal of Chemical Physics*, *120*(13), 5946–5961. http://doi.org/10.1063/1.1651473[↩](about:blank#fnref4)
+5. Park, S., Khalili-Araghi, F., Tajkhorshid, E., & Schulten, K. (2003). Free energy calculation from steered molecular dynamics simulations using Jarzynski’s equality. *The Journal of Chemical Physics*, *119*(6), 3559–3566. http://doi.org/10.1063/1.1590311[↩](about:blank#fnref5)
+6. Arrar, M., Boubeta, F. M., Szretter, M. E., Sued, M., Boechi, L., & Rodriguez, D. (2018). On the accurate estimation of free energies using the jarzynski equality. *Journal of Computational Chemistry*, *40*(4), 688–696. http://doi.org/10.1002/jcc.25754[↩](about:blank#fnref6)
+7. Ytreberg, F. M., & Zuckerman, D. M. (2004). Single-ensemble nonequilibrium path-sampling estimates of free energy differences. *The Journal of Chemical Physics*, *120*(23), 10876–10879. http://doi.org/10.1063/1.1760511[↩](about:blank#fnref7)
+8. Oberhofer, H., Dellago, C., & Geissler, P. L. (2005). Biased Sampling of Nonequilibrium Trajectories: Can Fast Switching Simulations Outperform Conventional Free Energy Calculation Methods? †. *The Journal of Physical Chemistry B*, *109*(14), 6902–6915. http://doi.org/10.1021/jp044556a[↩](about:blank#fnref8)
+9. Oberhofer, H., & Dellago, C. (2008). Optimum bias for fast-switching free energy calculations. *Computer Physics Communications*, *179*(1-3), 41–45. http://doi.org/10.1016/j.cpc.2008.01.017[↩](about:blank#fnref9)
+10. Sun, S. X. (2003). Equilibrium free energies from path sampling of nonequilibrium trajectories. *The Journal of Chemical Physics*, *118*(13), 5769–5775. http://doi.org/10.1063/1.1555845[↩](about:blank#fnref10)
+11. Atılgan, E., & Sun, S. X. (2004). Equilibrium free energy estimates based on nonequilibrium work relations and extended dynamics. *The Journal of Chemical Physics*, *121*(21), 10392–10400. http://doi.org/10.1063/1.1813434[↩](about:blank#fnref11)
+12. Geiger, P., & Dellago, C. (2010). Optimum protocol for fast-switching free-energy calculations. *Physical Review E*, *81*(2), 021127–14. http://doi.org/10.1103/PhysRevE.81.021127[↩](about:blank#fnref12)
+13. Pohorille, A., Jarzynski, C., & Chipot, C. (2010). Good Practices in Free-Energy Calculations. *The Journal of Physical Chemistry B*, *114*(32), 10235–10253. http://doi.org/10.1021/jp102971x[↩](about:blank#fnref13)
+14. Ytreberg, F. M., & Zuckerman, D. M. (2004). Efficient use of nonequilibrium measurement to estimate free energy differences for molecular systems. *Journal of Computational Chemistry*, *25*(14), 1749–1759. http://doi.org/10.1002/jcc.20103[↩](about:blank#fnref14)
+15. Giovannelli, E., Gellini, C., Pietraperzia, G., Cardini, G., & Chelli, R. (2014). Combining path-breaking with bidirectional nonequilibrium simulations to improve efficiency in free energy calculations. *The Journal of Chemical Physics*, *140*(6), 064104–9. http://doi.org/10.1063/1.4863999[↩](about:blank#fnref15)
+16. Chelli, R. (2012). Local Sampling in Steered Monte Carlo Simulations Decreases Dissipation and Enhances Free Energy Estimates via Nonequilibrium Work Theorems. *Journal of Chemical Theory and Computation*, *8*(11), 4040–4052. http://doi.org/10.1021/ct300348w[↩](about:blank#fnref16)

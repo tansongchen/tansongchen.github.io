@@ -19,10 +19,20 @@ module.exports = {
       resolve: "gatsby-source-filesystem",
       options: {
         name: "images",
-        path: "./src/images/",
+        path: "src/images/",
       },
       __key: "images",
     },
-    "gatsby-plugin-sass"
+    {
+      resolve: "gatsby-source-filesystem",
+      options: {
+        name: "articles",
+        path: "articles/",
+      },
+      __key: "articles",
+    },
+    "gatsby-plugin-sass",
+    `gatsby-plugin-react-helmet`,
+    "gatsby-plugin-mdx",
   ],
 };

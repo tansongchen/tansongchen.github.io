@@ -1,6 +1,60 @@
 @charset "utf-8";
 
-// If need, change your variables before importing Bulma
-$title-color: #ff0000;
+$navbar-height: 4rem;
+$content-heading-weight: 400;
+$dropdown-menu-min-width: 1rem;
+$timeline-marker-color: white;
+$footer-padding: 3rem 1.5rem 4rem;
 
 @import "~bulma/bulma.sass";
+@import "~bulma-timeline/dist/css/bulma-timeline.sass";
+
+.navbar-item {
+  padding: 0.5rem 1rem;
+}
+
+.navbar-item-current {
+  background-color: #fafafa;
+}
+
+article > div.columns.box {
+  padding: 0;
+  overflow: auto;
+}
+
+article > div > div.column {
+  padding: 0;
+}
+
+.image.is-4by3 .gatsby-image-wrapper {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+
+.quote {
+  margin: 2rem auto;
+  padding: 0 2rem;
+  max-width: 700px;
+  line-height: 1.8;
+  border: none;
+  color: #888;
+}
+
+.quote::before {
+  content: "“ ";
+  color: #555555;
+  font-size: 4em;
+  font-family: Arial, serif;
+  line-height: 1em;
+  font-weight: 700;
+}
+
+figure.is-2by1 img {
+  object-fit: cover; /* Do not scale the image */
+  object-position: center; /* Center the image within the element */
+    // height: 100px;
+    // width: 100px;
+}
