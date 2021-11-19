@@ -5,7 +5,7 @@ import { Helmet } from "react-helmet"
 
 const NotFound = () => {
   return (
-    <Layout current="/404/">
+    <Layout slug="404">
       <Helmet>
         <title>正在建设中</title>
       </Helmet>

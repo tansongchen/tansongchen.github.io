@@ -90,9 +90,9 @@ const Selector = ({ sortMethod, changeSortMethod, intervalStart, changeIntervalS
         </div>
       </div>
       <div className="level-right is-vcentered">
-        <Dropdown<Date> options={[new Date("2019-01-01 00:00:00"), new Date("2020-01-01 00:00:00"), new Date("2021-01-01 00:00:00")]} callback={changeIntervalStart} current={intervalStart} display={getYear}/>
+        <Dropdown<Date> options={[new Date("2019-01-01T00:00:00"), new Date("2020-01-01T00:00:00"), new Date("2021-01-01T00:00:00")]} callback={changeIntervalStart} current={intervalStart} display={getYear}/>
         <div style={{padding: ".5rem", display: "inline-flex"}}>至</div>
-        <Dropdown<Date> options={[new Date("2019-12-31 23:59:59"), new Date("2020-12-31 23:59:59"), new Date("2021-12-31 23:59:59")]} callback={changeIntervalEnd} current={intervalEnd} display={getYear}/>
+        <Dropdown<Date> options={[new Date("2019-12-31T23:59:59"), new Date("2020-12-31T23:59:59"), new Date("2021-12-31T23:59:59")]} callback={changeIntervalEnd} current={intervalEnd} display={getYear}/>
         <div style={{padding: ".5rem .8rem", display: "inline-flex"}}></div>
         <Dropdown<SortMethod> options={[SortMethod.FromNewestToOldest, SortMethod.FromOldestToNewest]} callback={changeSortMethod} current={sortMethod} display={getSortMethod}/>
       </div>
@@ -163,8 +163,8 @@ const ArticleList = ({ sortMethod: sort, intervalStart, intervalEnd, activeTag, 
 class Main extends Component<MainProps, MainState> {
   state: MainState = {
     sortMethod: SortMethod.FromNewestToOldest,
-    intervalStart: new Date("2019-01-01 00:00:00"),
-    intervalEnd: new Date("2021-12-31 23:59:59"),
+    intervalStart: new Date("2019-01-01T00:00:00"),
+    intervalEnd: new Date("2021-12-31T23:59:59"),
     activeTag: undefined
   }
 
@@ -177,6 +177,7 @@ class Main extends Component<MainProps, MainState> {
     const changeTag = (activeTag: string, tag: string) => { activeTag === tag ? this.setState({ activeTag: undefined }) : this.setState({ activeTag: tag })}
     return <main>
       <Introduction />
+      <hr />
       <Selector sortMethod={this.state.sortMethod} changeSortMethod={changeSortMethod} intervalStart={this.state.intervalStart} changeIntervalStart={changeIntervalStart} intervalEnd={this.state.intervalEnd} changeIntervalEnd={changeIntervalEnd} changeTag={changeTag} activeTag={this.state.activeTag} allTags={allTags}/>
       <ArticleList {...this.state} nodes={this.props.nodes}/>
     </main>
@@ -187,11 +188,9 @@ const Articles = ({ data }) => {
   const preprocess = ({ frontmatter, slug }) => ({...frontmatter, slug: slug, date: new Date(frontmatter.date)});
   const nodes: ArticleProps[] = data.allMdx.nodes.map(preprocess);
   return (
-    <Fragment>
-      <Layout slug="articles">
-        <Main nodes={nodes}/>
-      </Layout>
-    </Fragment>
+    <Layout slug="articles">
+      <Main nodes={nodes}/>
+    </Layout>
   )
 }
 

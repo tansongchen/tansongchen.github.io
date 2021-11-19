@@ -2,8 +2,7 @@ import { Link } from "gatsby"
 import React, {Component, Fragment} from "react"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faCode, faHome, faPen, faPhotoVideo, faPortrait, IconDefinition } from "@fortawesome/free-solid-svg-icons"
-import { Helmet } from "react-helmet"
-import summary from "../utils/metadata"
+import summary, { title } from "../utils/metadata"
 
 interface NavItemProps {
   icon: IconDefinition,
@@ -20,7 +19,7 @@ const NavItem = ({icon, name, slug, current}: NavItemProps) => <Link to={`/${slu
 interface NavProps { slug: string }
 interface NavState { expand: boolean }
 
-class Nav extends Component<NavProps, NavState> {
+class Header extends Component<NavProps, NavState> {
   state: NavState = {
     expand: false
   }
@@ -30,7 +29,7 @@ class Nav extends Component<NavProps, NavState> {
       <div className="content is-medium container">
         <div className="navbar-brand">
           <a className="navbar-item" style={{fontSize: "1.5rem", padding: "0 1.5rem"}} href="/">
-            🍭️ 淞宸奇妙屋&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            🍭️ {title}
           </a>
 
           <a role="button" className="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample" onClick={() => { this.setState({ expand: !this.state.expand }) }}>
@@ -46,9 +45,9 @@ class Nav extends Component<NavProps, NavState> {
           <div className="navbar-end">
             <div className="navbar-item">
               <div className="buttons">
-                <a className="button is-info">
+                <Link to="/404/" className="button is-info">
                   <strong>订阅</strong>
-                </a>
+                </Link>
                 {/* <a className="button is-light">
                   Log in
                 </a> */}
@@ -60,15 +59,5 @@ class Nav extends Component<NavProps, NavState> {
   </nav>
   }
 }
-
-const Header = ({slug}) => <Fragment>
-  <Helmet>
-    <meta charSet="utf-8" />
-    <title>淞宸奇妙屋</title>
-    <body className="has-navbar-fixed-top" />
-  </Helmet>
-  <Nav slug={slug}>
-  </Nav>
-</Fragment>
 
 export default Header

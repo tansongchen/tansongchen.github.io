@@ -15,6 +15,7 @@ module.exports = {
     },
     "gatsby-plugin-sharp",
     "gatsby-transformer-sharp",
+    "gatsby-transformer-yaml",
     {
       resolve: "gatsby-source-filesystem",
       options: {
@@ -26,13 +27,19 @@ module.exports = {
     {
       resolve: "gatsby-source-filesystem",
       options: {
-        name: "articles",
-        path: "articles/",
+        name: "contents",
+        path: "contents/",
       },
-      __key: "articles",
+      __key: "contents",
     },
     "gatsby-plugin-sass",
     `gatsby-plugin-react-helmet`,
-    "gatsby-plugin-mdx",
+    {
+      resolve: "gatsby-plugin-mdx",
+      options: {
+        remarkPlugins: [require("remark-math")],
+        rehypePlugins: [require("rehype-katex")],
+      },
+    },
   ],
 };

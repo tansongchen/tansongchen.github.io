@@ -1,6 +1,4 @@
 import React, { Fragment, ReactElement } from "react"
-import { Link } from "gatsby"
-import Layout from "../components/Layout"
 import { StaticImage } from "gatsby-plugin-image"
 import { IconDefinition } from "@fortawesome/fontawesome-common-types"
 import { faCode, faHome, faPen, faPhotoVideo, faPortrait } from "@fortawesome/free-solid-svg-icons"
@@ -12,6 +10,8 @@ interface Category {
   icon: IconDefinition
   description: string
 }
+
+export const title = "众妙斋";
 
 const imageDomain = "https://cdn.jsdelivr.net/gh/tansongchen/images@master/";
 

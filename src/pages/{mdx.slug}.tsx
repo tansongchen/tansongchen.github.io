@@ -2,13 +2,20 @@ import * as React from 'react'
 import { graphql } from 'gatsby'
 import { MDXRenderer } from 'gatsby-plugin-mdx'
 import Layout from '../components/Layout'
+import "katex/dist/katex.min.css";
 
 const Article = ({ data }) => {
+  const { title, date, tags, abstract, cover } = data.mdx.frontmatter;
   return (
     <Layout slug={data.mdx.slug}>
-      <section className="section has-text-centered" style={{backgroundColor: "rgba(230, 240, 255, 0.5)"}}>
-        <div style={{fontSize: "200%"}}>{data.mdx.frontmatter.title}</div>
-        <p>{data.mdx.frontmatter.date}</p>
+      <section className="section" style={{backgroundColor: "rgba(230, 240, 255, 0.5)"}}>
+        <div className="content has-text-centered">
+          <h2>{title}</h2>
+          <p>{date}</p>
+          <div className="tags" style={{justifyContent: "center"}}>
+            {tags.map(x => <span key={x} className="tag is-medium is-info">{x}</span>)}
+          </div>
+        </div>
       </section>
       <main className="section container is-max-widescreen">
         <div className="column">
@@ -29,6 +36,9 @@ export const query = graphql`
       frontmatter {
         title
         date(formatString: "YYYY 年 M 月 DD 日")
+        tags
+        abstract
+        cover
       }
       slug
       body

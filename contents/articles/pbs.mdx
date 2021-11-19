@@ -26,20 +26,32 @@ PBS 最初是 NASA 管理计算任务时研发的系统，发展到今天有 Ope
 
 假设你现在拥有一个 Fortran 90 源码文件 `Hello.f90`，它的内容是这样的：
 
-```
-program Hello    print *, 'Hello World!'end program
+```fortran
+program Hello
+    print *, 'Hello World!'
+end program
 ```
 
 我们将它上传到自己的帐户根目录 `~`，并试图将它提交为一个任务。为此，我们可以在自己的帐户根目录 `~` 下新建一个脚本文件 `script`：
 
-```
+```bash
 vim script
 ```
 
 粘贴以下命令：
 
-```
-#PBS -q mix#PBS -V#PBS -S /bin/bash#PBS -l nodes=1:ppn=24#PBS -l walltime=24:00:00source /opt/software/bashrcNP=$(cat $PBS_NODEFILE | wc -l)cd $PBS_O_WORKDIRifort Hello.f90uniq $PBS_NODEFILE > tmpfilempirun -np $NP -machinefile tmpfile ./a.out
+```bash
+#PBS -q mix
+#PBS -V
+#PBS -S /bin/bash
+#PBS -l nodes=1:ppn=24
+#PBS -l walltime=24:00:00
+source /opt/software/bashrc
+NP=$(cat $PBS_NODEFILE | wc -l)
+cd $PBS_O_WORKDIR
+ifort Hello.f90
+uniq $PBS_NODEFILE > tmpfile
+mpirun -np $NP -machinefile tmpfile ./a.out
 ```
 
 下面对其进行逐行的解释：
@@ -65,7 +77,7 @@ vim script
 
 现在，你可以在根目录下提交这个脚本：
 
-```
+```bash
 qsub script
 ```
 
@@ -80,8 +92,14 @@ qsub script
 
 我们首先来看标准输出文件。`script.oXXXXX` 的内容是：
 
-```
-Copyright (C) 2009-2014 Intel Corporation. All rights reserved.Intel(R) Inspector XE 2015 (build 379161)Copyright (C) 2009-2015 Intel Corporation. All rights reserved.Intel(R) VTune(TM) Amplifier XE 2015 (build 403110)Copyright (C) 2009-2014 Intel Corporation. All rights reserved.Intel(R) Advisor XE 2015 (build 380555) Hello World!
+```bash
+Copyright (C) 2009-2014 Intel Corporation. All rights reserved.
+Intel(R) Inspector XE 2015 (build 379161)
+Copyright (C) 2009-2015 Intel Corporation. All rights reserved.
+Intel(R) VTune(TM) Amplifier XE 2015 (build 403110)
+Copyright (C) 2009-2014 Intel Corporation. All rights reserved.
+Intel(R) Advisor XE 2015 (build 380555)
+Hello World!
 ```
 
 前六行是在导入环境变量时 Intel 打广告产生的输出，而 `Hello World!` 是程序运行产生的输出。~~（目前没有发现不让 Intel 打广告的办法，就这样吧。）~~
@@ -89,7 +107,12 @@ Copyright (C) 2009-2014 Intel Corporation. All rights reserved.Intel(R) Inspecto
 其次看标准错误文件。`script.eXXXXX` 的内容是：
 
 ```
--bash: BASH_FUNC_module(): line 0: syntax error near unexpected token `)'-bash: BASH_FUNC_module(): line 0: `BASH_FUNC_module() () {  eval `/usr/bin/modulecmd bash $*`'-bash: error importing function definition for `BASH_FUNC_module'/opt/software/bashrc: line 25: /opt/software/g09/bsd/g09.profile: 权限不够/opt/software/bashrc: line 40: /etc/profile.d/conda.sh: 没有那个文件或目录/opt/software/bashrc: line 41: conda: command not found
+-bash: BASH_FUNC_module(): line 0: syntax error near unexpected token `)'
+-bash: BASH_FUNC_module(): line 0: `BASH_FUNC_module() () {  eval `/usr/bin/modulecmd bash $*`'
+-bash: error importing function definition for `BASH_FUNC_module'
+/opt/software/bashrc: line 25: /opt/software/g09/bsd/g09.profile: 权限不够
+/opt/software/bashrc: line 40: /etc/profile.d/conda.sh: 没有那个文件或目录
+/opt/software/bashrc: line 41: conda: command not found
 ```
 
 比较遗憾的是，这里确实有一些错误。这些错误主要是导入环境变量时产生的，部分环境变量~~因年久失修~~找不到对应的资源。不过，这对于我们的应用来说没有影响，因此不用管它就好了。
@@ -152,7 +175,7 @@ Copyright (C) 2009-2014 Intel Corporation. All rights reserved.Intel(R) Inspecto
 
 rsync 是一款能在本地和服务器之间同步文件的工具。在 macOS 系统中，我们可以通过「家酿啤酒」（Homebrew）包管理工具来安装它，命令为 `brew install rsync`（如果你使用 macOS 但不知道 Homebrew，~~那我怀疑你是一个假的程序猿，~~可以看这篇文章了解一下。在 Linux 系统中，它很可能已经被预置了，无需安装。rsync 的语法是：
 
-```
+```bash
 rsync 源文件夹/ 目标文件夹
 ```
 
@@ -192,7 +215,7 @@ rsync 源文件夹/ 目标文件夹
 
 下面我们将在显然，我们工作的大部分时间还是在本地进行代码设计和调试。本地编译运行的命令为：
 
-```
+```bash
 ifort ${relativeFile} -module .module -o .executable/${fileBasenameNoExtension} -mkl -lmkl_lapack95_lp64 && .executable/${fileBasenameNoExtension}
 ```
 
@@ -205,7 +228,7 @@ ifort ${relativeFile} -module .module -o .executable/${fileBasenameNoExtension} 
 
 当待编译的源码有输出文件时，输出文件前应该加上 `data/`。例如，
 
-```
+```fortran
 open(10, file = 'data/test.dat')
 ```
 
@@ -215,14 +238,26 @@ open(10, file = 'data/test.dat')
 
 我们按下 `⌘;` `⌘u`，触发的命令是：
 
-```
+```bash
 rsync -a --delete %/src/ user@host:src; ssh user@host 'qsub -v FILE=${relativeFile} script'
 ```
 
 其中 `user@host` 是我们的登录帐户，如 `tansongchen@127.0.0.1`，而 `%/src` 要替换为你自己的工作目录。第一句是将本地的源码严格同步到服务器上，而第二步则是用 `qsub` 命令在服务器上提交脚本，同时将当前文件的相对目录作为一个参数传入。这一参数使得我们可以保持一个恒定的脚本而不必每次更改。这个脚本的内容是：
 
-```
-#PBS -q mix#PBS -V#PBS -S /bin/bash#PBS -j oe#PBS -o .log/${PBS_JOBID%.*}#PBS -l nodes=1:ppn=24#PBS -l walltime=24:00:00source /opt/software/bashrcNP=$(cat $PBS_NODEFILE | wc -l)cd $PBS_O_WORKDIRifort $FILE -O3 -module .module -o .executable/${PBS_JOBID%.*} -mkl -lmkl_lapack95_lp64uniq $PBS_NODEFILE > .executable/tmpfilempirun -np $NP -machinefile .executable/tmpfile .executable/${PBS_JOBID%.*}
+```bash
+#PBS -q mix
+#PBS -V
+#PBS -S /bin/bash
+#PBS -j oe
+#PBS -o .log/${PBS_JOBID%.*}
+#PBS -l nodes=1:ppn=24
+#PBS -l walltime=24:00:00
+source /opt/software/bashrc
+NP=$(cat $PBS_NODEFILE | wc -l)
+cd $PBS_O_WORKDIR
+ifort $FILE -O3 -module .module -o .executable/${PBS_JOBID%.*} -mkl -lmkl_lapack95_lp64
+uniq $PBS_NODEFILE > .executable/tmpfile
+mpirun -np $NP -machinefile .executable/tmpfile .executable/${PBS_JOBID%.*}
 ```
 
 其中 `FILE` 是待传入的参数，注意 Code 中文件相对于工作文件夹的路径恰好也是同步之后服务器上文件相对于根目录的路径，所以这使得同样的代码在本地编译和在服务器上编译时的行为完全一样。
@@ -237,7 +272,7 @@ rsync -a --delete %/src/ user@host:src; ssh user@host 'qsub -v FILE=${relativeFi
 
 假如此时服务器上没有任务正在排队，那么我们提交的任务会在约半分钟之内完成编译（视源码体量而定）。此时，我们按下 `⌘;` `⌘l`，触发的命令是：
 
-```
+```bash
 ssh user@host 'qstat'
 ```
 
@@ -247,7 +282,7 @@ ssh user@host 'qstat'
 
 当我们在提交作业后半分钟查看情况时，如果任务状态为 R 并且有一定的运行时间，那么说明该任务可以正常运行。反之，如果任务状态为 C，很可能是任务出现了错误（如果我们的任务没有简单到可以在半分钟内运行完的话）。此时，我们按下 `⌘;` `⌘e`，触发的命令是：
 
-```
+```bash
 rsync -a --delete user@host:log/ %/log
 ```
 
@@ -255,7 +290,7 @@ rsync -a --delete user@host:log/ %/log
 
 我曾经遇到过一个当时看上去非常费解的问题。在本地完美编译运行的程序在服务器上出现了运行错，提示信息为：
 
-```
+```bash
 forrtl: severe (174): SIGSEGV, segmentation fault occurred
 ```
 
@@ -265,7 +300,7 @@ forrtl: severe (174): SIGSEGV, segmentation fault occurred
 
 若任务一直正常运行，并且达到了 C 的状态，那么表明任务已经运行完成。按下 `⌘;` `⌘d`，触发的命令为：
 
-```
+```bash
 rsync -a --delete user@host:data/ %/cluster
 ```
 

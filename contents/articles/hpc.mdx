@@ -6,10 +6,6 @@ cover: https://cdn.jsdelivr.net/gh/tansongchen/images@master/hpc.webp
 abstract: 看看计算机上的线性代数在有计算机以来的七十多年是如何演化的。
 ---
 
-# hpc
-
-![http://img.candobear.com/2019-08-24-super.jpg](http://img.candobear.com/2019-08-24-super.jpg)
-
 即使没有听说过 LAPACK、Intel MKL 和 OpenBLAS 这些高性能计算库，你也一定会对 MATLAB，C++ 中的 Eigen，Python 中的 NumPy 等等强大的数值计算工具有所耳闻。不过，相比于它们的名气而言，它们的来历就鲜为人知了。例如，请你考虑以下两个有趣的问题：
 
 - MATLAB 里的 MAT 是不是 Mathmetics 的简写？
@@ -57,8 +53,12 @@ abstract: 看看计算机上的线性代数在有计算机以来的七十多年�
 
 什么是矩阵操作方式？例如，如果在 Fortran 中希望对矩阵中的元素进行遍历，那么最好这样写：
 
-```
-do j = 1, n  do i = 1, n    A(i, j) = <some expression>  end doend do
+```fortran
+do j = 1, n
+  do i = 1, n
+    A(i, j) = <some expression>
+  end do
+end do
 ```
 
 这看上去有点违反直觉，但在 Fortran 程序所操作的内存中，紧邻 `A(1,1)` 元的元素，确实是 `A(2,1)` 元而非 `A(1,2)` 元！因此，如果按行访问，将会不断在内存中跳来跳去，造成资源浪费。在今天的 MATLAB 中，矩阵的操作依然是列优先的。当然，作为今天的 MATLAB，它支持的常微分方程数值解、快速 Fourier 变换等内容，就是很久以后的事情了。
@@ -76,13 +76,13 @@ do j = 1, n  do i = 1, n    A(i, j) = <some expression>  end doend do
 
 这些更加低级的（与硬件有关的优化）实际上是通过 BLAS（基本线性代数子程序）来完成的，它定义了诸如向量加法、标量与向量的乘法和点乘等等线性代数的基本过程，并根据特定的处理器进行优化。[3](about:blank#fn3)这里的黑科技有时候看上去会非常难以理解，例如：
 
-我们一般认为矩阵乘法是 *O*(*n*3) 时间复杂度的，因为 *Cij* = ∑*kAikBkj* 对每个元素都要循环 *n* 次，而元素的数量是 *n*2 的，总体结果当然是 *n*3 的。但在真正的高性能计算中，复杂度会降到 *O*(*n*2.5) 甚至更低。~~所以自己还是没事不要瞎造轮子。~~
+我们一般认为矩阵乘法是 $O(n^3)$ 时间复杂度的，因为 $C_{ij}=\sum_k A_{ik}B_{kj}$ 对每个元素都要循环 $n$ 次，而元素的数量是 $n^2$ 的，总体结果当然是 $n^3$ 的。但在真正的高性能计算中，复杂度会降到 $O(n^{2.5})$ 甚至更低。~~所以自己还是没事不要瞎造轮子。~~
 
 ![http://img.candobear.com/2019-08-24-complexity.png](http://img.candobear.com/2019-08-24-complexity.png)
 
 LAPACK 尽管是用古老的 Fortran 77 语言写的，但确实相当完善并久经检验，以至于它已经几乎成为了各种更加高级的库默认的底层实现。当我上周查找关于 LAPACK 的资料的时候，我惊奇的发现 LAPACK 竟然是 macOS 系统自带框架的一部分。[4](about:blank#fn4)如果希望在 macOS 系统中使用 LAPACK，只需要在编译时加上 `-framework accelerate` 就可以了。例如
 
-```
+```bash
 gfortran xx.f90 -o xx -framework accelerate
 ```
 
@@ -90,22 +90,25 @@ gfortran xx.f90 -o xx -framework accelerate
 
 不过虽然是这么说，但如果你真的打算直接调用 LAPACK，那你可能还需要再想一想。一个典型的 LAPACK 函数，例如实对称矩阵的本征值问题，大概是这个样子的：
 
-```
-! Fortran 接口call ssyev(jobz, uplo, n, a, lda, w, work, lwork, info)
+```fortran
+! Fortran 接口
+call ssyev(jobz, uplo, n, a, lda, w, work, lwork, info)
 ```
 
 或者
 
-```
-// C 接口lapack_int LAPACKE_<?>syev( int matrix_layout, char jobz, char uplo, lapack_int n, <datatype>* a, lapack_int lda, <datatype>* w );
+```c
+// C 接口
+lapack_int LAPACKE_<?>syev( int matrix_layout, char jobz, char uplo, lapack_int n, <datatype>* a, lapack_int lda, <datatype>* w );
 ```
 
 除了必要的 A 是矩阵输入，w 是本征值输出之外，其他对象对你要解决的问题来说，啥用没有，仅仅是指定了 LAPACK 工作中的一些细节。这是因为，Fortran 77 并不支持数组的动态大小，所以不仅需要额外提供给 LAPACK 一个矩阵维数，还要提供一些向量作为「工作空间」，以防存储空间不够用。声明这些无用的变量并初始化它们显然会对你程序的明晰程度产生一定的影响~~，并强烈损害了我这样的强迫症的使用体验~~。
 
 好在 Fortran 95 的泛型编程和显式接口很大程度上解决了这个问题。由于这不是一篇介绍现代 Fortran 的文章，具体实现的方法就不作展开了，但当使用 Fortran 95 调用的时候，可以简单地写成
 
-```
-! Fortran 95 接口call syev(a, w, job)
+```fortran
+! Fortran 95 接口
+call syev(a, w, job)
 ```
 
 注意这里的 `ssyev` 前面指定单精度数的那个 `s` 也可以省略不写。
@@ -132,14 +135,45 @@ gfortran xx.f90 -o xx -framework accelerate
 
 简单来说，Intel 搞了什么指令集，Intel 自己最清楚，所以可以在编译的时候根据指令集进行终极优化。让我们来做一个简单的测试，对比 「`gfortran` 编译器调用 Accelerate 框架」与 「`ifort` 编译器调用 Accelerate 框架」在计算 1000 × 1000 矩阵乘法时的表现。先放上源代码：
 
-```
-program main    implicit none    integer :: i, j, k    integer, parameter :: n = 1000    real(8) :: a(n,n) = 1, b(n,n) = 1, c(n, n) = 0    real :: t1, t2    call cpu_time(t1)    do j = 1, n        do i = 1, n            do k = 1, n                c(i, j) = c(i, j) + a(i, k) * b(k, j)            end do        end do    end do    call cpu_time(t2)    print *, '造轮子：', t2 - t1    call cpu_time(t1)    c = matmul(a, b)    call cpu_time(t2)    print *, '自带矩阵乘法：', t2 - t1    call cpu_time(t1)    call sgemm('n', 'n', n, n, n, 1d0, a, n, b, n, 0d0, c, n)    call cpu_time(t2)    print *, 'BLAS：', t2 - t1end program
+```fortran
+program main
+    implicit none
+    integer :: i, j, k
+    integer, parameter :: n = 1000
+    real(8) :: a(n,n) = 1, b(n,n) = 1, c(n, n) = 0
+    real :: t1, t2
+    call cpu_time(t1)
+    do j = 1, n
+        do i = 1, n
+            do k = 1, n
+                c(i, j) = c(i, j) + a(i, k) * b(k, j)
+            end do
+        end do
+    end do
+    call cpu_time(t2)
+    print *, '造轮子：', t2 - t1
+    call cpu_time(t1)
+    c = matmul(a, b)
+    call cpu_time(t2)
+    print *, '自带矩阵乘法：', t2 - t1
+    call cpu_time(t1)
+    call sgemm('n', 'n', n, n, n, 1d0, a, n, b, n, 0d0, c, n)
+    call cpu_time(t2)
+    print *, 'BLAS：', t2 - t1
+end program
 ```
 
 输出结果是：
 
-```
-$ ifort speed.f90 -O3 -o speed -framework accelerate && ./speed 造轮子：  0.1375380 自带矩阵乘法：  0.1311140 BLAS：  3.3599138E-04$ gfortran speed.f90 -O3 -o speed -framework accelerate && ./speed 造轮子：   1.04389393 自带矩阵乘法：   9.80659723E-02 BLAS：   3.60965729E-04
+```bash
+$ ifort speed.f90 -O3 -o speed -framework accelerate && ./speed
+造轮子：  0.1375380
+自带矩阵乘法：  0.1311140
+BLAS：  3.3599138E-04
+$ gfortran speed.f90 -O3 -o speed -framework accelerate && ./speed
+造轮子：   1.04389393
+自带矩阵乘法：   9.80659723E-02
+BLAS：   3.60965729E-04
 ```
 
 可以看到，按造轮子写循环的写法，ifort 的优化功力很强，优化到了自带矩阵乘法的水平，这可能是因为 ifort 能够更好地进行底层向量化处理。调 BLAS 库又比自带矩阵乘法快了两个数量级，不过后面这两个级别就与用什么编译无关了。
@@ -217,13 +251,13 @@ Perl 语言的发明者曾经表示，程序员最大的三个优点就是懒惰
 
 在浏览器中访问本地的安装指南，路径应该类似于 `/opt/intel/documentation_2019/en/ps2019/getstart_comp.htm`，按照上面的指示，将 `ifort` 添加到环境变量中：
 
-```
+```bash
 source <install_dir>/bin/compilervars.sh intel64
 ```
 
 其中 `<install_dir>` 默认是 `/opt/intel/compilers_and_libraries_2020.0.166/mac/`。然后进行编译器测试：
 
-```
+```bash
 ifort Hello.f90
 ```
 
@@ -233,7 +267,7 @@ ifort Hello.f90
 
 现在打开 MKL 的[安装指南](https://software.intel.com/en-us/mkl-macos-developer-guide)（建议下载 PDF 阅读，网页访问非常慢），按照上面的指示，将 MKL 添加到环境变量中：
 
-```
+```bash
 source <install_dir>/mkl/bin/mklvars.sh intel64 mod
 ```
 
@@ -243,20 +277,49 @@ source <install_dir>/mkl/bin/mklvars.sh intel64 mod
 
 帮助文件提供了很多种不同的链接方式，我没有完全搞懂，但我选了一种比较简单的链接命令：
 
-```
+```bash
 ifort Hello.f90 -o Hello -mkl -lmkl_lapack95_lp64
 ```
 
 你可以复制这个命令，然后使用这个测试程序进行测试。当然，每次编译都输入这么长的命令是会死人的。如果你也和我一样使用 Visual Studio Code 作为编辑器的话，可以使用这个任务文件来将编译运行过程自动化。
 
-```
-{    "version": "2.0.0",    "tasks": [        {            "label": "编译 Fortran 源代码",            "type": "shell",            "command": "ifort ${fileBasename} -o ${fileBasenameNoExtension} -mkl -lmkl_lapack95_lp64",            "options": {                "cwd": "${relativeFileDirname}",            },            "group": {                "kind": "build",                "isDefault": true            },            "presentation": {                "focus": true            }        }    ]}
+```json
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "编译 Fortran 源代码",
+            "type": "shell",
+            "command": "ifort ${fileBasename} -o ${fileBasenameNoExtension} -mkl -lmkl_lapack95_lp64",
+            "options": {
+                "cwd": "${relativeFileDirname}",
+            },
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "presentation": {
+                "focus": true
+            }
+        }
+    ]
+}
 ```
 
 注意，如果调用 LAPACK，那么程序中直接 `call` 相应的子例程即可；如果通过 LAPACK 95 接口间接调用 LAPACK，那么还需要导入接口模块，例如上面用来测试的 `Hello.f90` 源码是：
 
-```
-include 'lapack.f90'program main    use lapack95    use f95_precision    implicit none    real*8 :: a(2,2) = 0    print *, 'Hello Intel MKL!'    a(1,1) = 1    call getrf(a)    print *, 'The result is:', aend program
+```fortran
+include 'lapack.f90'
+program main
+    use lapack95
+    use f95_precision
+    implicit none
+    real*8 :: a(2,2) = 0
+    print *, 'Hello Intel MKL!'
+    a(1,1) = 1
+    call getrf(a)
+    print *, 'The result is:', a
+end program
 ```
 
 ## 数学参考
