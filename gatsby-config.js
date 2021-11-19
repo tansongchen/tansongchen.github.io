@@ -1,4 +1,5 @@
 module.exports = {
+  assetPrefix: `https://cdn.jsdelivr.net/gh/tansongchen/tansongchen.github.io@master/`,
   siteMetadata: {
     siteUrl: "https://tansongchen.com",
     title: "Songchen Tan Personal Website",
