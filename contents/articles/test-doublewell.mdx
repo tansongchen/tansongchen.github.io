@@ -12,7 +12,7 @@ abstract: Jarzynski 等式的后续
 
 在 [7 月 12 日的文章](https://tansongchen.com/free_energy/) 中，我们讨论了非平衡分子动力学中的 Jarzynski 等式。我们先简单回顾一下 Jarzynski 等式适用的条件：
 
-> 考虑一个经典、恒温的系统，它具有 $N$ 个自由度，可以由相空间坐标 $x = (q, p)$ 描述。
+> 考虑一个经典、恒温的系统，它具有 $N$ 个自由度，可以由相空间坐标 $x=(q,p)$ 描述。
 >
 >
 > 现设系统经历了一个过程并改变了它的 Hamilton 量，则在这个过程中 Hamilton 量可以写作 $H(x,\lambda)$，其中 $\lambda=0$ 对应初态，$\lambda=1$ 对应末态。在这个过程中 $\lambda$ 随时间的变化关系记作 $\lambda(t)$。
@@ -39,7 +39,7 @@ $$
 
 ## 扩展 Hamilton 量和正则方程的构建
 
-在 [7 月 19 日的文章](https://tansongchen.com/symplecticity/) 中，我们总结了在 Hamilton 量不含时的情况下，辛算法的一般构建方式。不过上面的讨论要求我们处理一个 Hamilton 量随标度参量变化，因而也就随时间变化的情况：$H = H(p, q, λ(t))$。我们接下来要说明的是：对于 Hamilton 量含时的情况，尽管 Hamilton 量不守恒，但原有的辛算法仍然保持某种部分的（或者说准的）辛性。
+在 [7 月 19 日的文章](https://tansongchen.com/symplecticity/) 中，我们总结了在 Hamilton 量不含时的情况下，辛算法的一般构建方式。不过上面的讨论要求我们处理一个 Hamilton 量随标度参量变化，因而也就随时间变化的情况：$H=H(p,q,\lambda (t))$。我们接下来要说明的是：对于 Hamilton 量含时的情况，尽管 Hamilton 量不守恒，但原有的辛算法仍然保持某种部分的（或者说准的）辛性。
 
 先考虑一般的情况，即 $\mathbb R^{2n}$ 上的正则方程：
 
@@ -81,7 +81,7 @@ H_3&=\frac{s\pi^2}{2M}
 \end{aligned}
 $$
 
-我们发现，如果将 $V(q,Q)$ 替换 $V(q)$ 放在 $H_2$ 中，那么 $H_2$ 仍然只含广义位置而不含广义动量，因此仍然可以精确求出时间演化算符；另外如果将 $P$ 加到 $H_1$ 中，那么 $H_1$ 只含广义动量 $p$, $P$ 和广义位置 $s$，它们互相不共轭，因此也可以精确求出时间演化算符。也即：$K=K_1+K_2+K_3$，其中
+我们发现，如果将 $V(q,Q)$ 替换 $V(q)$ 放在 $H_2$ 中，那么 $H_2$ 仍然只含广义位置而不含广义动量，因此仍然可以精确求出时间演化算符；另外如果将 $P$ 加到 $H_1$ 中，那么 $H_1$ 只含广义动量 $p,P$ 和广义位置 $s$，它们互相不共轭，因此也可以精确求出时间演化算符。也即：$K=K_1+K_2+K_3$，其中
 
 $$
 \begin{aligned}
@@ -91,7 +91,7 @@ K_3&=\frac{s\pi^2}{2M}
 \end{aligned}
 $$
 
-对应的辛差分格式仍然适用：$x_{n+1} = e^{\Delta tH_3/2}e^{\Delta tH_2/2}e^{\Delta tH_1}e^{\Delta tH_2/2}e^{\Delta tH_3/2}x_n$，这里 **x** 是 6 维向量。我们具体将这个格式写出来（**高能预警**）：
+对应的辛差分格式仍然适用：$x_{n+1}=e^{\Delta tH_3/2}e^{\Delta tH_2/2}e^{\Delta tH_1}e^{\Delta tH_2/2}e^{\Delta tH_3/2}x_n$，这里 **x** 是 6 维向量。我们具体将这个格式写出来（**高能预警**）：
 
 $$
 \begin{aligned}
@@ -140,7 +140,7 @@ $$
 
 也即 $F_N=-\ln X_N$，那么这个估值的期望是 $\langle F_N\rangle=-\langle\ln X_N\rangle$
 
-由 Jensen’s（琴生）不等式，$\ln\langle X_N\rangle<\langle\ln X_N\rangle$，而 $\langle X_N\rangle=\langle X\rangle = e^{-F}$，故有 $\langle F_N\rangle\ge -\ln e^{-F}=F$
+由 Jensen’s（琴生）不等式，$\ln\langle X_N\rangle<\langle\ln X_N\rangle$，而 $\langle X_N\rangle=\langle X\rangle=e^{-F}$，故有 $\langle F_N\rangle\ge -\ln e^{-F}=F$
 
 这说明我们总是高估真实的自由能变。
 
@@ -174,7 +174,7 @@ $$
 \varepsilon_N^2\approx \frac{\langle (e^{-W_d}-1)^2\rangle}N
 $$
 
-换言之，获得准确度为 $kT$ 的数据所需的采样数目为 $N\approx\langle(e^{-W_d} − 1)^2\rangle$。上篇文章中提到的绝大多数计算方法基于在一定条件下最小化 $\langle(e^{-W_d} − 1)^2\rangle$。
+换言之，获得准确度为 $kT$ 的数据所需的采样数目为 $N\approx\langle(e^{-W_d}−1)^2\rangle$。上篇文章中提到的绝大多数计算方法基于在一定条件下最小化 $\langle(e^{-W_d}−1)^2\rangle$。
 
 # 一些结果
 

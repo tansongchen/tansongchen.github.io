@@ -20,7 +20,7 @@ abstract: 适用于大体系的 O(N) GW 方法的推导
 
 众所周知，一次量子化将物理量描述为线性 Hermite 算符，物理量的期望值由算符作用在给定的量子态上给出。
 
-而在二次量子化中，量子态本身也变为了算符。我们记描述 $N$ 个电子的波函数为 $\Psi_N$，即 $\Psi_N(x_1, \cdots, x_N)$ 则*产生算符* $c^\dagger$ 是一类将全体 $N$ 电子波函数空间 $\mathcal H(N)$ 映射到全体 $N+1$ 电子波函数空间 $\mathcal H(N+1)$ 的映射，而*湮灭算符* $c$ 则正好相反。
+而在二次量子化中，量子态本身也变为了算符。我们记描述 $N$ 个电子的波函数为 $\Psi_N$，即 $\Psi_N(x_1,\cdots,x_N)$ 则*产生算符* $c^\dagger$ 是一类将全体 $N$ 电子波函数空间 $\mathcal H(N)$ 映射到全体 $N+1$ 电子波函数空间 $\mathcal H(N+1)$ 的映射，而*湮灭算符* $c$ 则正好相反。
 
 $$
 \begin{array} { l } { \hat { c } : \mathcal H ( N + 1 ) \rightarrow \mathcal H ( N ) } \\ { \hat { c } ^ { \dagger } : \mathcal H ( N ) \rightarrow \mathcal H ( N + 1 ) } \end{array}
@@ -55,13 +55,13 @@ $$
 
 ## Heisenberg 绘景
 
-由于只有算符的期望值是可观测量，所以只要得到正确的期望值，我们*可以对算符进行任意修改*。对于随时间演化的系统，我们因此可以将时间演化的效果从波函数完全转移到算符上。换句话说，如果系统的时间演化可以用 $|\Psi(t)⟩ = U(t)|\Psi(0)⟩$ 表示，那么我们将 Heisenberg 绘景下的算符 $O(t)$ 写成 $U^\dagger OU$ 就能包括时间演化的效果。特别对于 Hamilton 量不含时的系统，时间演化算符 $U=e^{-iHt}$。
+由于只有算符的期望值是可观测量，所以只要得到正确的期望值，我们*可以对算符进行任意修改*。对于随时间演化的系统，我们因此可以将时间演化的效果从波函数完全转移到算符上。换句话说，如果系统的时间演化可以用 $|\Psi(t)\rangle=U(t)|\Psi(0)\rangle$ 表示，那么我们将 Heisenberg 绘景下的算符 $O(t)$ 写成 $U^\dagger OU$ 就能包括时间演化的效果。特别对于 Hamilton 量不含时的系统，时间演化算符 $U=e^{-iHt}$。
 
 # Green 函数
 
 ## Green 函数的定义
 
-我们现在可以给出 Green 函数的定义：对于一个 $N$ 电子系统，其 Green 函数是 $G(rtr't') = \langle 0|T[f(rt)f^{\dagger}(r't')]|0\rangle$ 其中 $|0\rangle$ 是系统基态，$f(rt)$ 和 $f^\dagger(r't')$ 分别是湮灭场算符和产生场算符在 Heisenberg 绘景下的形式，而 $T$ 是时序算符，其定义为：
+我们现在可以给出 Green 函数的定义：对于一个 $N$ 电子系统，其 Green 函数是 $G(rtr't')=\langle 0|T[f(rt)f^{\dagger}(r't')]|0\rangle$ 其中 $|0\rangle$ 是系统基态，$f(rt)$ 和 $f^\dagger(r't')$ 分别是湮灭场算符和产生场算符在 Heisenberg 绘景下的形式，而 $T$ 是时序算符，其定义为：
 
 $$
 T [ A ( t _ { 1 } ) B ( t _ { 2 } ) ] \equiv \left\{ \begin{array} { l l } { A ( t _ { 1 } ) B ( t _ { 2 } ) } & {t _ { 1 } > t _ { 2 } } \\ { -B ( t _ { 2 } ) A ( t _ { 1 } ) } & {t _ { 2 } > t _ { 1 } } \end{array} \right.
@@ -79,7 +79,7 @@ G_0(r,r',t)=&\sum _ { n } \varphi _ { n } ( r ) \varphi _ { n }  ( r ^ { \prime 
 \end{aligned}
 $$
 
-其中 $\varphi_n$ 是第 $n$ 个 Kohn-Sham 轨道，而 $\varepsilon_n$ 是相应的能量。如果该轨道被占据，则 $f_n$ = 1，否则 $f_n$ = 0。$\theta(t)$ 是 Heaviside 阶跃函数：
+其中 $\varphi_n$ 是第 $n$ 个 Kohn-Sham 轨道，而 $\varepsilon_n$ 是相应的能量。如果该轨道被占据，则 $f_n=1$，否则 $f_n=0$。$\theta(t)$ 是 Heaviside 阶跃函数：
 
 $$
 \theta(t)=
@@ -106,7 +106,7 @@ $$
 这里我们将占据数 $f_n$ 转化为了关于全部占据轨道的投影算符：
 
 $$
-P = \sum_{n<N_{\rm occupied}}|\varphi_n\rangle\langle\varphi_n|
+P=\sum_{n<N_{\rm occupied}}|\varphi_n\rangle\langle\varphi_n|
 $$
 
 # 频域 Green 函数 $\tilde G$
@@ -221,7 +221,7 @@ $$
 其中 $\varphi_n(r)$ 和 $\varepsilon_n$ 是如下本征方程的本征函数和本征值：
 
 $$
-H_0\varphi_n + \int\mathrm dr'\Sigma(r, r')\varphi_n(r') = \varepsilon_n\varphi_n
+H_0\varphi_n+\int\mathrm dr'\Sigma(r,r')\varphi_n(r')=\varepsilon_n\varphi_n
 $$
 
 注意：我们上面得到的 $\tilde G$ 的表达式和一开始推导出的形式相同，那么表明 $\varphi_n$ 就是实际体系的轨迹，而 $\varepsilon_n$ 就是我们要求的准粒子能量。
@@ -242,7 +242,7 @@ $$
 
 Hedin 方程组
 
-其中，数字 1, 2, ..., 7 指代的是不同的位置和时间，即 $1\equiv (r_1, t_1)$。不幸的是，如果我们希望求解这样的问题，那将会比原来的多体问题更复杂！
+其中，数字 $1,2,\cdots,7$ 指代的是不同的位置和时间，即 $1\equiv(r_1,t_1)$。不幸的是，如果我们希望求解这样的问题，那将会比原来的多体问题更复杂！
 
 ## $GW$ 近似
 
@@ -255,7 +255,7 @@ $$
 
 其中 $P$ 是极化率，也即屏蔽相互作用是*「裸」相互作用加上一个由极化作用导致的修正项*。
 
-而所谓的 $GW$ 近似，就是（无比机智地）在 Hedin’s 方程中的第一式中令 $\Gamma = 1$，使得 $\Sigma=iGW$。显然，这是巨大的简化，使得我们只需要求解准粒子方程和这个方程就能得到自能函数 $\Sigma$，进而得到准粒子能量。
+而所谓的 $GW$ 近似，就是（无比机智地）在 Hedin’s 方程中的第一式中令 $\Gamma=1$，使得 $\Sigma=iGW$。显然，这是巨大的简化，使得我们只需要求解准粒子方程和这个方程就能得到自能函数 $\Sigma$，进而得到准粒子能量。
 
 ## $G_0W_0$ 近似
 
@@ -263,7 +263,7 @@ $$
 
 ### 用 $G_0$ 代替 $G$
 
-上一篇文章中，我们指出 Kohn-Sham 轨道可以给出一个近似的 *G*0 ≈ *G*。鉴于 *Σ* 本身就是对 *G* 的一个修正项，我们这里就*忽略掉「修正项的修正项」*，使用（已知的）*G*0 代替未知的 *G*。
+上一篇文章中，我们指出 Kohn-Sham 轨道可以给出一个近似的 $G_0\approx G$。鉴于 $\Sigma$ 本身就是对 $G$ 的一个修正项，我们这里就*忽略掉「修正项的修正项」*，使用（已知的）*G*0 代替未知的 *G*。
 
 ### 用 $W_0$ 代替 $W$
 
@@ -274,7 +274,7 @@ $$
 现在，我们可以用所有已知量一次性地表达 $\Sigma$ 了。我们再来看看准粒子方程：
 
 $$
-H_0\varphi_n + \int\mathrm dr'\Sigma(r, r')\varphi_n(r') = \varepsilon_n\varphi_n
+H_0\varphi_n+\int\mathrm dr'\Sigma(r,r')\varphi_n(r')=\varepsilon_n\varphi_n
 $$
 
 这个方程看上去是不是有点眼熟？是的！如果将自能函数 $\Sigma(r,r')$ 换成交换关联势 $v_{\rm xc}(r,r')$，那么将与 Kohn-Sham 方程无异（请注意 $H_0$ 已包含了核吸引势和 Hartree 势）。
@@ -284,7 +284,7 @@ $$
 在一阶微扰理论中，如果已经解出 $H_0\varphi=\varepsilon_0\varphi$，对于新的 Hamilton 量 $H_0+V$，我们可以近似认为相应的能量本征值是 $\varepsilon=\vaepsilon_0+\langle\varphi_0|V|\varphi_0\rangle$ 在这里，$V$ 实际上是非局域势
 
 $$
-\int dr'(\Sigma(r,r')− V_{\rm xc}(r,r'))
+\int dr'(\Sigma(r,r')−V_{\rm xc}(r,r'))
 $$
 
 所以，通过对这个非局域势取期望，就能够获得准粒子的能量修正。
@@ -308,7 +308,7 @@ $$
 
 ## 随机函数
 
-现在假设我们定义了这样一个函数，它在所有格点上的取值都是 $\zeta_n=\pm h^{3/2}$ 而取正还是取负是随机的。显然，这个函数的模方是 $\langle\zeta|\zeta\rangle = \sum_n (h^{-3/2})^2h^3 = K$ 其中 $K$ 是格点总数（注意它不是归一化的）。
+现在假设我们定义了这样一个函数，它在所有格点上的取值都是 $\zeta_n=\pm h^{3/2}$ 而取正还是取负是随机的。显然，这个函数的模方是 $\langle\zeta|\zeta\rangle=\sum_n (h^{-3/2})^2h^3=K$ 其中 $K$ 是格点总数（注意它不是归一化的）。
 
 ## 单位算符的随机函数表示
 
@@ -367,20 +367,20 @@ $$
 
 我们重新检视这个表达式，发现 $\theta(t)-f_n$ 的本质在于：
 
-- 在「$t < 0$ 的过去」，投影到占据轨道上；
-- 在「$t > 0$ 的未来」，投影到未占据的轨道上。
+- 在「$t<0$ 的过去」，投影到占据轨道上；
+- 在「$t>0$ 的未来」，投影到未占据的轨道上。
 
 于是我们可以把 Green 函数借助化学势写成这个形式：
 
 $$
-\langle r'|e^{-iH_0t}[\theta(t) − \theta(\mu-H_0)]|r\rangle
+\langle r'|e^{-iH_0t}[\theta(t)−\theta(\mu-H_0)]|r\rangle
 $$
 
 其中 $\theta(\mu-H_0)$ 就对应着 $f_n$。
 
 ## 从单位算符到随机单位算符
 
-当我们把算符乘到由 $1 = \sum_n|\varphi_n\rangle\langle\varphi_n|$ 构成的单位算符上的时候，就形成了原先的 Green 函数形式。但现在我们用 $1_N$ 代替 $1$，就可以写成
+当我们把算符乘到由 $1=\sum_n|\varphi_n\rangle\langle\varphi_n|$ 构成的单位算符上的时候，就形成了原先的 Green 函数形式。但现在我们用 $1_N$ 代替 $1$，就可以写成
 
 $$
 \begin{aligned}
@@ -412,7 +412,7 @@ $$
 \end{aligned}
 $$
 
-既然 $\zeta(r,t)$ 和 $W_P(r,r',t)$ 都是含时的，我们应该将它们解耦。定义 $f_n(r,t) = \varphi_n(r)\zeta(r,t)$，我们可以发现：
+既然 $\zeta(r,t)$ 和 $W_P(r,r',t)$ 都是含时的，我们应该将它们解耦。定义 $f_n(r,t)=\varphi_n(r)\zeta(r,t)$，我们可以发现：
 
 $$
 \begin{aligned}
@@ -431,7 +431,7 @@ $$
 \Sigma_{n}^{\rm P}(t)=\langle A_{n\zeta\xi}B_{n\zeta\xi}\rangle_{\zeta\xi}
 $$
 
-其中 $A_{n\zeta\xi}(t) = \int\varphi_n(r)\zeta(r,t)\xi(r)\mathrm dr$
+其中 $A_{n\zeta\xi}(t)=\int\varphi_n(r)\zeta(r,t)\xi(r)\mathrm dr$
 
 $$
 B_{n\zeta\xi}(t)=\int\xi(r)W^{\rm P}(r,r',t)\varphi_n(r')\zeta(r')\mathrm dr\mathrm dr'
@@ -488,7 +488,7 @@ $$
 所以电子密度差 $n_u(r,t)-n(r,t)$ 应该是
 
 $$
-\Delta n(r,t) \approx −i\int_0^t\mathrm dt'\int\mathrm dr'u(r',t')\langle [n(r,t),n(r',t')]\rangle
+\Delta n(r,t)\approx−i\int_0^t\mathrm dt'\int\mathrm dr'u(r',t')\langle [n(r,t),n(r',t')]\rangle
 $$
 
 在这里我们可以定义（延迟的）敏感函数

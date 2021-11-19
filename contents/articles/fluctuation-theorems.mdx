@@ -23,7 +23,7 @@ $$
 的形式得到保持。但热力学第二定律告诉我们， $\Delta S\ge 0$，用更加微观一些的语言表述，这意味着给定初始的宏观态和结束的宏观态，对每一条微观轨迹 $x(t)$ 上的熵产生泛函取平均时总是大于 0：$\langle\Omega[x(t)]\rangle\ge0$。也即虽然某些轨迹的熵可以减少，但从系综平均来看，熵是增加的。为了解决这个矛盾，Boltzmann 在非平衡统计力学中提出了稀薄气体的 $H$ 定理（其中 $d\omega$ 为相空间体积元，$f$ 为相空间分布函数）：
 
 $$
-H = \int f\ln f\mathrm d\omega = \langle\ln f\rangle
+H=\int f\ln f\mathrm d\omega=\langle\ln f\rangle
 $$
 
 并证明了 $H$ 对时间的导数总是小于 0。上式与 Gibbs 熵公式 $S=-\sum_ip_i\ln p_i$ 非常相似，因此 $H$ 恒减可以等价地看作是 $S$ 恒增。但 Loschmidt 提出，如果在某一时刻将粒子的动量全部反向，$f$ 是动量偶函数（保持不变），而系统沿轨迹原路返回，所产生的 $H$ 函数将随时间增加，而这也是不违背力学规律的。
@@ -42,7 +42,7 @@ $$
 
 以下我们假定体系的运动可以用经典力学描述，并使用如下的标记：
 
-- 由 $n$ 个自由度的运动所张成的 $2n$ 维向量 $x(t) = (q_1, ..., q_n, p_1, ..., p_n)$；
+- 由 $n$ 个自由度的运动所张成的 $2n$ 维向量 $x(t)=(q_1,...,q_n,p_1,...,p_n)$；
 - 体系在相空间中的分布函数 $f(x,t)$，其物理意义是在时刻 $t$，体积元 $x+\mathrm dx$ 内找到系统的概率。
 
 根据总概率守恒，类比于流体的连续性方程我们可以得到体系的运动方程：
@@ -51,7 +51,7 @@ $$
 \frac{\partial f(\mathbf x(t),t)}{\partial t}=-\nabla\cdot(f\dot{\mathbf x}(t))
 $$
 
-由 *div*(**F***φ*) = *φdiv***F** + **F** ⋅ *gradφ*，可以得到 $\div(F\varphi)=\varphi\div F+F\cdot\operatorname{grad}\varphi$
+由 $\div(F\varphi)=\varphi\div F+F\cdot\operatorname{grad}\varphi$，可以得到
 
 $$
 \frac{\mathrm df(\mathbf x(t),t)}{\mathrm dt}=-(\nabla\cdot\dot{\mathbf x}(t))f
@@ -65,7 +65,7 @@ $$
 \omega(x(t),t)=\omega(x(0),0)\exp\left(\int_0^tz(\tau)\mathrm d\tau\right)
 $$
 
-现在我们考虑对轨迹的终点做时间反演变换，反演中心是 $t/2$，即 $M: x(t)\equiv (q(t),p(t))\to y(0) = (q(t),-p(t))$，那么这个变换的 Jacobi 行列式等于 1，所以应该有 $\omega(x(t),t)=\omega(y(0),0)$。所以，正向轨迹和反演后轨迹所含的相点数目之比是
+现在我们考虑对轨迹的终点做时间反演变换，反演中心是 $t/2$，即 $M:x(t)\equiv(q(t),p(t))\to y(0)=(q(t),-p(t))$，那么这个变换的 Jacobi 行列式等于 1，所以应该有 $\omega(x(t),t)=\omega(y(0),0)$。所以，正向轨迹和反演后轨迹所含的相点数目之比是
 
 $$
 \frac{f(\mathbf x(0),0)\omega(\mathbf x(0),0)}{f(\mathbf y(0),0)\omega(\mathbf y(0),0)}=\frac{f(\mathbf x(0),0)}{f(\mathbf x(t),0)}\exp\left(-\int_0^tz(\tau)\mathrm d\tau\right)
@@ -75,7 +75,7 @@ $$
 
 ---
 
-我们现在可以导出过程涨落定理（transient fluctuation theorem, TFT）的主要结果了。考虑在时间 $t$ 内耗散泛函平均值为 $A$（$p(\Omega = A)$）和平均值为 $−A$（$p(\omega = −A)$）的比值，它可以表示为那些「**随后将要生成这些轨迹的初始相点数量**」的比值。具体来说，
+我们现在可以导出过程涨落定理（transient fluctuation theorem, TFT）的主要结果了。考虑在时间 $t$ 内耗散泛函平均值为 $A$（$p(\Omega=A)$）和平均值为 $−A$（$p(\omega=−A)$）的比值，它可以表示为那些「**随后将要生成这些轨迹的初始相点数量**」的比值。具体来说，
 
 $$
 \begin{aligned}
@@ -108,18 +108,18 @@ $$
 我们可以在上式中对所有轨迹进行积分：
 
 $$
-\int p(\Omega=A)\mathrm dA = \int e^{At}p(\Omega =  −A)\mathrm dA
+\int p(\Omega=A)\mathrm dA=\int e^{At}p(\Omega=−A)\mathrm dA
 $$
 
-也即：$e^{-\Omega t} = 1 = e^0$。根据 Jensen’s （琴生）不等式，有 $\langle e^{x}\rangle\ge e^{\langle x\rangle}$，因此平均来看，耗散大于 0： $\langle\Omega\rangle \ge0$。这与热力学第二定律相容。
+也即：$e^{-\Omega t}=1=e^0$。根据 Jensen’s （琴生）不等式，有 $\langle e^{x}\rangle\ge e^{\langle x\rangle}$，因此平均来看，耗散大于 0： $\langle\Omega\rangle\ge0$。这与热力学第二定律相容。
 
 ### 耗散泛函的物理意义
 
-上述定义出来的耗散泛函到底是个什么东西？它取决于具体系综的形式。例如，正则系综下耗散泛函为 $\Omega t = W −\Delta F$ 由于 $W=\Delta U-Q$，$\Delta F=\Delta U-T\Delta S$，所以上式总的结果是 $-Q+T\Delta S$。体系的熵变可以分解为因热交换产生的熵 $\Delta S_1 = Q/T$，以及纯粹因不可逆性产生的熵 $\Delta S_2$，那么可以看出上式就等于 $T\Delta S_2$。因此，正则系综下耗散泛函有平均熵产生率的物理意义。
+上述定义出来的耗散泛函到底是个什么东西？它取决于具体系综的形式。例如，正则系综下耗散泛函为 $\Omega t=W−\Delta F$ 由于 $W=\Delta U-Q$，$\Delta F=\Delta U-T\Delta S$，所以上式总的结果是 $-Q+T\Delta S$。体系的熵变可以分解为因热交换产生的熵 $\Delta S_1=Q/T$，以及纯粹因不可逆性产生的熵 $\Delta S_2$，那么可以看出上式就等于 $T\Delta S_2$。因此，正则系综下耗散泛函有平均熵产生率的物理意义。
 
 ## 稳态涨落定理（SSFT）
 
-处在非平衡状态的系统有可能达到某种稳定的状态，在这种状态下体系稳定地产生耗散，速率不随时间变化。假设达到这种平衡的弛豫时间为 *τ*，那么当 *t*/*τ* ≫ 1 时，应该有
+处在非平衡状态的系统有可能达到某种稳定的状态，在这种状态下体系稳定地产生耗散，速率不随时间变化。假设达到这种平衡的弛豫时间为 $\tau$，那么当 $t/\tau\gg 1$ 时，应该有
 
 $$
 \begin{aligned}
