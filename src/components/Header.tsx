@@ -40,7 +40,7 @@ class Header extends Component<NavProps, NavState> {
         </div>
         <div className={this.state.expand ? "navbar-menu is-active" : "navbar-menu"}>
           <div className="navbar-start" style={{justifyContent: "center", marginLeft: "auto"}}>
-            {summary.map(x => <NavItem {...x} current={this.props.slug} />)}
+            {summary.map(x => <NavItem {...x} current={this.props.slug} key={x.slug} />)}
           </div>
           <div className="navbar-end">
             <div className="navbar-item">

@@ -1,9 +1,12 @@
+import "../styles/bulma.scss"
 import "../styles/index.scss"
 import React, { Fragment, ReactElement } from "react"
 import { faCalendar, faCheckCircle, faMapMarker, faPlayCircle } from "@fortawesome/free-solid-svg-icons"
 import Layout from "../components/Layout"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { StaticImage } from "gatsby-plugin-image"
+
+const imageDomain = "https://cdn.jsdelivr.net/gh/tansongchen/images@0.0.2/"
 
 const Introduction = () => <section className="section" style={{backgroundImage: "linear-gradient(to bottom, rgba(220,230,255,0.5), rgba(255,255,255,0.5))"}}>
   <div className="container content is-max-desktop" style={{fontSize: "125%"}}>
@@ -27,8 +30,8 @@ interface EducationProps {
 }
 
 const EducationItem = ({ photo, institutionName, institutionUrl, degrees, duration, location, description } : EducationProps) => <article className="section container is-max-desktop">
-  <div className="box columns">
-    <div className="column">
+  <div className="box columns" style={{padding: 0, overflow: "hidden", position: "relative", zIndex: 0}}>
+    <div className="column" style={{padding: 0}}>
       <figure className="image is-4by3">
         <a href={institutionUrl}>
           {photo}
@@ -56,8 +59,6 @@ const EducationItem = ({ photo, institutionName, institutionUrl, degrees, durati
     </div>
   </div>
 </article>
-
-const imageDomain = "https://cdn.jsdelivr.net/gh/tansongchen/images@master/";
 
 const mit: EducationProps = {
   photo: <StaticImage src={imageDomain + "mit.webp"} alt="mit" />,
@@ -165,7 +166,7 @@ const ExperienceItem = ({ title, company, companyUrl, photo, description, durati
         {description}
       </div>
       <div className="column">
-        <figure className="image box" style={{textAlign: "center", padding: 0, overflow: "auto"}}>
+        <figure className="image box" style={{textAlign: "center", padding: 0, overflow: "hidden", position: "relative", zIndex: 0}}>
           <a href={companyUrl}>
             {photo}
           </a>

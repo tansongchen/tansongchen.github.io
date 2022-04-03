@@ -1,5 +1,4 @@
 module.exports = {
-  assetPrefix: `https://cdn.jsdelivr.net/gh/tansongchen/tansongchen.github.io@master/`,
   siteMetadata: {
     siteUrl: "https://tansongchen.com",
     title: "Songchen Tan Personal Website",
@@ -39,7 +38,17 @@ module.exports = {
       resolve: "gatsby-plugin-mdx",
       options: {
         remarkPlugins: [require("remark-math")],
-        rehypePlugins: [require("rehype-katex")],
+        // rehypePlugins: [require("rehype-katex")],
+      },
+    },
+    {
+      resolve: `gatsby-plugin-purgecss`,
+      options: {
+        purgeOnly: ['src/styles/bulma.scss'], // Purge only these files/folders
+        purgeCSSOptions: {
+          // https://purgecss.com/configuration.html#options
+          // safelist: ['safelist'], // Don't remove this selector
+        },
       },
     },
   ],

@@ -23,7 +23,7 @@ const Address = () => <section className="column has-text-centered content">
   <h4>地址</h4>
   <p>
     <a href="https://maps.google.com/maps?ll=42.361941,-71.090438&z=15&t=m&hl=en-US&gl=US&mapclient=embed&cid=3475329887376826349">
-      Gates Building Room 758
+      Gates Building Room 785
       <br />
       32 Vassar Street
       <br />

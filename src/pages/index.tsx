@@ -1,3 +1,4 @@
+import "../styles/bulma.scss"
 import "../styles/index.scss"
 import React, { Fragment, ReactElement } from "react"
 import { Link } from "gatsby"
@@ -6,19 +7,19 @@ import { StaticImage } from "gatsby-plugin-image"
 import summary from "../utils/metadata"
 import { title } from "../utils/metadata"
 
-const imageDomain = "https://cdn.jsdelivr.net/gh/tansongchen/images@master/";
+const imageDomain = "https://cdn.jsdelivr.net/gh/tansongchen/images@0.0.2/"
 
 const Introduction = () => <section className="section" style={{backgroundImage: "linear-gradient(to bottom, rgba(200,240,255,0.5), rgba(255,255,255,0.5))"}}>
   <div className="container is-max-widescreen">
     <div className="columns is-vcentered">
       <div className="column is-one-third" style={{padding: "3rem"}}>
-        <div className="card">
+        <figure className="image">
+          <img src={"https://cdn.jsdelivr.net/gh/tansongchen/images@master/mitao.gif"} alt="avatar"/>
+        </figure>
+        {/* <div className="card" style={{background: "transparent"}}>
           <div className="card-image">
-            <figure className="image">
-              <StaticImage src={imageDomain + "avatar.webp"} alt="avatar"/>
-            </figure>
           </div>
-        </div>
+        </div> */}
       </div>
       <div className="column content" style={{padding: "5%", fontSize: "125%"}}>
         <p>
@@ -42,14 +43,12 @@ interface SummaryProps {
   description: string
 }
 
-const Summary = ({ slug, image, name, description }: SummaryProps) => {
-  return <div className="column" style={{margin: "1rem"}} key={slug}>
+const Summary = ({ slug, image, name, description }: SummaryProps) => <Link to={`/${slug}/`} key={slug}>
+  <div className="column" style={{margin: "1rem"}} key={slug}>
     <div className="card">
       <div className="card-image">
         <figure className="image">
-          <Link to={`/${slug}/`}>
-            {image}
-          </Link>
+          {image}
         </figure>
       </div>
       <div className="card-content content">
@@ -60,7 +59,7 @@ const Summary = ({ slug, image, name, description }: SummaryProps) => {
       </div>
     </div>
   </div>
-}
+</Link>
 
 const Overview = () => <section className="section container">
   <div className="columns">

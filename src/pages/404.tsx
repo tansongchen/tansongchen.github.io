@@ -1,3 +1,5 @@
+import "../styles/bulma.scss"
+import "../styles/index.scss"
 import React from "react"
 import { Link } from "gatsby"
 import Layout from "../components/Layout"

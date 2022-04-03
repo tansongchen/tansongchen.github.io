@@ -1,6 +1,9 @@
+import "../styles/bulma.scss"
+import "../styles/index.scss"
 import React, { Fragment, Component } from 'react'
 import { graphql } from 'gatsby'
 import Layout from '../components/Layout'
+import { imageDomain } from '../utils/metadata'
 
 const Introduction = () => <section className="section" style={{backgroundImage: "linear-gradient(to bottom, rgba(200,240,230,0.5), rgba(255,255,255,0.5))"}}>
   <div className="container content is-max-desktop" style={{fontSize: "125%"}}>
@@ -18,23 +21,25 @@ interface PhotoProps {
   changeActive: (active: string) => void,
 }
 
-const Preview = ({ date, url, caption, active, changeActive }: PhotoProps) => <figure className="box image is-128x128" style={{margin: ".8rem", padding: 0, cursor: "pointer", overflow: "auto"}} aria-haspopup="true" onClick={() => {changeActive(url)}}>
+const Preview = ({ date, url, caption, active, changeActive }: PhotoProps) => <figure className="box image is-128x128" style={{margin: ".8rem", padding: 0, cursor: "pointer", overflow: "auto"}} aria-haspopup="true" onClick={() => {changeActive(url)}} key={url}>
   <img src={url} alt={caption} />
 </figure>
 
 const format = (d: Date) => `${d.getFullYear()} 年 ${d.getMonth() + 1} 月 ${d.getDate()} 日`
 
 const Modal = ({ date, url, caption, active, changeActive }: PhotoProps) =>
-<div className={"modal" + (url === active ? " is-active" : "")}>
+<div className={"modal" + (url === active ? " is-active" : "")} key={url}>
   <div className="modal-background"></div>
   <div className="modal-content content has-text-centered">
     <figure className="image">
       <img src={url} alt={caption} />
     </figure>
-    <p style={{color: "#BBB"}}>
-      {format(date)}
-    </p>
-    <p style={{color: "#DDD", fontSize: "125%", whiteSpace: "pre"}}>{caption}</p>
+    <div style={{margin: "0 2rem"}}>
+      <p style={{color: "#BBB"}}>
+        {format(date)}
+      </p>
+      <div style={{color: "#DDD", fontSize: "125%"}}>{caption.split('\n').map(line => <p key={line}>{line}</p>)}</div>
+    </div>
   </div>
   <button className="modal-close is-large" aria-label="close" onClick={() => changeActive(undefined)} />
 </div>
@@ -50,7 +55,7 @@ interface MonthProps {
   callback: (active: string) => void,
 }
 
-const Month = ({ year, month, photos, active, callback }: MonthProps) => <Fragment>
+const Month = ({ year, month, photos, active, callback }: MonthProps) => <div key={`${year} 年 ${month} 月`}>
   <article className="columns">
     <div className="column is-one-third has-text-centered">
       <div className="content">
@@ -64,7 +69,7 @@ const Month = ({ year, month, photos, active, callback }: MonthProps) => <Fragme
   <article>
     {photos.map(x => <Modal {...x} active={active} changeActive={callback} />)}
   </article>
-</Fragment>
+</div>
 
 class Gallery extends Component<GalleryProps, GalleryState> {
   state: GalleryState = {
@@ -93,7 +98,7 @@ class Gallery extends Component<GalleryProps, GalleryState> {
 }
 
 const Photos = ({ data }) => {
-  const preprocess = ({ caption, date, url }) => ({caption: caption, date: new Date(date), url: url});
+  const preprocess = ({ caption, date, url }) => ({caption: caption, date: new Date(date), url: imageDomain + url});
   const nodes: PhotoProps[] = data.allPhotosYaml.nodes.map(preprocess);
   return (
     <Layout slug="photos">

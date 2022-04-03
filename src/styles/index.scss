@@ -1,29 +1,9 @@
-@charset "utf-8";
-
-$navbar-height: 4rem;
-$content-heading-weight: 400;
-$dropdown-menu-min-width: 1rem;
-$timeline-marker-color: white;
-$footer-padding: 3rem 1.5rem 4rem;
-
-@import "~bulma/bulma.sass";
-@import "~bulma-timeline/dist/css/bulma-timeline.sass";
-
 .navbar-item {
   padding: 0.5rem 1rem;
 }
 
 .navbar-item-current {
   background-color: #fafafa;
-}
-
-article > div.columns.box {
-  padding: 0;
-  overflow: auto;
-}
-
-article > div > div.column {
-  padding: 0;
 }
 
 .image.is-4by3 .gatsby-image-wrapper {
@@ -52,7 +32,7 @@ article > div > div.column {
   font-weight: 700;
 }
 
-figure.is-2by1 img, figure.is-128x128 img {
+figure.is-4by3 img, figure.is-2by1 img, figure.is-128x128 img {
   object-fit: cover;
   object-position: center;
   height: 100%;
@@ -67,4 +47,14 @@ figure.is-2by1 img, figure.is-128x128 img {
 .content em {
   font-style: normal;
   font-weight: 600;
+}
+
+.math-display {
+  text-align: center;
+  margin: 1em;
+  overflow: scroll;
+}
+
+a {
+  word-wrap: break-word;
 }

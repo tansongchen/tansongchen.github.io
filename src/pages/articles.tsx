@@ -1,5 +1,6 @@
+import "../styles/bulma.scss"
 import "../styles/index.scss"
-import React, { Component, Fragment, ReactElement } from "react"
+import React, { Component, Fragment } from "react"
 import Layout from "../components/Layout"
 import { graphql, Link } from "gatsby"
 
@@ -86,7 +87,7 @@ const Selector = ({ sortMethod, changeSortMethod, intervalStart, changeIntervalS
     <div className="level container is-max-widescreen is-vcentered">
       <div className="level-left">
         <div className="tags">
-          {allTags.map(tag => <Tag tag={tag} activeTag={activeTag} changeTag={changeTag}/>)}
+          {allTags.map(tag => <Tag tag={tag} activeTag={activeTag} changeTag={changeTag} key={tag}/>)}
         </div>
       </div>
       <div className="level-right is-vcentered">
@@ -103,12 +104,11 @@ const Selector = ({ sortMethod, changeSortMethod, intervalStart, changeIntervalS
 const format = (d: Date) => `${d.getFullYear()} 年 ${d.getMonth() + 1} 月 ${d.getDate()} 日`
 
 const Article = ({ title, date, slug, cover, tags, abstract }: ArticleProps) => <article key={slug} className="container section">
-  <div className="box columns">
-    <div className="column">
+<Link to={`/${slug}/`}>
+  <div className="box columns" style={{padding: 0, overflow: "auto"}}>
+    <div className="column" style={{padding: 0}}>
       <figure className="image is-2by1">
-        <Link to={`/${slug}/`}>
-          <img src={cover} alt={cover} />
-        </Link>
+        <img src={cover} alt={cover} />
       </figure>
     </div>
     <div className="column content" style={{padding: "1.5rem"}}>
@@ -122,6 +122,7 @@ const Article = ({ title, date, slug, cover, tags, abstract }: ArticleProps) => 
       </p>
     </div>
   </div>
+</Link>
 </article>
 
 interface MainState {

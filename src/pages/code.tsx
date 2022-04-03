@@ -1,5 +1,6 @@
+import "../styles/bulma.scss"
+import "../styles/index.scss"
 import React, { Component } from 'react'
-import { graphql } from 'gatsby'
 import Layout from '../components/Layout'
 import { request } from "@octokit/request";
 import { faCodeBranch, faEye, faStar } from '@fortawesome/free-solid-svg-icons';
@@ -68,7 +69,6 @@ const repositories: RepositoryProps[] = [
   {name: "AwesomeBig2Agent"},
   {name: "AwesomeLandlordBot"},
   {name: "GRE3000"},
-  {name: "AnkiEvernoteImporter"},
 ];
 
 class Repository extends Component<RepositoryProps, RepositoryState> {

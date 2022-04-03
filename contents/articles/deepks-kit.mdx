@@ -2,7 +2,7 @@
 title: DeePKS-kit：天梯亦可上，只要肯登攀
 date: 2021-05-15
 tags: [化学, 物理]
-cover: https://gitee.com/tansongchen/ImageHost/raw/master/2021/05/24/10-26-58.jpg
+cover: https://cdn.jsdelivr.net/gh/tansongchen/images@master/deepks-kit.webp
 abstract: 机器学习帮助我们攀登密度泛函中的 Jacob 天梯
 ---
 
@@ -19,13 +19,17 @@ abstract: 机器学习帮助我们攀登密度泛函中的 Jacob 天梯
 # 方法回顾
 
 在这一理念的引导下，2020 年 8 月，我们发表了论文 [DeePKS: a comprehensive data-driven approach towards accurate density functional theory](https://doi.org/10.1021/acs.jctc.0c00872 "DeePKS: a comprehensive data-driven approach towards accurate density functional theory")，提出了构建准确且高效的密度泛函模型的通用机器学习框架，并且利用这一框架训练了具有化学精度的密度泛函模型。DeePKS 的设计依据以下几个原则：必须能够适用于各种类型的体系；必须能用小体系上训练的模型计算大体系；必须能充分利用现有的多种电子结构数据，包括在给定构型下的能量、力和电子密度等。为此，我们将体系的总能量表示为一种基准泛函模型给出的能量加上一个由机器学习给出的修正项：
+
 $$
-E=\min _{\left\{\varphi_{i}\right\},\left\langle\varphi_{i} \mid {\varphi}_{j}\right\rangle=\delta_{i j}}\left\{E_{\rm base}\left[\left\{\varphi_{i}\right\}\right]+E_{\delta}\left[\left\{\varphi_{i} \mid \omega\right\}\right]\right\}
+E=\min_{\left\{\varphi_{i}\right\},\left\langle\varphi_{i} \mid {\varphi}_{j}\right\rangle=\delta_{i j}}\left\{E_{\rm base}\left[\left\{\varphi_{i}\right\}\right]+E_{\delta}\left[\left\{\varphi_{i} \mid \omega\right\}\right]\right\}
 $$
+
 其中 $\{\varphi_i\}$ 是一组 Kohn-Sham 轨道，$E_{\rm base}$ 是基准模型（例如 Hartree-Fock 或 PBE 泛函），$\omega$ 是修正项 $E_\delta$ 中的参数。而在修正项的计算过程中，我们首先将密度矩阵预处理为每个原子 $I$ 上的描述符 $\mathbf d^I$，然后通过神经网络 $\mathcal F^{\rm NN}$ 计算出
+
 $$
 E_\delta=\sum_I\mathcal F^{\rm NN}(\mathbf d^I\mid\omega)
 $$
+
 在构建好模型之后，我们将模型的优化问题表述为在自洽场方程约束下最小化各种电子结构性质 $Y[\{\varphi_i\}\mid\omega]$ 和高精度标签 $Y_{\rm label}$ 的均方误差的过程。为了展示这样的模型的泛化能力，我们在 CCSD(T) 精度的、包含 7212 个不同分子的 QM7b-T 数据库上训练，测试误差仅为 0.2 kcal/mol，在化学精度所要求的 1 kcal/mol 以内。
 
 ![DeePKS 方法在 QM7b-T 数据库上的表现](https://gitee.com/tansongchen/ImageHost/raw/master/2021/05/22/09-15-13.jpg)
