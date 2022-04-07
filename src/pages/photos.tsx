@@ -98,7 +98,7 @@ class Gallery extends Component<GalleryProps, GalleryState> {
 }
 
 const Photos = ({ data }) => {
-  const preprocess = ({ caption, date, url }) => ({caption: caption, date: new Date(date), url: imageDomain + url});
+  const preprocess = ({ caption, date, url }) => ({caption: caption, date: new Date((new Date(date)).getTime() + 8 * 3600 * 1000), url: imageDomain + url});
   const nodes: PhotoProps[] = data.allPhotosYaml.nodes.map(preprocess);
   return (
     <Layout slug="photos">

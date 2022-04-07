@@ -20,11 +20,11 @@ export const imageDomain = "https://cdn.jsdelivr.net/gh/tansongchen/images@maste
 
 const summary: Category[] = [
   {slug: "", image: <StaticImage src={imageDomain + "avatar.webp"} alt="avatar" />, name: "主页", icon: faHome, description: ""},
-  {slug: "about", image: <StaticImage src={imageDomain + "mitao.webp"} alt="mitao" />, name: "关于", icon: faPortrait, description: "了解更多关于我的背景"},
+  {slug: "about", image: <StaticImage src={imageDomain + "mitao.webp"} alt="mitao" />, name: "关于", icon: faPortrait, description: "了解更多我的背景"},
   {slug: "articles", image: <StaticImage src={imageDomain + "articles.webp"} alt="articles" />, name: "文章", icon: faPen, description: "读读我写的文字"},
   {slug: "photos", image: <StaticImage src={imageDomain + "photos.webp"} alt="photos" />, name: "照片", icon: faPhotoVideo, description: "看看我拍的照片"},
   {slug: "code", image: <StaticImage src={imageDomain + "code.webp"} alt="code" />, name: "代码", icon: faCode, description: "瞅瞅我写的代码"},
-  {slug: "cuisine", image: <StaticImage src={imageDomain + "breakfast.webp"} alt="cuisine" />, name: "美食", icon: faUtensils, description: "尝尝我做的美食"}
+  {slug: "cuisine", image: <StaticImage src={imageDomain + "cuisine.webp"} alt="cuisine" />, name: "美食", icon: faUtensils, description: "尝尝我做的美食"}
 ]
 
 export default summary;

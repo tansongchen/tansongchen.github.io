@@ -67,7 +67,7 @@ class Form extends Component<FormProps, FormState> {
       }
     }
     return (
-      <article style={{margin: "2rem"}}>
+      <article style={{margin: "2rem 0"}}>
         <p className="title is-4">您的订单</p>
         <div className="level">
           <div className="level-left">

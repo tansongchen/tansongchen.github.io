@@ -63,7 +63,7 @@ const Summary = ({ slug, image, name, description }: SummaryProps) => <Link to={
 
 const Overview = () => <section className="section container">
   <div className="columns">
-    {summary.slice(1, 5).map(Summary)}
+    {summary.slice(1, 6).map(Summary)}
   </div>
 </section>
 

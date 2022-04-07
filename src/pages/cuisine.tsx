@@ -37,25 +37,21 @@ interface DishProps {
   shouldSelect: boolean
 }
 
-const Dish = ({ caption, url, category, rating, ordered, update, shouldSelect }: DishProps) => <div className="card" style={{width: "200px", margin: "1rem 1rem 1rem 1rem"}}>
-  <div className="card-image">
-    <figure className="image" style={{width: "200px", height: "200px"}}>
+const Dish = ({ caption, url, category, rating, ordered, update, shouldSelect }: DishProps) => <div className="box" style={{margin: "1rem", display: "flex", padding: 0, overflow: "auto"}}>
+  <div style={{padding: 0}}>
+    <figure className="image" style={{width: "180px", height: "180px"}}>
       <img src={url} alt="Placeholder image" style={{objectFit: "cover", objectPosition: "center", height: "100%"}} />
     </figure>
   </div>
-  <div className="card-content">
-    <div className="media">
-      <div className="media-content" style={{textAlign: "center"}}>
-        <p className="block">{caption}</p>
-        <p className="block">{'⭐️️'.repeat(rating)}</p>
-        { !shouldSelect ?
-          <button className="button is-success is-static">添加</button> :
-          ordered ?
-          <button className="button is-danger" onClick={() => update(caption, 0)}>取消</button> :
-          <button className="button is-success" onClick={() => update(caption, 1)}>添加</button>
-        }
-      </div>
-    </div>
+  <div style={{textAlign: "center", padding: "0 1.5rem", display: "flex", justifyContent: "center", flexDirection: "column", width: "150px", height: "180px"}}>
+    <p className="block" style={{fontSize: "1.2rem"}}>{caption}</p>
+    <p className="block content is-small">{'⭐️️'.repeat(rating)}</p>
+    { !shouldSelect ?
+      <button className="button is-success is-static">添加</button> :
+      ordered ?
+      <button className="button is-danger" onClick={() => update(caption, 0)}>取消</button> :
+      <button className="button is-success" onClick={() => update(caption, 1)}>添加</button>
+    }
   </div>
 </div>
 
@@ -79,7 +75,7 @@ const Submenu = ({ title, dishes, selected, update, shouldSelect }: SubmenuProps
       <h3 style={{margin: "1.5rem 0 .5rem 0"}}>{title}</h3>
     </div>
   </div>
-  <div className="column" style={{display: "flex", flexWrap: "wrap", justifyContent: "center"}}>
+  <div className="column" style={{display: "flex", flexWrap: "wrap", justifyContent: "center", padding: 0}}>
     {dishes.map(x => <Dish {...x} key={x.caption} update={update} ordered={selected.get(x.caption)} shouldSelect={shouldSelect}/>)}
   </div>
 </article>
@@ -111,10 +107,8 @@ class Menu extends Component<MenuProps, MenuState> {
     }
     const changeSelect = (b: boolean) => this.setState({shouldSelect: b});
     return <Fragment>
-      <section className="section">
-        <div className="container">
-          {groups.map(x => <Submenu {...x} key={x.title} update={update} selected={this.state.selected} shouldSelect={this.state.shouldSelect}/>)}
-        </div>
+      <section className="section" style={{padding: "3rem 1rem"}}>
+        {groups.map(x => <Submenu {...x} key={x.title} update={update} selected={this.state.selected} shouldSelect={this.state.shouldSelect}/>)}
       </section>
       <Order selected={this.state.selected} update={update} changeSelect={changeSelect} shouldSelect={this.state.shouldSelect}/>
     </Fragment>
