@@ -9,7 +9,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 const Introduction = () => <section className="section" style={{backgroundImage: "linear-gradient(to bottom, rgba(255,230,220,0.5), rgba(255,255,255,0.5))"}}>
   <div className="container content is-max-desktop" style={{fontSize: "125%"}}>
     <p>
-      我实在是难以想象我为什么会对写代码如此热衷，直到我看到了《人月神话》中对程序员工作的如下描述：
+      我无法理解我是如何从写代码中获得快乐的，直到我看到了《人月神话》中对程序员工作的如下描述：
     </p>
     <blockquote style={{backgroundColor: "transparent"}}>
       <p>
@@ -125,6 +125,7 @@ const Gallery = ({ repositories }: GalleryProps) => <section className="section"
 
 const Code = () => <Layout slug="/code/">
   <Introduction />
+  <hr />
   <Gallery repositories={repositories}/>
 </Layout>
 

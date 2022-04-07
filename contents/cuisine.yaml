@@ -34,18 +34,18 @@
   caption: 猪肉炖白菜粉条
   rating: 4
   category: 鲁菜
-- url: 1280x960.png
-  caption: 韭菜炒鸡蛋
-  rating: 4
-  category: 鲁菜
+# - url: 1280x960.png
+#   caption: 韭菜炒鸡蛋
+#   rating: 4
+#   category: 鲁菜
 - url: IMG_2001.webp
   caption: 牛尾骨汤
   rating: 4
   category: 鲁菜
-- url: 1280x960.png
-  caption: 家常豆腐
-  rating: 4
-  category: 鲁菜
+# - url: 1280x960.png
+#   caption: 家常豆腐
+#   rating: 4
+#   category: 鲁菜
 - url: IMG_2067.webp
   caption: 炒合菜
   rating: 4
@@ -70,22 +70,22 @@
   caption: 醋溜白菜
   rating: 2
   category: 鲁菜
-- url: IMG_1933.webp
-  caption: 西湖牛肉羹
-  rating: 4
-  category: 淮扬菜
-- url: 1280x960.png
-  caption: 清炖狮子头
-  rating: 4
-  category: 淮扬菜
-- url: 1280x960.png
-  caption: 香菇瓤菜心
-  rating: 4
-  category: 淮扬菜
-- url: 1280x960.png
-  caption: 大煮干丝
-  rating: 4
-  category: 淮扬菜
+# - url: IMG_1933.webp
+#   caption: 西湖牛肉羹
+#   rating: 4
+#   category: 淮扬菜
+# - url: 1280x960.png
+#   caption: 清炖狮子头
+#   rating: 4
+#   category: 淮扬菜
+# - url: 1280x960.png
+#   caption: 香菇瓤菜心
+#   rating: 4
+#   category: 淮扬菜
+# - url: 1280x960.png
+#   caption: 大煮干丝
+#   rating: 4
+#   category: 淮扬菜
 - url: IMG_1972.webp
   caption: 小炒木耳
   rating: 5
@@ -166,15 +166,15 @@
   caption: 疙瘩汤
   rating: 4
   category: 面点
-- url: 1280x960.png
-  caption: 葱油大饼
-  rating: 4
-  category: 面点
+# - url: 1280x960.png
+#   caption: 葱油大饼
+#   rating: 4
+#   category: 面点
 - url: IMG_2072.webp
   caption: 薄饼
   rating: 4
   category: 面点
-- url: 1280x960.png
-  caption: 清汤面
-  rating: 4
-  category: 面点
+# - url: 1280x960.png
+#   caption: 清汤面
+#   rating: 4
+#   category: 面点

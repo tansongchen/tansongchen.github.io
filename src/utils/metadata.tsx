@@ -14,6 +14,7 @@ interface Category {
 export const title = "众妙斋";
 
 export const format = (d: Date) => `${d.getFullYear()} 年 ${d.getMonth() + 1} 月 ${d.getDate()} 日`;
+export const mmdd = (d: Date) => `${d.getMonth() + 1} 月 ${d.getDate()} 日`;
 
 export const imageDomain = "https://cdn.jsdelivr.net/gh/tansongchen/images@master/";
 
