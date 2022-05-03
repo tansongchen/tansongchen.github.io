@@ -1,3 +1,7 @@
+require("dotenv").config({
+  path: `.env.${process.env.NODE_ENV}`,
+})
+
 module.exports = {
   siteMetadata: {
     siteUrl: "https://tansongchen.com",
@@ -38,7 +42,7 @@ module.exports = {
       resolve: "gatsby-plugin-mdx",
       options: {
         remarkPlugins: [require("remark-math")],
-        // rehypePlugins: [require("rehype-katex")],
+        mediaTypes: ["text/x-markdown"]
       },
     },
     {
@@ -51,5 +55,14 @@ module.exports = {
         },
       },
     },
+    {
+      resolve: `gatsby-source-notion`,
+      options: {
+        previewCallRate: 0,
+        databases: [
+          '7a13ff42f6174106be20fa0401af6ff3'
+        ]
+      }
+    }
   ],
 };

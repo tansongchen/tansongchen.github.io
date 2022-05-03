@@ -2,6 +2,7 @@ import "../styles/bulma.scss"
 import "../styles/index.scss"
 import React, { Fragment, Component } from 'react'
 import { graphql } from 'gatsby'
+import { GatsbyImage, IGatsbyImageData } from "gatsby-plugin-image"
 import Layout from '../components/Layout'
 import Order from '../components/Order'
 import { imageDomain } from '../utils/metadata'
@@ -22,30 +23,24 @@ const Introduction = () => <section className="section" style={{backgroundImage:
 
 interface DishData {
   caption: string,
-  url: string,
+  image: IGatsbyImageData,
   category: string,
-  rating: number
+  rating: string
 }
 
-interface DishProps {
-  caption: string,
-  url: string,
-  category: string,
-  rating: number,
+interface DishProps extends DishData {
   ordered: number,
   update: (a: string, b: number) => void,
   shouldSelect: boolean
 }
 
-const Dish = ({ caption, url, category, rating, ordered, update, shouldSelect }: DishProps) => <div className="box" style={{margin: "1rem", display: "flex", padding: 0, overflow: "auto"}}>
-  <div style={{padding: 0}}>
-    <figure className="image" style={{width: "180px", height: "180px"}}>
-      <img src={url} alt="Placeholder image" style={{objectFit: "cover", objectPosition: "center", height: "100%"}} />
-    </figure>
+const Dish = ({ caption, image, category, rating, ordered, update, shouldSelect }: DishProps) => <div className="box" style={{margin: "1rem", display: "flex", padding: 0, overflow: "hidden", position: "relative", zIndex: 0}}>
+  <div style={{width: "180px", height: "180px", padding: 0}}>
+    <GatsbyImage image={image} alt={caption}/>
   </div>
   <div style={{textAlign: "center", padding: "0 1.5rem", display: "flex", justifyContent: "center", flexDirection: "column", width: "150px", height: "180px"}}>
     <p className="block" style={{fontSize: "1.2rem"}}>{caption}</p>
-    <p className="block content is-small">{'⭐️️'.repeat(rating)}</p>
+    <p className="block content is-small">{rating}</p>
     { !shouldSelect ?
       <button className="button is-success is-static">添加</button> :
       ordered ?
@@ -101,6 +96,7 @@ class Menu extends Component<MenuProps, MenuState> {
     for (let [key, value] of map.entries()) {
       groups.push({title: key, dishes: value});
     }
+    groups.sort((a, b) => b.dishes.length - a.dishes.length);
     const update = (name, number) => {
       this.state.selected.set(name, number);
       this.setState({selected: this.state.selected});
@@ -116,8 +112,14 @@ class Menu extends Component<MenuProps, MenuState> {
 }
 
 const Cuisine = ({ data }) => {
-  const preprocess = ({ caption, category, rating, url }) => ({caption: caption, category: category, rating: rating, url: imageDomain + url});
-  const nodes: DishData[] = data.allCuisineYaml.nodes.map(preprocess);
+  const preprocess = ({ title, properties, image }) => {
+    return {
+      caption: title,
+      category: properties.Category.select.name,
+      rating: properties.Rating.select.name,
+      image: image.childImageSharp.gatsbyImageData }
+  };
+  const nodes: DishData[] = data.allNotionPage.nodes.map(preprocess);
   return (
     <Layout slug="cuisine">
       <Introduction />
@@ -128,16 +130,40 @@ const Cuisine = ({ data }) => {
 }
 
 export const query = graphql`
-  query {
-    allCuisineYaml {
-      nodes {
-        caption
-        rating
-        url
-        category
+query {
+  allNotionPage(filter: {cover: {type: {eq: "file"}}}) {
+    nodes {
+      image {
+        childImageSharp {
+          gatsbyImageData(
+            width: 180
+            height: 180
+            placeholder: BLURRED
+            formats: [AUTO, WEBP, AVIF]
+          )
+        }
+      }
+      title
+      properties {
+        Category {
+          select {
+            name
+          }
+        }
+        Complexity {
+          select {
+            name
+          }
+        }
+        Rating {
+          select {
+            name
+          }
+        }
       }
     }
   }
+}
 `
 
 export default Cuisine

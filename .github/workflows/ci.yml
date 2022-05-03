@@ -4,6 +4,8 @@ on:
   push:
     branches:
       - master
+  schedule:
+    - cron:  '0 4 * * *'
 
 jobs:
   build:
@@ -21,6 +23,10 @@ jobs:
           key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
           restore-keys: |
             ${{ runner.os }}-node-
+      - name: Create env file
+        run: |
+          touch .env.production
+          echo GATSBY_NOTION_TOKEN=${{ secrets.GATSBY_NOTION_TOKEN }} >> .env.production
       - run: npm ci && npm run build
       - uses: peaceiris/actions-gh-pages@v3
         with:
