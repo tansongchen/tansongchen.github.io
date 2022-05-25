@@ -92,13 +92,14 @@ class Menu extends Component<MenuProps, MenuState> {
     for (let dish of this.props.nodes) {
       map.set(dish.category, (map.get(dish.category) || []).concat([dish]))
     }
-    let groups = [];
-    for (let [key, value] of map.entries()) {
+    let groups: {title: string, dishes: DishData[]}[] = [];
+    for (let key of ["鲁菜", "川菜", "粤菜", "淮扬菜", "面点", "其他菜系"]) {
+      let value = map.get(key);
+      value.sort((a: DishData, b: DishData) => b.rating.length - a.rating.length);
       groups.push({title: key, dishes: value});
     }
-    groups.sort((a, b) => b.dishes.length - a.dishes.length);
-    const update = (name, number) => {
-      this.state.selected.set(name, number);
+    const update = (name: string, count: number) => {
+      this.state.selected.set(name, count);
       this.setState({selected: this.state.selected});
     }
     const changeSelect = (b: boolean) => this.setState({shouldSelect: b});
