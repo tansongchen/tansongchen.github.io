@@ -1,4 +1,7 @@
-exports.onCreateWebpackConfig = ({
+import type { GatsbyNode } from "gatsby";
+import { createRemoteFileNode } from "gatsby-source-filesystem";
+
+export const onCreateWebpackConfig: GatsbyNode['onCreateWebpackConfig'] = ({
   actions,
   stage
 }) => {
@@ -24,9 +27,7 @@ exports.onCreateWebpackConfig = ({
   }
 }
 
-const { createRemoteFileNode } = require("gatsby-source-filesystem")
-
-exports.createSchemaCustomization = ({ actions }) => {
+export const createSchemaCustomization: GatsbyNode['createSchemaCustomization'] = ({ actions }) => {
   const { createTypes } = actions
 
   createTypes(`
@@ -36,7 +37,7 @@ exports.createSchemaCustomization = ({ actions }) => {
   `)
 }
 
-exports.onCreateNode = async ({
+export const onCreateNode: GatsbyNode['onCreateNode'] = async ({
   node,
   actions: { createNode, createNodeField },
   createNodeId,
@@ -45,15 +46,15 @@ exports.onCreateNode = async ({
   // For all MarkdownRemark nodes that have a featured image url, call createRemoteFileNode
   if (
     node.internal.type === "NotionPage" &&
-    node.cover?.file?.url
+    node.coverImage
   ) {
     const fileNode = await createRemoteFileNode({
-      url: node.cover.file.url, // string that points to the URL of the image
+      url: node.coverImage, // string that points to the URL of the image
       parentNodeId: node.id, // id of the parent node of the fileNode you are going to create
       createNode, // helper function in gatsby-node to generate the node
       createNodeId, // helper function in gatsby-node to generate the node id
       getCache,
-    })
+    } as any)
 
     // if the file was created, extend the node with "localFile"
     if (fileNode) {

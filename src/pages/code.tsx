@@ -26,7 +26,7 @@ const Introduction = () => <section className="section" style={{backgroundImage:
 </section>
 
 interface RepositoryProps {
-  owner?: string,
+  owner: string,
   name: string
 }
 
@@ -44,40 +44,39 @@ interface RepositoryState {
   subscribers_url: string,
 }
 
-const dummyState: RepositoryState = {
-  owner: {login: ""},
-  name: "",
-  stargazers_count: 0,
-  forks_count: 0,
-  subscribers_count: 0,
-  description: "",
-  language: "",
-  html_url: "",
-  forks_url: "",
-  subscribers_url: "",
-  stargazers_url: ""
-};
-
 const repositories: RepositoryProps[] = [
   {name: "julia", owner: "JuliaLang"},
   {name: "Enzyme", owner: "wsmoses"},
   {name: "lammps", owner: "lammps"},
   {name: "deepks-kit", owner: "deepmodeling"},
   {name: "abacus-develop", owner: "deepmodeling"},
-  {name: "PIMD.jl"},
-  {name: "dppl-project"},
-  {name: "AwesomeBig2Agent"},
-  {name: "AwesomeLandlordBot"},
-  {name: "GRE3000"},
+  {name: "PIMD.jl", owner: "tansongchen"},
+  {name: "dppl-project", owner: "tansongchen"},
+  {name: "AwesomeBig2Agent", owner: "tansongchen"},
+  {name: "AwesomeLandlordBot", owner: "tansongchen"},
+  {name: "GRE3000", owner: "tansongchen"},
 ];
 
 class Repository extends Component<RepositoryProps, RepositoryState> {
-  state: RepositoryState = {...dummyState};
+  state: RepositoryState = {
+    owner: {login: ""},
+    name: "",
+    stargazers_count: 0,
+    forks_count: 0,
+    subscribers_count: 0,
+    description: "",
+    language: "",
+    html_url: "",
+    forks_url: "",
+    subscribers_url: "",
+    stargazers_url: ""
+  };
   async componentDidMount() {
-    this.setState((await request('GET /repos/{owner}/{repo}', {
-      owner: this.props.owner || 'tansongchen',
+    let data = (await request('GET /repos/{owner}/{repo}', {
+      owner: this.props.owner,
       repo: this.props.name
-    })).data);
+    })).data;
+    this.setState({...data, description: data.description || "", language: data.language || "" });
   }
   render() {
     const { owner, name, stargazers_count, forks_count, subscribers_count, description, language, html_url, forks_url, stargazers_url, subscribers_url }: RepositoryState = this.state;

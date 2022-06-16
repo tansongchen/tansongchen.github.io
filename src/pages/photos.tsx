@@ -1,7 +1,7 @@
 import "../styles/bulma.scss"
 import "../styles/index.scss"
 import React, { Fragment, Component } from 'react'
-import { graphql } from 'gatsby'
+import { graphql, PageProps } from 'gatsby'
 import Layout from '../components/Layout'
 import { imageDomain } from '../utils/metadata'
 
@@ -13,12 +13,15 @@ const Introduction = () => <section className="section" style={{backgroundImage:
   </div>
 </section>
 
-interface PhotoProps {
+interface PhotoData {
   caption: string,
   url: string,
-  date: Date,
-  active: string,
-  changeActive: (active: string) => void,
+  date: Date
+}
+
+interface PhotoProps extends PhotoData {
+  active?: string,
+  changeActive: (active?: string) => void,
 }
 
 const Preview = ({ date, url, caption, active, changeActive }: PhotoProps) => <figure className="box image is-128x128" style={{margin: ".8rem", padding: 0, cursor: "pointer", overflow: "auto"}} aria-haspopup="true" onClick={() => {changeActive(url)}} key={url}>
@@ -44,15 +47,15 @@ const Modal = ({ date, url, caption, active, changeActive }: PhotoProps) =>
   <button className="modal-close is-large" aria-label="close" onClick={() => changeActive(undefined)} />
 </div>
 
-interface GalleryProps { nodes: PhotoProps[] }
-interface GalleryState { active: string }
+interface GalleryProps { nodes: PhotoData[] }
+interface GalleryState { active?: string }
 
 interface MonthProps {
   year: number,
   month: number,
-  photos: PhotoProps[],
-  active: string,
-  callback: (active: string) => void,
+  photos: PhotoData[],
+  active?: string,
+  callback: (active?: string) => void,
 }
 
 const Month = ({ year, month, photos, active, callback }: MonthProps) => <div key={`${year} 年 ${month} 月`}>
@@ -77,14 +80,14 @@ class Gallery extends Component<GalleryProps, GalleryState> {
   }
 
   render() {
-    let map = new Map<number, PhotoProps[]>();
+    let map = new Map<number, PhotoData[]>();
     this.props.nodes.sort((a, b) => (b.date.getTime() - a.date.getTime()));
     for (let photo of this.props.nodes) {
       let year = photo.date.getFullYear(), month = photo.date.getMonth() + 1;
       let key = year * 100 + month;
       map.set(key, (map.get(key) || []).concat([photo]))
     }
-    const changeActive = (active: string) => { this.setState({ active: active }) };
+    const changeActive = (active?: string) => { this.setState({ active: active }) };
     let groups: MonthProps[] = [];
     for (let [key, value] of map.entries()) {
       groups.push({year: Math.floor(key / 100), month: key % 100, photos: value, active: this.state.active, callback: changeActive});
@@ -97,9 +100,8 @@ class Gallery extends Component<GalleryProps, GalleryState> {
   }
 }
 
-const Photos = ({ data }) => {
-  const preprocess = ({ caption, date, url }) => ({caption: caption, date: new Date((new Date(date)).getTime() + 8 * 3600 * 1000), url: imageDomain + url});
-  const nodes: PhotoProps[] = data.allPhotosYaml.nodes.map(preprocess);
+const Photos = ({ data }: PageProps<Queries.PhotosQuery>) => {
+  const nodes: PhotoData[] = data.allPhotosYaml.nodes.map(({ caption, date, url }) => ({caption: caption || "", date: new Date((new Date(date || "1970-01-01")).getTime() + 8 * 3600 * 1000), url: imageDomain + url}));
   return (
     <Layout slug="photos">
       <Introduction />
@@ -110,7 +112,7 @@ const Photos = ({ data }) => {
 }
 
 export const query = graphql`
-  query {
+  query Photos {
     allPhotosYaml {
       nodes {
         caption

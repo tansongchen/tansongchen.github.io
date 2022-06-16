@@ -1,7 +1,7 @@
 import "../styles/bulma.scss"
 import "../styles/index.scss"
 import React, { Fragment, Component } from 'react'
-import { graphql } from 'gatsby'
+import { graphql, PageProps } from 'gatsby'
 import { GatsbyImage, IGatsbyImageData } from "gatsby-plugin-image"
 import Layout from '../components/Layout'
 import Order from '../components/Order'
@@ -23,7 +23,7 @@ const Introduction = () => <section className="section" style={{backgroundImage:
 
 interface DishData {
   caption: string,
-  image: IGatsbyImageData,
+  image?: IGatsbyImageData,
   category: string,
   rating: string
 }
@@ -36,7 +36,7 @@ interface DishProps extends DishData {
 
 const Dish = ({ caption, image, category, rating, ordered, update, shouldSelect }: DishProps) => <div className="box" style={{margin: "1rem", display: "flex", padding: 0, overflow: "hidden", position: "relative", zIndex: 0}}>
   <div style={{width: "180px", height: "180px", padding: 0}}>
-    <GatsbyImage image={image} alt={caption}/>
+    {image ? <GatsbyImage image={image} alt={caption}/> : <div></div>}
   </div>
   <div style={{textAlign: "center", padding: "0 1.5rem", display: "flex", justifyContent: "center", flexDirection: "column", width: "150px", height: "180px"}}>
     <p className="block" style={{fontSize: "1.2rem"}}>{caption}</p>
@@ -71,7 +71,7 @@ const Submenu = ({ title, dishes, selected, update, shouldSelect }: SubmenuProps
     </div>
   </div>
   <div className="column" style={{display: "flex", flexWrap: "wrap", justifyContent: "center", padding: 0}}>
-    {dishes.map(x => <Dish {...x} key={x.caption} update={update} ordered={selected.get(x.caption)} shouldSelect={shouldSelect}/>)}
+    {dishes.map(x => <Dish {...x} key={x.caption} update={update} ordered={selected.get(x.caption)!} shouldSelect={shouldSelect}/>)}
   </div>
 </article>
 
@@ -94,7 +94,7 @@ class Menu extends Component<MenuProps, MenuState> {
     }
     let groups: {title: string, dishes: DishData[]}[] = [];
     for (let key of ["鲁菜", "川菜", "粤菜", "淮扬菜", "面点", "其他菜系"]) {
-      let value = map.get(key);
+      let value = map.get(key)!;
       value.sort((a: DishData, b: DishData) => b.rating.length - a.rating.length);
       groups.push({title: key, dishes: value});
     }
@@ -112,15 +112,15 @@ class Menu extends Component<MenuProps, MenuState> {
   }
 }
 
-const Cuisine = ({ data }) => {
-  const preprocess = ({ title, properties, image }) => {
+const Cuisine = ({ data }: PageProps<Queries.CuisineQuery>) => {
+  const nodes: DishData[] = data.allNotionPage.nodes.map(({ title, properties, image }) => {
     return {
-      caption: title,
-      category: properties.Category.select.name,
-      rating: properties.Rating.select.name,
-      image: image.childImageSharp.gatsbyImageData }
-  };
-  const nodes: DishData[] = data.allNotionPage.nodes.map(preprocess);
+      caption: title || "",
+      category: properties?.Category || "鲁菜",
+      rating: properties?.Rating || '⭐️️️️⭐️️️️⭐️️️️⭐️️️️',
+      image: image?.childImageSharp?.gatsbyImageData
+    } as DishData // Make TypeScript happy
+  }).filter(({ image }) => image);
   return (
     <Layout slug="cuisine">
       <Introduction />
@@ -131,8 +131,10 @@ const Cuisine = ({ data }) => {
 }
 
 export const query = graphql`
-query {
-  allNotionPage(filter: {cover: {type: {eq: "file"}}}) {
+query Cuisine {
+  allNotionPage(
+    filter: {coverImage: {ne: null}, parent: {id: {eq: "987c72e8-0e31-57c7-b291-a97e5904112c"}}}
+  ) {
     nodes {
       image {
         childImageSharp {
@@ -146,21 +148,9 @@ query {
       }
       title
       properties {
-        Category {
-          select {
-            name
-          }
-        }
-        Complexity {
-          select {
-            name
-          }
-        }
-        Rating {
-          select {
-            name
-          }
-        }
+        Category
+        Complexity
+        Rating
       }
     }
   }

@@ -223,7 +223,7 @@ const thg: ExperienceData = {
   location: "Berkeley, CA"
 }
 
-const DateTag = ({date}) => <header className="timeline-header">
+const DateTag = ({date}: {date: string}) => <header className="timeline-header">
   <span className="tag is-medium is-info" style={{minWidth: "4rem"}}>{date}</span>
 </header>
 

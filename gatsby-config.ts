@@ -1,8 +1,12 @@
-require("dotenv").config({
-  path: `.env.${process.env.NODE_ENV}`,
-})
+import type { GatsbyConfig } from "gatsby"
+import { config as env } from "dotenv"
 
-module.exports = {
+env({path: `.env.${process.env.NODE_ENV}`});
+
+export const CUISINE_DATABASE = '7a13ff42f6174106be20fa0401af6ff3';
+
+const config: GatsbyConfig = {
+  graphqlTypegen: true,
   siteMetadata: {
     siteUrl: "https://tansongchen.com",
     title: "Songchen Tan Personal Website",
@@ -60,9 +64,11 @@ module.exports = {
       options: {
         previewCallRate: 0,
         databases: [
-          '7a13ff42f6174106be20fa0401af6ff3'
+          CUISINE_DATABASE
         ]
       }
     }
   ],
 };
+
+export default config;

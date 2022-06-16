@@ -1,8 +1,8 @@
 import { faCheck, faClock, faEnvelope, faExclamationTriangle, faUser, faUtensils } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import React, { Component, Fragment } from 'react'
+import React, { Component, Fragment } from 'react';
 import { mmdd } from '../utils/metadata';
-import hash from 'object-hash'
+import hash from 'object-hash';
 import Dropdown from './Dropdown';
 
 const endpoint = 'https://n49dt2t564.execute-api.us-east-1.amazonaws.com/';
@@ -150,7 +150,7 @@ interface OrderState {
   submitting: boolean
 }
 
-const SummaryItem = ({ name, update }) => <div className="block" style={{display: "flex"}}>
+const SummaryItem = ({ name, update }: { name: string, update: (a: string, b: number) => void }) => <div className="block" style={{display: "flex"}}>
   <div className="button" style={{width: "70%"}}>
     {name}
   </div>

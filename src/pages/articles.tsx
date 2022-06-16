@@ -3,7 +3,7 @@ import "../styles/index.scss"
 import React, { Component, Fragment } from "react"
 import Layout from "../components/Layout"
 import Dropdown from "../components/Dropdown"
-import { graphql, Link } from "gatsby"
+import { graphql, Link, PageProps } from "gatsby"
 
 enum SortMethod {
   FromNewestToOldest,
@@ -30,7 +30,13 @@ interface ArticleProps {
   slug: string
 }
 
-const Tag = ({ tag, activeTag, changeTag }) => {
+interface TagProps {
+  tag: string,
+  activeTag?: string,
+  changeTag: (activeTag?: string, tag?: string) => void,
+}
+
+const Tag = ({ tag, activeTag, changeTag }: TagProps) => {
   const className = "tag is-medium is-info" + (tag === activeTag ? "" : " is-light");
   return <div key={tag} className={className} onClick={() => changeTag(activeTag, tag)}>
     {tag}
@@ -44,8 +50,8 @@ interface SelectorProps {
   changeIntervalStart: (intervalStart: Date) => void,
   intervalEnd: Date,
   changeIntervalEnd: (intervalEnd: Date) => void,
-  activeTag: string,
-  changeTag: (activeTag: string, tag: string) => void,
+  activeTag?: string,
+  changeTag: (activeTag?: string, tag?: string) => void,
   allTags: string[]
 }
 
@@ -98,7 +104,7 @@ interface MainState {
   sortMethod: SortMethod,
   intervalStart: Date,
   intervalEnd: Date,
-  activeTag: string
+  activeTag?: string
 }
 
 interface MainProps {
@@ -109,15 +115,19 @@ interface ArticleListProps {
   sortMethod: SortMethod,
   intervalStart: Date,
   intervalEnd: Date,
-  activeTag: string
+  activeTag?: string
   nodes: ArticleProps[]
 }
 
 const ArticleList = ({ sortMethod: sort, intervalStart, intervalEnd, activeTag, nodes }: ArticleListProps) => {
-  let filterByInterval = (blog: ArticleProps) => intervalStart <= new Date(blog.date) && new Date(blog.date) <= intervalEnd;
-  let filterByIntervalAndTag = (blog: ArticleProps) => intervalStart <= new Date(blog.date) && new Date(blog.date) <= intervalEnd && blog.tags.includes(activeTag);
   let dt = (blog: ArticleProps) => new Date(blog.date);
-  let filteredArticles = activeTag === undefined ? nodes.filter(filterByInterval) : nodes.filter(filterByIntervalAndTag);
+  let filteredArticles =
+    activeTag ?
+    nodes.filter(
+      (blog: ArticleProps) => intervalStart <= new Date(blog.date) && new Date(blog.date) <= intervalEnd && blog.tags.includes(activeTag)
+    ) : nodes.filter(
+      (blog: ArticleProps) => intervalStart <= new Date(blog.date) && new Date(blog.date) <= intervalEnd
+    );
   if (sort == SortMethod.FromNewestToOldest) {
     filteredArticles.sort((a, b) => dt(b).getTime() - dt(a).getTime())
   } else {
@@ -140,11 +150,12 @@ class Main extends Component<MainProps, MainState> {
 
   render() {
     const tagArrays = this.props.nodes.map(node => node.tags);
-    const allTags = Array.from(new Set([].concat(...tagArrays)));
+    const tagArray = ([] as string[]).concat(...tagArrays);
+    const allTags = Array.from(new Set(tagArray));
     const changeSortMethod = (sortMethod: SortMethod) => { this.setState({ sortMethod: sortMethod }) };
     const changeIntervalStart = (intervalStart: Date) => { this.setState({ intervalStart: intervalStart }) };
     const changeIntervalEnd = (intervalEnd: Date) => { this.setState({ intervalEnd: intervalEnd }) };
-    const changeTag = (activeTag: string, tag: string) => { activeTag === tag ? this.setState({ activeTag: undefined }) : this.setState({ activeTag: tag })}
+    const changeTag = (activeTag?: string, tag?: string) => { activeTag === tag ? this.setState({ activeTag: undefined }) : this.setState({ activeTag: tag })}
     return <main>
       <Introduction />
       <hr />
@@ -154,9 +165,17 @@ class Main extends Component<MainProps, MainState> {
   }
 }
 
-const Articles = ({ data }) => {
-  const preprocess = ({ frontmatter, slug }) => ({...frontmatter, slug: slug, date: new Date(frontmatter.date)});
-  const nodes: ArticleProps[] = data.allMdx.nodes.map(preprocess);
+const Articles = ({ data }: PageProps<Queries.ArticlesQuery>) => {
+  const nodes: ArticleProps[] = data.allMdx.nodes.map(({ frontmatter, slug }) => {
+    return {
+      title: frontmatter?.title || "Title",
+      date: new Date(frontmatter?.date || "1970-01-01"),
+      slug: slug || "unknown",
+      tags: (frontmatter?.tags || []).map(s => s || ""),
+      abstract: frontmatter?.abstract || "",
+      cover: frontmatter?.cover || ""
+    }
+  });
   return (
     <Layout slug="articles">
       <Main nodes={nodes}/>
@@ -165,7 +184,7 @@ const Articles = ({ data }) => {
 }
 
 export const query = graphql`
-  query {
+  query Articles {
     allMdx {
       nodes {
         frontmatter {
