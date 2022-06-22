@@ -3,7 +3,8 @@ import "../styles/index.scss"
 import React, { Fragment, Component } from 'react'
 import { graphql, PageProps } from 'gatsby'
 import Layout from '../components/Layout'
-import { imageDomain } from '../utils/metadata'
+
+const imageDomain = "https://cdn.jsdelivr.net/gh/tansongchen/images@master/";
 
 const Introduction = () => <section className="section" style={{backgroundImage: "linear-gradient(to bottom, rgba(200,240,230,0.5), rgba(255,255,255,0.5))"}}>
   <div className="container content is-max-desktop" style={{fontSize: "125%"}}>

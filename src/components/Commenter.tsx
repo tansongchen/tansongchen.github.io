@@ -1,7 +1,7 @@
 import { faCheck, faClock, faEnvelope, faExclamationTriangle, faUser } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { Component, Fragment } from 'react'
-import { format } from '../utils/metadata';
+import { yymmdd } from '../utils/metadata';
 import hash from 'object-hash'
 
 const endpoint = 'https://mac5hbk0qb.execute-api.us-east-1.amazonaws.com/';
@@ -92,7 +92,7 @@ const dummyComment: CommentProps = {
 const Comment = ({ id, name, datetime, content }: CommentProps) => {
   return (
     <div className="content" key={id}>
-      <p><span style={{fontSize: "150%", marginRight: "1rem"}}>@{name || '无名氏'}</span>{format(datetime)}</p>
+      <p><span style={{fontSize: "150%", marginRight: "1rem"}}>@{name || '无名氏'}</span>{yymmdd(datetime)}</p>
       <p>{content}</p>
     </div>
   )

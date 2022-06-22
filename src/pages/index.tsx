@@ -44,8 +44,8 @@ interface SummaryProps {
 }
 
 const Summary = ({ slug, image, name, description }: SummaryProps) => <Link to={`/${slug}/`} key={slug}>
-  <div className="column" style={{margin: "1rem"}} key={slug}>
-    <div className="card">
+  <div className="column" style={{margin: "1rem", justifyContent: "center"}} key={slug}>
+    <div className="card" style={{width: 300, margin: "auto"}}>
       <div className="card-image">
         <figure className="image">
           {image}
@@ -62,8 +62,8 @@ const Summary = ({ slug, image, name, description }: SummaryProps) => <Link to={
 </Link>
 
 const Overview = () => <section className="section container">
-  <div className="columns">
-    {summary.slice(1, 6).map(Summary)}
+  <div className="columns" style={{flexWrap: "wrap", justifyContent: "center"}}>
+    {summary.slice(1).map(Summary)}
   </div>
 </section>
 

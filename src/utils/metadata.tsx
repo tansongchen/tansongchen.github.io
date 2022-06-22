@@ -1,7 +1,7 @@
 import React, { Fragment, ReactElement } from "react"
 import { StaticImage } from "gatsby-plugin-image"
 import { IconDefinition } from "@fortawesome/fontawesome-common-types"
-import { faCode, faHome, faPen, faPhotoVideo, faPortrait, faUtensils } from "@fortawesome/free-solid-svg-icons"
+import { faCode, faHome, faPen, faImage, faVideo, faPortrait, faUtensils } from "@fortawesome/free-solid-svg-icons"
 
 interface Category {
   slug: string,
@@ -13,18 +13,19 @@ interface Category {
 
 export const title = "众妙斋";
 
-export const format = (d: Date) => `${d.getFullYear()} 年 ${d.getMonth() + 1} 月 ${d.getDate()} 日`;
+export const yymmdd = (d: Date) => `${d.getFullYear()} 年 ${d.getMonth() + 1} 月 ${d.getDate()} 日`;
 export const mmdd = (d: Date) => `${d.getMonth() + 1} 月 ${d.getDate()} 日`;
 
-export const imageDomain = "https://cdn.jsdelivr.net/gh/tansongchen/images@master/";
-
 const summary: Category[] = [
-  {slug: "", image: <StaticImage src={imageDomain + "avatar.webp"} alt="avatar" />, name: "主页", icon: faHome, description: ""},
-  {slug: "about", image: <StaticImage src={imageDomain + "mitao.webp"} alt="mitao" />, name: "关于", icon: faPortrait, description: "了解更多我的背景"},
-  {slug: "articles", image: <StaticImage src={imageDomain + "articles.webp"} alt="articles" />, name: "文章", icon: faPen, description: "读读我写的文字"},
-  {slug: "photos", image: <StaticImage src={imageDomain + "photos.webp"} alt="photos" />, name: "照片", icon: faPhotoVideo, description: "看看我拍的照片"},
-  {slug: "code", image: <StaticImage src={imageDomain + "code.webp"} alt="code" />, name: "代码", icon: faCode, description: "瞅瞅我写的代码"},
-  {slug: "cuisine", image: <StaticImage src={imageDomain + "cuisine.webp"} alt="cuisine" />, name: "美食", icon: faUtensils, description: "尝尝我做的美食"}
+  {slug: "", image: <StaticImage src="../images/index/mitao.jpg" alt="avatar" width={300} height={300}/>, name: "主页", icon: faHome, description: ""},
+  {slug: "about", image: <StaticImage src="../images/index/mitao.jpg" alt="mitao" width={300} height={300}/>, name: "关于", icon: faPortrait, description: "了解更多关于我的背景"},
+  {slug: "articles", image: <StaticImage src="../images/index/articles.jpg" alt="articles" width={300} height={300}/>, name: "文章", icon: faPen, description: "阅读我笔下的文字"},
+  {slug: "photos", image: <StaticImage src="../images/index/photos.jpg" alt="photos" width={300} height={300}/>, name: "照片", icon: faImage, description: "欣赏我拍的照片"},
+  {slug: "videos", image: <StaticImage src="../images/index/videos.jpg" alt="photos" width={300} height={300}/>, name: "视频", icon: faVideo, description: "观看我拍的视频"},
+  {slug: "code", image: <StaticImage src="../images/index/code.jpg" alt="code" width={300} height={300}/>, name: "代码", icon: faCode, description: "关注我写的代码"},
+  {slug: "cuisine", image: <StaticImage src="../images/index/cuisine.jpg" alt="cuisine" width={300} height={300}/>, name: "美食", icon: faUtensils, description: "品尝我做的佳肴"}
 ]
+
+export const [home, about, articles, photos, code, cuisine] = summary;
 
 export default summary;

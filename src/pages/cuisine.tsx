@@ -1,11 +1,10 @@
-import "../styles/bulma.scss"
-import "../styles/index.scss"
-import React, { Fragment, Component } from 'react'
-import { graphql, PageProps } from 'gatsby'
-import { GatsbyImage, IGatsbyImageData } from "gatsby-plugin-image"
-import Layout from '../components/Layout'
-import Order from '../components/Order'
-import { imageDomain } from '../utils/metadata'
+import "../styles/bulma.scss";
+import "../styles/index.scss";
+import React, { Fragment, Component } from 'react';
+import { graphql, PageProps } from 'gatsby';
+import { GatsbyImage, IGatsbyImageData } from "gatsby-plugin-image";
+import Layout from '../components/Layout';
+import Order from '../components/Order';
 
 const Introduction = () => <section className="section" style={{backgroundImage: "linear-gradient(to bottom, rgba(200,250,250,0.5), rgba(255,255,255,0.5))"}}>
   <div className="container content is-max-desktop" style={{fontSize: "125%"}}>
@@ -142,7 +141,7 @@ query Cuisine {
             width: 180
             height: 180
             placeholder: BLURRED
-            formats: [AUTO, WEBP, AVIF]
+            formats: [AUTO, WEBP]
           )
         }
       }

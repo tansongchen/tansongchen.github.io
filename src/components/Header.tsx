@@ -45,7 +45,7 @@ class Header extends Component<NavProps, NavState> {
           <div className="navbar-end">
             <div className="navbar-item">
               <div className="buttons">
-                <Link to="/404/" className="button is-info">
+                <Link to="/rss.xml" className="button is-info">
                   <strong>订阅</strong>
                 </Link>
                 {/* <a className="button is-light">

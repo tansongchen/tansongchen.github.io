@@ -3,7 +3,8 @@ import { config as env } from "dotenv"
 
 env({path: `.env.${process.env.NODE_ENV}`});
 
-export const CUISINE_DATABASE = '7a13ff42f6174106be20fa0401af6ff3';
+const CUISINE_DATABASE = '7a13ff42f6174106be20fa0401af6ff3';
+const VIDEOS_DATABASE = 'ad2cddcf3e644aa1b7582ec34b5f8f34';
 
 const config: GatsbyConfig = {
   graphqlTypegen: true,
@@ -21,7 +22,24 @@ const config: GatsbyConfig = {
         icon: "src/images/icon.png",
       },
     },
-    "gatsby-plugin-sharp",
+    {
+      resolve: `gatsby-plugin-sharp`,
+      options: {
+        defaults: {
+          formats: [`auto`, `webp`],
+          placeholder: `blurred`,
+          quality: 50,
+          breakpoints: [750, 1080, 1366, 1920],
+          backgroundColor: `transparent`,
+          tracedSVGOptions: {},
+          blurredOptions: {},
+          jpgOptions: {},
+          pngOptions: {},
+          webpOptions: {},
+          avifOptions: {},
+        }
+      }
+    },
     "gatsby-transformer-sharp",
     "gatsby-transformer-yaml",
     {
@@ -64,7 +82,66 @@ const config: GatsbyConfig = {
       options: {
         previewCallRate: 0,
         databases: [
-          CUISINE_DATABASE
+          CUISINE_DATABASE,
+          VIDEOS_DATABASE
+        ]
+      }
+    },
+    {
+      resolve: `gatsby-plugin-feed`,
+      options: {
+        feeds: [
+          {
+            serialize: ({ query: { site, allNotionPage }}) => {
+              return allNotionPage.nodes.map(node => {
+                return {
+                  title: node.title,
+                  categories: [node.properties.Category],
+                  description: node.properties.Rating,
+                  url: site.siteMetadata.siteUrl + '/cuisine/',
+                  guid: node.title,
+                  enclosure: {
+                    url: site.siteMetadata.siteUrl + node.image.childImageSharp.resize.src
+                  },
+                  date: new Date(node.lastEditedTime)
+                }
+              })
+            },
+            query: `
+            {
+              allNotionPage(
+                filter: {coverImage: {ne: null}, parent: {id: {eq: "987c72e8-0e31-57c7-b291-a97e5904112c"}}}
+              ) {
+                nodes {
+                  title
+                  properties {
+                    Category
+                    Complexity
+                    Rating
+                  }
+                  lastEditedTime
+                  image {
+                    childImageSharp {
+                      resize(width: 500, height: 500, toFormat: WEBP) {
+                        src
+                      }
+                    }
+                  }
+                }
+              }
+            }
+            `,
+            output: `/rss.xml`,
+            title: "众妙斋",
+            description: "让您可以在您喜爱的 RSS 阅读器上获取众妙斋的更新（目前仅支持美食板块）",
+            feed_url: 'https://tansongchen.com/rss.xml',
+            site_url: 'https://tansongchen.com',
+            image_url: 'https://tansongchen.com/favicon-32x32.png',
+            managingEditor: '谭淞宸',
+            webMaster: '谭淞宸',
+            copyright: '谭淞宸 2017 - 2022',
+            languages: 'zh'
+          }
         ]
       }
     }
