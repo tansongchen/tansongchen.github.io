@@ -1,6 +1,5 @@
-import "../styles/bulma.scss"
-import "../styles/index.scss"
 import React from "react"
+import "../styles/index.scss"
 import { Link } from "gatsby"
 import Layout from "../components/Layout"
 import { Helmet } from "react-helmet"

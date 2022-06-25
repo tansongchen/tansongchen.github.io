@@ -1,4 +1,3 @@
-import "../styles/bulma.scss"
 import "../styles/index.scss"
 import React, { Fragment, Component } from 'react'
 import { graphql, PageProps } from 'gatsby'

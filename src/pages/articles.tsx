@@ -1,4 +1,3 @@
-import "../styles/bulma.scss"
 import "../styles/index.scss"
 import React, { Component, Fragment } from "react"
 import Layout from "../components/Layout"

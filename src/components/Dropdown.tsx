@@ -1,5 +1,3 @@
-import "../styles/bulma.scss"
-import "../styles/index.scss"
 import React, { Component, Fragment } from "react"
 
 interface DropdownState { active: boolean };

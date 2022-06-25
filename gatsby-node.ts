@@ -1,5 +1,8 @@
+import * as React from "react";
 import type { GatsbyNode } from "gatsby";
 import { createRemoteFileNode } from "gatsby-source-filesystem";
+import { resolve } from "path";
+import { pinyin } from "pinyin-pro";
 
 export const onCreateWebpackConfig: GatsbyNode['onCreateWebpackConfig'] = ({
   actions,
@@ -35,6 +38,44 @@ export const createSchemaCustomization: GatsbyNode['createSchemaCustomization'] 
       image: File @link(from: "fields.localFile")
     }
   `)
+}
+
+export const createPages: GatsbyNode['createPages'] = async ({ actions, graphql }) => {
+  const { data: articlesData } = await graphql(`
+    query Article {
+      allMdx(filter: {slug: {ne: null}}) {
+        nodes {
+          slug
+          id
+        }
+      }
+    }
+  `) as { data: { allMdx: { nodes: { slug: string, id: string }[] }}};
+  articlesData.allMdx.nodes.forEach(({ slug, id }) => {
+    actions.createPage({
+      path: slug,
+      component: resolve("./src/templates/article.tsx"),
+      context: { id: id },
+    });
+  });
+  const { data: cuisineData } = await graphql(`
+    query Dishes {
+      notionDatabase(title: {eq: "菜谱"}) {
+        childrenNotionPage {
+          id
+          title
+        }
+      }
+    }
+  `) as { data: { notionDatabase: { childrenNotionPage: { id: string, title: string }[] }}};
+  cuisineData.notionDatabase.childrenNotionPage.forEach(({ id, title }) => {
+    const uri = pinyin(title, {toneType: 'none', type: 'array'}).join('-');
+    actions.createPage({
+      path: `cuisine/${uri}`,
+      component: resolve("./src/templates/dish.tsx"),
+      context: { id: id },
+    });
+  });
 }
 
 export const onCreateNode: GatsbyNode['onCreateNode'] = async ({

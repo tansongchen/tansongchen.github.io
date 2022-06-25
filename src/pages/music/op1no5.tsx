@@ -1,4 +1,3 @@
-import "../../styles/bulma.scss"
 import "../../styles/index.scss"
 import React, { Fragment, ReactElement } from "react"
 import { faCode, faMusic, faStickyNote } from "@fortawesome/free-solid-svg-icons"

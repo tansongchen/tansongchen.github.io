@@ -7,10 +7,9 @@ const CUISINE_DATABASE = '7a13ff42f6174106be20fa0401af6ff3';
 const VIDEOS_DATABASE = 'ad2cddcf3e644aa1b7582ec34b5f8f34';
 
 const config: GatsbyConfig = {
-  graphqlTypegen: true,
   siteMetadata: {
     siteUrl: "https://tansongchen.com",
-    title: "Songchen Tan Personal Website",
+    title: "众妙斋",
   },
   plugins: [
     "gatsby-plugin-image",
@@ -61,23 +60,6 @@ const config: GatsbyConfig = {
     "gatsby-plugin-sass",
     `gatsby-plugin-react-helmet`,
     {
-      resolve: "gatsby-plugin-mdx",
-      options: {
-        remarkPlugins: [require("remark-math")],
-        mediaTypes: ["text/x-markdown"]
-      },
-    },
-    {
-      resolve: `gatsby-plugin-purgecss`,
-      options: {
-        purgeOnly: ['src/styles/bulma.scss'], // Purge only these files/folders
-        purgeCSSOptions: {
-          // https://purgecss.com/configuration.html#options
-          // safelist: ['safelist'], // Don't remove this selector
-        },
-      },
-    },
-    {
       resolve: `gatsby-source-notion`,
       options: {
         previewCallRate: 0,
@@ -86,6 +68,18 @@ const config: GatsbyConfig = {
           VIDEOS_DATABASE
         ]
       }
+    },
+    {
+      resolve: "gatsby-plugin-mdx",
+      options: {
+        remarkPlugins: [require("remark-math")]
+      },
+    },
+    {
+      resolve: `gatsby-plugin-purgecss`,
+      options: {
+        purgeOnly: ['src/styles/index.scss'], // Purge only these files/folders
+      },
     },
     {
       resolve: `gatsby-plugin-feed`,
@@ -146,6 +140,7 @@ const config: GatsbyConfig = {
       }
     }
   ],
+  graphqlTypegen: true,
 };
 
 export default config;

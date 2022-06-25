@@ -1,4 +1,3 @@
-import "../styles/bulma.scss"
 import "../styles/index.scss"
 import React, { Fragment, ReactElement } from "react"
 import { faCalendar, faCheckCircle, faMapMarker, faPlayCircle } from "@fortawesome/free-solid-svg-icons"
