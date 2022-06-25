@@ -35,7 +35,7 @@ interface DishProps extends DishData {
 
 const Dish = ({ caption, image, category, rating, ordered, update, shouldSelect }: DishProps) => <div className="box" style={{margin: "1rem", display: "flex", padding: 0, overflow: "hidden", position: "relative", zIndex: 0}}>
   <div style={{width: "180px", height: "180px", padding: 0}}>
-    <Link to={`/cuisine/${pinyin(caption, {toneType: 'none', type: 'array'}).join('-')}`}>
+    <Link to={`/recipes/${pinyin(caption, {toneType: 'none', type: 'array'}).join('-')}`}>
       {image ? <GatsbyImage image={image} alt={caption}/> : <div></div>}
     </Link>
   </div>
@@ -113,7 +113,7 @@ class Menu extends Component<MenuProps, MenuState> {
   }
 }
 
-const Cuisine = ({ data }: PageProps<Queries.CuisineQuery>) => {
+const Recipes = ({ data }: PageProps<Queries.RecipesQuery>) => {
   const nodes = data.notionDatabase?.childrenNotionPage?.map(page => {
     const { title, properties, image } = page || {};
     return {
@@ -124,7 +124,7 @@ const Cuisine = ({ data }: PageProps<Queries.CuisineQuery>) => {
     } as DishData // Make TypeScript happy
   })?.filter(({ image }) => image) || [];
   return (
-    <Layout slug="cuisine">
+    <Layout slug="recipes">
       <Introduction />
       <hr />
       <Menu nodes={nodes} />
@@ -133,8 +133,8 @@ const Cuisine = ({ data }: PageProps<Queries.CuisineQuery>) => {
 }
 
 export const query = graphql`
-query Cuisine {
-  notionDatabase(id: {eq: "987c72e8-0e31-57c7-b291-a97e5904112c"}) {
+query Recipes {
+  notionDatabase(title: {eq: "菜谱"}) {
     childrenNotionPage {
       title
       properties {
@@ -152,4 +152,4 @@ query Cuisine {
 }
 `
 
-export default Cuisine
+export default Recipes

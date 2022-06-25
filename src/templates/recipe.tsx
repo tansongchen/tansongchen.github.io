@@ -5,7 +5,7 @@ import { MDXRenderer } from 'gatsby-plugin-mdx';
 import Layout from '../components/Layout';
 import { pinyin } from "pinyin-pro";
 
-export default function Dish({ data }: PageProps<Queries.DishQuery>) {
+export default function Recipe({ data }: PageProps<Queries.RecipeQuery>) {
   const { title, properties, childMdx } = data.notionPage || {};
   return (
       <Layout slug={`cuisine/${pinyin(title || "菜名", {toneType: 'none', type: 'array'}).join('-')}`}>
@@ -30,7 +30,7 @@ export default function Dish({ data }: PageProps<Queries.DishQuery>) {
 }
 
 export const query = graphql`
-  query Dish ($id: String) {
+  query Recipe ($id: String) {
     notionPage(id: {eq: $id}) {
       title
       properties {

@@ -14,10 +14,10 @@ const Introduction = () => <section className="section" style={{backgroundImage:
 interface VideoProps {
   url: string,
   title: string,
-  tags: string[]
+  category: string
 }
 
-const Video = ({url, title, tags}: VideoProps) => <article className="container content is-max-desktop" key={url}>
+const Video = ({url, title, category}: VideoProps) => <article className="container content is-max-desktop" key={url}>
   <h2>{title}</h2>
   <div style={{position: "relative", padding: "30% 45%"}}>
     <iframe style={{position: "absolute", width: "100%", height: "100%", left: "0", top: "0"}} src={url + "&high_quality=1"} scrolling="no" data-border="0" data-frameborder="no" data-framespacing="0" data-allowfullscreen="true">
@@ -34,7 +34,7 @@ const Videos = ({ data }: PageProps<Queries.VideosQuery>) => {
   const nodes: VideoProps[] = data.allNotionPage.nodes.map(({ title, properties }) => {
     return {
       title: title || "",
-      tags: properties?.Tags?.map(s => s || "") || [],
+      category: properties?.Category || "",
       url: properties?.Bilibili_URL || ""
     }
   })
@@ -57,8 +57,8 @@ query Videos {
     nodes {
       title
       properties {
+        Category
         Bilibili_URL
-        Tags
       }
     }
   }

@@ -1,9 +1,9 @@
-import type { GatsbyConfig } from "gatsby"
-import { config as env } from "dotenv"
+import type { GatsbyConfig } from "gatsby";
+import { config as env } from "dotenv";
 
 env({path: `.env.${process.env.NODE_ENV}`});
 
-const CUISINE_DATABASE = '7a13ff42f6174106be20fa0401af6ff3';
+const RECIPES_DATABASE = '7a13ff42f6174106be20fa0401af6ff3';
 const VIDEOS_DATABASE = 'ad2cddcf3e644aa1b7582ec34b5f8f34';
 
 const config: GatsbyConfig = {
@@ -64,7 +64,7 @@ const config: GatsbyConfig = {
       options: {
         previewCallRate: 0,
         databases: [
-          CUISINE_DATABASE,
+          RECIPES_DATABASE,
           VIDEOS_DATABASE
         ]
       }
@@ -86,13 +86,13 @@ const config: GatsbyConfig = {
       options: {
         feeds: [
           {
-            serialize: ({ query: { site, allNotionPage }}) => {
-              return allNotionPage.nodes.map(node => {
+            serialize: ({ query: { site, notionDatabase }}) => {
+              return notionDatabase.childrenNotionPage.map(node => {
                 return {
                   title: node.title,
                   categories: [node.properties.Category],
                   description: node.properties.Rating,
-                  url: site.siteMetadata.siteUrl + '/cuisine/',
+                  url: site.siteMetadata.siteUrl + '/recipes/',
                   guid: node.title,
                   enclosure: {
                     url: site.siteMetadata.siteUrl + node.image.childImageSharp.resize.src
@@ -103,10 +103,8 @@ const config: GatsbyConfig = {
             },
             query: `
             {
-              allNotionPage(
-                filter: {coverImage: {ne: null}, parent: {id: {eq: "987c72e8-0e31-57c7-b291-a97e5904112c"}}}
-              ) {
-                nodes {
+              notionDatabase(title: {eq: "菜谱"}) {
+                childrenNotionPage {
                   title
                   properties {
                     Category

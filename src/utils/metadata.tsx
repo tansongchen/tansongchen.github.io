@@ -23,9 +23,9 @@ const summary: Category[] = [
   {slug: "photos", image: <StaticImage src="../images/index/photos.jpg" alt="photos" width={300} height={300}/>, name: "照片", icon: faImage, description: "欣赏我拍的照片"},
   {slug: "videos", image: <StaticImage src="../images/index/videos.jpg" alt="photos" width={300} height={300}/>, name: "视频", icon: faVideo, description: "观看我拍的视频"},
   {slug: "code", image: <StaticImage src="../images/index/code.jpg" alt="code" width={300} height={300}/>, name: "代码", icon: faCode, description: "关注我写的代码"},
-  {slug: "cuisine", image: <StaticImage src="../images/index/cuisine.jpg" alt="cuisine" width={300} height={300}/>, name: "美食", icon: faUtensils, description: "品尝我做的佳肴"}
+  {slug: "recipes", image: <StaticImage src="../images/index/recipes.jpg" alt="recipes" width={300} height={300}/>, name: "菜谱", icon: faUtensils, description: "品尝我做的佳肴"}
 ]
 
-export const [home, about, articles, photos, code, cuisine] = summary;
+export const [home, about, articles, photos, code, recipes] = summary;
 
 export default summary;

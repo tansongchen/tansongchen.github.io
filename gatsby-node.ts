@@ -1,4 +1,3 @@
-import * as React from "react";
 import type { GatsbyNode } from "gatsby";
 import { createRemoteFileNode } from "gatsby-source-filesystem";
 import { resolve } from "path";
@@ -42,7 +41,7 @@ export const createSchemaCustomization: GatsbyNode['createSchemaCustomization'] 
 
 export const createPages: GatsbyNode['createPages'] = async ({ actions, graphql }) => {
   const { data: articlesData } = await graphql(`
-    query Article {
+    query ArticleIndex {
       allMdx(filter: {slug: {ne: null}}) {
         nodes {
           slug
@@ -58,8 +57,8 @@ export const createPages: GatsbyNode['createPages'] = async ({ actions, graphql 
       context: { id: id },
     });
   });
-  const { data: cuisineData } = await graphql(`
-    query Dishes {
+  const { data: recipesData } = await graphql(`
+    query RecipeIndex {
       notionDatabase(title: {eq: "菜谱"}) {
         childrenNotionPage {
           id
@@ -68,11 +67,11 @@ export const createPages: GatsbyNode['createPages'] = async ({ actions, graphql 
       }
     }
   `) as { data: { notionDatabase: { childrenNotionPage: { id: string, title: string }[] }}};
-  cuisineData.notionDatabase.childrenNotionPage.forEach(({ id, title }) => {
+  recipesData.notionDatabase.childrenNotionPage.forEach(({ id, title }) => {
     const uri = pinyin(title, {toneType: 'none', type: 'array'}).join('-');
     actions.createPage({
-      path: `cuisine/${uri}`,
-      component: resolve("./src/templates/dish.tsx"),
+      path: `recipes/${uri}`,
+      component: resolve("./src/templates/recipe.tsx"),
       context: { id: id },
     });
   });
