@@ -63,11 +63,12 @@ export const createPages: GatsbyNode['createPages'] = async ({ actions, graphql 
         childrenNotionPage {
           id
           title
+          coverImage
         }
       }
     }
-  `) as { data: { notionDatabase: { childrenNotionPage: { id: string, title: string }[] }}};
-  recipesData.notionDatabase.childrenNotionPage.forEach(({ id, title }) => {
+  `) as { data: { notionDatabase: { childrenNotionPage: { id: string, title: string, coverImage: string | null }[] }}};
+  recipesData.notionDatabase.childrenNotionPage.filter(x => x.coverImage).forEach(({ id, title }) => {
     const uri = pinyin(title, {toneType: 'none', type: 'array'}).join('-');
     actions.createPage({
       path: `recipes/${uri}`,

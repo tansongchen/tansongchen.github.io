@@ -114,15 +114,15 @@ class Menu extends Component<MenuProps, MenuState> {
 }
 
 const Recipes = ({ data }: PageProps<Queries.RecipesQuery>) => {
-  const nodes = data.notionDatabase?.childrenNotionPage?.map(page => {
+  const nodes = data.notionDatabase?.childrenNotionPage?.filter(page => page?.image).map(page => {
     const { title, properties, image } = page || {};
     return {
       caption: title || "",
       category: properties?.Category || "鲁菜",
       rating: properties?.Rating || '⭐️️️️⭐️️️️⭐️️️️⭐️️️️',
       image: image?.childImageSharp?.gatsbyImageData
-    } as DishData // Make TypeScript happy
-  })?.filter(({ image }) => image) || [];
+    } as DishData
+  }) || [];
   return (
     <Layout slug="recipes">
       <Introduction />

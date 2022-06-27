@@ -87,7 +87,7 @@ const config: GatsbyConfig = {
         feeds: [
           {
             serialize: ({ query: { site, notionDatabase }}) => {
-              return notionDatabase.childrenNotionPage.map(node => {
+              return notionDatabase.childrenNotionPage.filter(node => node.image).map(node => {
                 return {
                   title: node.title,
                   categories: [node.properties.Category],
