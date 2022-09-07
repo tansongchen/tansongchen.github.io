@@ -5,7 +5,9 @@ import { MDXRenderer } from 'gatsby-plugin-mdx'
 import Layout from '../components/Layout'
 import Commenter from '../components/Commenter';
 import { Helmet } from 'react-helmet';
-import katex from 'katex'
+import katex from 'katex';
+import slugify from "../utils/slugify";
+import { yymmdd } from "../utils/metadata";
 
 export default class Article extends Component<PageProps<Queries.ArticleQuery>, object> {
   componentDidMount() {
@@ -17,11 +19,9 @@ export default class Article extends Component<PageProps<Queries.ArticleQuery>, 
     }
   }
   render() {
-    const { title, date, tags } = this.props.data?.mdx?.frontmatter || {};
-    const slug = this.props.data?.mdx?.slug || "articles/404";
-    const short = slug.split('/')[1];
+    const { title, properties, childMdx } = this.props.data!.notionPage!;
     return (
-        <Layout slug={slug}>
+        <Layout slug={slugify(title!)}>
           <Helmet>
             <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.css" integrity="sha384-R4558gYOUz8mP9YWpZJjofhk+zx0AS11p36HnD2ZKj/6JR5z27gSSULCNHIRReVs" crossOrigin="anonymous" />
             {/* <script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.js" integrity="sha384-z1fJDqw8ZApjGO3/unPWUPsIymfsJmyrDVWC8Tv/a1HeOtGmkwNd/7xUS0Xcnvsx" crossOrigin="anonymous"></script> */}
@@ -29,20 +29,20 @@ export default class Article extends Component<PageProps<Queries.ArticleQuery>, 
           <section className="section" style={{backgroundColor: "rgba(230, 240, 255, 0.5)"}}>
             <div className="content has-text-centered">
               <h2>{title || "Default Title"}</h2>
-              <p>{date || "Default Date"}</p>
+              <p>{yymmdd(new Date(properties!.Date!.start!))}</p>
               <div className="tags" style={{justifyContent: "center"}}>
-                {(tags || []).map(x => <span key={x} className="tag is-medium is-info">{x}</span>)}
+                {([properties!.Category] || []).map(x => <span key={x} className="tag is-medium is-info">{x}</span>)}
               </div>
             </div>
           </section>
           <main className="section">
             <div className="container is-max-desktop content">
               <MDXRenderer>
-                {this.props.data?.mdx?.body || ""}
+                {childMdx!.body}
               </MDXRenderer>
             </div>
           </main>
-          <Commenter slug={short} />
+          <Commenter slug={slugify(title!)} />
         </Layout>
     )
   }
@@ -50,16 +50,18 @@ export default class Article extends Component<PageProps<Queries.ArticleQuery>, 
 
 export const query = graphql`
   query Article ($id: String) {
-    mdx(id: {eq: $id}) {
-      frontmatter {
-        title
-        date(formatString: "YYYY 年 M 月 DD 日")
-        tags
-        abstract
-        cover
+    notionPage(id: {eq: $id}) {
+      title
+      properties {
+        Date {
+          start
+        }
+        Category
+        Tags
       }
-      slug
-      body
+      childMdx {
+        body
+      }
     }
   }
 `

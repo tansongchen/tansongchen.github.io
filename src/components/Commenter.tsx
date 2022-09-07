@@ -1,8 +1,8 @@
 import { faCheck, faClock, faEnvelope, faExclamationTriangle, faUser } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import React, { Component, Fragment } from 'react'
+import React, { Component } from 'react';
 import { yymmdd } from '../utils/metadata';
-import hash from 'object-hash'
+import hash from 'object-hash';
 
 const endpoint = 'https://mac5hbk0qb.execute-api.us-east-1.amazonaws.com/';
 
@@ -71,22 +71,11 @@ class Form extends Component<FormProps, FormState> {
   }
 }
 
-interface CommentProps {
+interface CommentProps extends FormState {
   id: string,
-  name: string,
-  email: string,
+  art: string,
   slug: string,
-  datetime: Date,
-  content: string
-}
-
-const dummyComment: CommentProps = {
-  id: "abcdef",
-  name: "小可爱",
-  email: "keai@xiao.com",
-  slug: 'mit-cse-ms',
-  datetime: new Date("2021-07-03T12:00:00"),
-  content: "这是一条评论"
+  datetime: Date
 }
 
 const Comment = ({ id, name, datetime, content }: CommentProps) => {
@@ -120,27 +109,28 @@ class Commenter extends Component<CommenterProps, CommenterState> {
   async componentDidMount() {
     try {
       const response = await fetch(endpoint + this.props.slug);
-      const rawComments = await response.json();
-      const preprocess = a => ({...a, datetime: new Date(a.datetime)})
-      this.setState({ comments: rawComments.Items.map(preprocess) });
+      const rawComments = (await response.json()).Items as CommentProps[];
+      this.setState({ comments: rawComments.map(
+        a => ({...a, datetime: new Date(a.datetime)})
+      )});
     } catch (e) {
       this.setState({ error: true });
     }
   }
 
-  onSubmitComment = async (form: FormState) => {
+  async onSubmitComment(form: FormState) {
     this.setState({ submitting: true });
-    let tmp = {...form, datetime: new Date(), slug: this.props.slug}
-    let comment: CommentProps = {...tmp, id: hash(tmp, {algorithm: 'md5'})};
+    const [art, slug] = this.props.slug.split('/');
+    const comment: CommentProps = {...form, datetime: new Date(), slug: slug, art: art, id: hash([form, slug, art], {algorithm: 'md5'})}
     try {
-      const response = await fetch(endpoint, {
+      await fetch(endpoint, {
         headers: {
           Accept: "application/json",
           "Content-Type": "application/json",
         },
         method: "PUT",
         body: JSON.stringify(comment),
-      })
+      });
       this.setState({ comments: [...this.state.comments, comment]});
       window.alert('提交成功！')
     } catch (error) {

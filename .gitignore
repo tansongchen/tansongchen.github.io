@@ -1,5 +1,5 @@
 node_modules/
 .cache/
 public
-.env.*
+.env
 gatsby-types.d.ts

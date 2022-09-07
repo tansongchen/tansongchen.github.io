@@ -66,7 +66,7 @@ const Overview = () => <section className="section container">
   </div>
 </section>
 
-const Index = () => {
+export default function() {
   return (
     <Fragment>
       <Layout slug="">
@@ -79,5 +79,3 @@ const Index = () => {
     </Fragment>
   )
 }
-
-export default Index

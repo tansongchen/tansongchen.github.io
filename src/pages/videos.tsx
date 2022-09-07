@@ -39,7 +39,7 @@ const Videos = ({ data }: PageProps<Queries.VideosQuery>) => {
     }
   })
   return (
-    <Layout slug="gallery">
+    <Layout slug="videos">
       <main>
         <Introduction />
         <hr />

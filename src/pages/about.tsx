@@ -1,9 +1,9 @@
-import "../styles/index.scss"
-import React, { Fragment, ReactElement } from "react"
-import { faCalendar, faCheckCircle, faMapMarker, faPlayCircle } from "@fortawesome/free-solid-svg-icons"
-import Layout from "../components/Layout"
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { StaticImage } from "gatsby-plugin-image"
+import "../styles/index.scss";
+import React, { Fragment, ReactElement } from "react";
+import { faCalendar, faCheckCircle, faMapMarker, faPlayCircle } from "@fortawesome/free-solid-svg-icons";
+import Layout from "../components/Layout";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { StaticImage } from "gatsby-plugin-image";
 
 const imageDomain = "https://cdn.jsdelivr.net/gh/tansongchen/images@0.0.2/"
 
@@ -241,7 +241,7 @@ const Experience = () => <section className="section">
   </div>
 </section>
 
-const About = () => {
+export default function() {
   return (
     <Fragment>
       <Layout slug="about">
@@ -256,5 +256,3 @@ const About = () => {
     </Fragment>
   )
 }
-
-export default About

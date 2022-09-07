@@ -3,6 +3,9 @@ import React, { Component, Fragment } from "react"
 import Layout from "../components/Layout"
 import Dropdown from "../components/Dropdown"
 import { graphql, Link, PageProps } from "gatsby"
+import { Piece } from "../utils/types"
+import { GatsbyImage, IGatsbyImageData } from "gatsby-plugin-image"
+import slugify from "../utils/slugify";
 
 enum SortMethod {
   FromNewestToOldest,
@@ -20,13 +23,8 @@ const Introduction = () => <section className="section" style={{backgroundImage:
   </div>
 </section>
 
-interface ArticleProps {
-  title: string,
-  date: Date,
-  tags: string[],
-  abstract: string,
-  cover: string,
-  slug: string
+interface IArticle extends Piece {
+  image: IGatsbyImageData
 }
 
 interface TagProps {
@@ -77,22 +75,20 @@ const Selector = ({ sortMethod, changeSortMethod, intervalStart, changeIntervalS
 
 const format = (d: Date) => `${d.getFullYear()} 年 ${d.getMonth() + 1} 月 ${d.getDate()} 日`
 
-const Article = ({ title, date, slug, cover, tags, abstract }: ArticleProps) => <article key={slug} className="container section">
-<Link to={`/${slug}/`}>
-  <div className="box columns" style={{padding: 0, overflow: "auto"}}>
+const Article = ({ name, date, image, tags, description }: IArticle) => <article key={name} className="container section">
+<Link to={`${slugify(name)}`}>
+  <div className="box columns" style={{padding: 0, overflow: "hidden", zIndex: 0, position: "relative"}}>
     <div className="column" style={{padding: 0}}>
-      <figure className="image is-2by1">
-        <img src={cover} alt={cover} />
-      </figure>
+      <GatsbyImage image={image} alt={name} />
     </div>
     <div className="column content" style={{padding: "1.5rem"}}>
-      <h3>{title}</h3>
+      <h3>{name}</h3>
       <p>{format(date)}</p>
       <p>
         {tags.map(tag => <span key={tag} className="tag is-info is-light is-medium" style={{margin: "0 3px"}}>{tag}</span>)}
       </p>
       <p>
-        {abstract}
+        {description}
       </p>
     </div>
   </div>
@@ -107,7 +103,7 @@ interface MainState {
 }
 
 interface MainProps {
-  nodes: ArticleProps[]
+  nodes: IArticle[]
 }
 
 interface ArticleListProps {
@@ -115,17 +111,17 @@ interface ArticleListProps {
   intervalStart: Date,
   intervalEnd: Date,
   activeTag?: string
-  nodes: ArticleProps[]
+  nodes: IArticle[]
 }
 
 const ArticleList = ({ sortMethod: sort, intervalStart, intervalEnd, activeTag, nodes }: ArticleListProps) => {
-  let dt = (blog: ArticleProps) => new Date(blog.date);
+  let dt = (blog: IArticle) => new Date(blog.date);
   let filteredArticles =
     activeTag ?
     nodes.filter(
-      (blog: ArticleProps) => intervalStart <= new Date(blog.date) && new Date(blog.date) <= intervalEnd && blog.tags.includes(activeTag)
+      (blog: IArticle) => intervalStart <= new Date(blog.date) && new Date(blog.date) <= intervalEnd && blog.tags.includes(activeTag)
     ) : nodes.filter(
-      (blog: ArticleProps) => intervalStart <= new Date(blog.date) && new Date(blog.date) <= intervalEnd
+      (blog: IArticle) => intervalStart <= new Date(blog.date) && new Date(blog.date) <= intervalEnd
     );
   if (sort == SortMethod.FromNewestToOldest) {
     filteredArticles.sort((a, b) => dt(b).getTime() - dt(a).getTime())
@@ -133,7 +129,7 @@ const ArticleList = ({ sortMethod: sort, intervalStart, intervalEnd, activeTag, 
     filteredArticles.sort((a, b) => dt(a).getTime() - dt(b).getTime())
   }
   return <section className="section">
-    <div className="container is-max-widescreen">
+    <div className="container is-max-desktop">
       {filteredArticles.map(Article)}
     </div>
   </section>
@@ -164,15 +160,16 @@ class Main extends Component<MainProps, MainState> {
   }
 }
 
-const Articles = ({ data }: PageProps<Queries.ArticlesQuery>) => {
-  const nodes: ArticleProps[] = data.allMdx.nodes.map(({ frontmatter, slug }) => {
+export default function({ data }: PageProps<Queries.ArticlesQuery>){
+  const nodes: IArticle[] = data.notionDatabase!.childrenNotionPage!.map(page => {
+    const { title, properties, image } = page!;
     return {
-      title: frontmatter?.title || "Title",
-      date: new Date(frontmatter?.date || "1970-01-01"),
-      slug: slug || "unknown",
-      tags: (frontmatter?.tags || []).map(s => s || ""),
-      abstract: frontmatter?.abstract || "",
-      cover: frontmatter?.cover || ""
+      name: title!,
+      date: new Date(properties!.Date!.start!),
+      image: image!.childImageSharp!.gatsbyImageData! as any as IGatsbyImageData,
+      category: properties!.Category!,
+      tags: properties!.Tags!.map(s => s || "").filter(s => s),
+      description: properties!.Description!,
     }
   });
   return (
@@ -184,19 +181,23 @@ const Articles = ({ data }: PageProps<Queries.ArticlesQuery>) => {
 
 export const query = graphql`
   query Articles {
-    allMdx {
-      nodes {
-        frontmatter {
-          title
-          date
-          tags
-          cover
-          abstract
+    notionDatabase(title: {eq: "文章"}) {
+      childrenNotionPage {
+        title
+        properties {
+          Category
+          Tags
+          Date {
+            start
+          }
+          Description
         }
-        slug
+        image {
+          childImageSharp {
+            gatsbyImageData(width: 600, height: 400, placeholder: BLURRED, formats: [AUTO, WEBP])
+          }
+        }
       }
     }
   }
 `
-
-export default Articles

@@ -2,6 +2,8 @@ import type { GatsbyNode } from "gatsby";
 import { createRemoteFileNode } from "gatsby-source-filesystem";
 import { resolve } from "path";
 import { pinyin } from "pinyin-pro";
+import { ExifData, read } from "fast-exif";
+import slugify from "./src/utils/slugify";
 
 export const onCreateWebpackConfig: GatsbyNode['onCreateWebpackConfig'] = ({
   actions,
@@ -40,46 +42,43 @@ export const createSchemaCustomization: GatsbyNode['createSchemaCustomization'] 
 }
 
 export const createPages: GatsbyNode['createPages'] = async ({ actions, graphql }) => {
-  const { data: articlesData } = await graphql(`
-    query ArticleIndex {
-      allMdx(filter: {slug: {ne: null}}) {
+  const { data } = await graphql<Queries.IndexQuery>(`
+    query Index {
+      allNotionDatabase {
         nodes {
-          slug
-          id
-        }
-      }
-    }
-  `) as { data: { allMdx: { nodes: { slug: string, id: string }[] }}};
-  articlesData.allMdx.nodes.forEach(({ slug, id }) => {
-    actions.createPage({
-      path: slug,
-      component: resolve("./src/templates/article.tsx"),
-      context: { id: id },
-    });
-  });
-  const { data: recipesData } = await graphql(`
-    query RecipeIndex {
-      notionDatabase(title: {eq: "菜谱"}) {
-        childrenNotionPage {
-          id
+          childrenNotionPage {
+            id
+            title
+          }
           title
-          coverImage
         }
       }
     }
-  `) as { data: { notionDatabase: { childrenNotionPage: { id: string, title: string, coverImage: string | null }[] }}};
-  recipesData.notionDatabase.childrenNotionPage.filter(x => x.coverImage).forEach(({ id, title }) => {
-    const uri = pinyin(title, {toneType: 'none', type: 'array'}).join('-');
-    actions.createPage({
-      path: `recipes/${uri}`,
-      component: resolve("./src/templates/recipe.tsx"),
-      context: { id: id },
+  `);
+  const api = new Map<string, [string, string]>([
+    ['女装', ['dresses', 'dress']],
+    ['文章', ['articles', 'article']],
+    ['照片', ['photos', 'photo']],
+    ['视频', ['videos', 'video']],
+    ['菜谱', ['recipes', 'recipe']],
+  ]);
+  data!.allNotionDatabase!.nodes!.forEach(database => {
+    const { title, childrenNotionPage } = database;
+    const [plural, singular] = api.get(title!)!;
+    childrenNotionPage!.forEach(page => {
+      page && page.title &&
+      actions.createPage({
+        path: `${plural}/${slugify(page.title)}`,
+        component: resolve(`./src/templates/${singular}.tsx`),
+        context: { id: page.id },
+      });
     });
   });
 }
 
 export const onCreateNode: GatsbyNode['onCreateNode'] = async ({
   node,
+  getNode,
   actions: { createNode, createNodeField },
   createNodeId,
   getCache,
@@ -89,17 +88,50 @@ export const onCreateNode: GatsbyNode['onCreateNode'] = async ({
     node.internal.type === "NotionPage" &&
     node.coverImage
   ) {
-    const fileNode = await createRemoteFileNode({
-      url: node.coverImage, // string that points to the URL of the image
+    createRemoteFileNode({
+      url: node.coverImage as string, // string that points to the URL of the image
       parentNodeId: node.id, // id of the parent node of the fileNode you are going to create
       createNode, // helper function in gatsby-node to generate the node
       createNodeId, // helper function in gatsby-node to generate the node id
       getCache,
-    } as any)
-
-    // if the file was created, extend the node with "localFile"
-    if (fileNode) {
+    } as any).then((fileNode) => {
       createNodeField({ node, name: "localFile", value: fileNode.id })
-    }
+    })
+  }
+
+  // For all NotionPage images, create exif
+  if (
+    node.internal.type === 'ImageSharp' &&
+    node.parent &&
+    getNode(node.parent)?.internal.type === 'File'
+  ) {
+    let exif: ExifData | undefined = undefined;
+    try {
+      exif = await read(getNode(node.parent)!.absolutePath as string);
+    } catch (error) {}
+    createNodeField({
+      node,
+      name: 'exif',
+      value: {
+        exif: {
+          DateTimeOriginal: '',
+          LensModel: '',
+          FocalLength: 0,
+          ISO: 0,
+          FNumber: 0,
+          ExposureTime: 0,
+          ExposureBiasValue: 0,
+        },
+        gps: {
+          GPSLatitudeRef: '',
+          GPSLatitude: [0, 0, 0],
+          GPSLongitudeRef: '',
+          GPSLongitude: [0, 0, 0],
+        },
+        image: {
+          Model: ''
+        }
+      }
+    });
   }
 }

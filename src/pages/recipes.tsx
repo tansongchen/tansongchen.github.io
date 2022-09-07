@@ -133,23 +133,23 @@ const Recipes = ({ data }: PageProps<Queries.RecipesQuery>) => {
 }
 
 export const query = graphql`
-query Recipes {
-  notionDatabase(title: {eq: "菜谱"}) {
-    childrenNotionPage {
-      title
-      properties {
-        Category
-        Complexity
-        Rating
-      }
-      image {
-        childImageSharp {
-          gatsbyImageData(width: 180, height: 180, placeholder: BLURRED, formats: [AUTO, WEBP])
+  query Recipes {
+    notionDatabase(title: {eq: "菜谱"}) {
+      childrenNotionPage {
+        title
+        properties {
+          Category
+          Complexity
+          Rating
+        }
+        image {
+          childImageSharp {
+            gatsbyImageData(width: 180, height: 180, placeholder: BLURRED, formats: [AUTO, WEBP])
+          }
         }
       }
     }
   }
-}
 `
 
 export default Recipes

@@ -2,8 +2,13 @@ import "../styles/index.scss"
 import React, { Fragment, Component } from 'react'
 import { graphql, PageProps } from 'gatsby'
 import Layout from '../components/Layout'
+import { Piece } from "../utils/types";
+import { IExifImage, preprocessExif } from "../components/ExifImage";
+import { GatsbyImage, IGatsbyImageData } from "gatsby-plugin-image";
 
-const imageDomain = "https://cdn.jsdelivr.net/gh/tansongchen/images@master/";
+interface IPhoto extends Piece {
+  exifImage: IExifImage
+}
 
 const Introduction = () => <section className="section" style={{backgroundImage: "linear-gradient(to bottom, rgba(200,240,230,0.5), rgba(255,255,255,0.5))"}}>
   <div className="container content is-max-desktop" style={{fontSize: "125%"}}>
@@ -13,65 +18,56 @@ const Introduction = () => <section className="section" style={{backgroundImage:
   </div>
 </section>
 
-interface PhotoData {
-  caption: string,
-  url: string,
-  date: Date
-}
-
-interface PhotoProps extends PhotoData {
+interface PhotoProps extends IPhoto {
   active?: string,
   changeActive: (active?: string) => void,
 }
 
-const Preview = ({ date, url, caption, active, changeActive }: PhotoProps) => <figure className="box image is-128x128" style={{margin: ".8rem", padding: 0, cursor: "pointer", overflow: "auto"}} aria-haspopup="true" onClick={() => {changeActive(url)}} key={url}>
-  <img src={url} alt={caption} />
-</figure>
+const Preview = ({ name, date, description, exifImage, active, changeActive }: PhotoProps) => <GatsbyImage image={exifImage.image} alt={name} aria-haspopup="true" onClick={() => {changeActive(name)}}/>
 
 const format = (d: Date) => `${d.getFullYear()} 年 ${d.getMonth() + 1} 月 ${d.getDate()} 日`
 
-const Modal = ({ date, url, caption, active, changeActive }: PhotoProps) =>
-<div className={"modal" + (url === active ? " is-active" : "")} key={url}>
-  <div className="modal-background"></div>
-  <div className="modal-content content has-text-centered">
-    <figure className="image">
-      <img src={url} alt={caption} />
-    </figure>
-    <div style={{margin: "0 2rem"}}>
-      <p style={{color: "#BBB"}}>
-        {format(date)}
-      </p>
-      <div style={{color: "#DDD", fontSize: "125%"}}>{caption.split('\n').map(line => <p key={line}>{line}</p>)}</div>
-    </div>
-  </div>
-  <button className="modal-close is-large" aria-label="close" onClick={() => changeActive(undefined)} />
-</div>
+// const Modal = ({ date, description, active, changeActive }: PhotoProps) =>
+// <div className={"modal" + (url === active ? " is-active" : "")} key={url}>
+//   <div className="modal-background"></div>
+//   <div className="modal-content content has-text-centered">
+//     <figure className="image">
+//       <img src={url} alt={caption} />
+//     </figure>
+//     <div style={{margin: "0 2rem"}}>
+//       <p style={{color: "#BBB"}}>
+//         {format(date)}
+//       </p>
+//       <div style={{color: "#DDD", fontSize: "125%"}}>{caption.split('\n').map(line => <p key={line}>{line}</p>)}</div>
+//     </div>
+//   </div>
+//   <button className="modal-close is-large" aria-label="close" onClick={() => changeActive(undefined)} />
+// </div>
 
-interface GalleryProps { nodes: PhotoData[] }
+interface GalleryProps { nodes: IPhoto[] }
 interface GalleryState { active?: string }
 
 interface MonthProps {
-  year: number,
-  month: number,
-  photos: PhotoData[],
+  category: string,
+  photos: IPhoto[],
   active?: string,
   callback: (active?: string) => void,
 }
 
-const Month = ({ year, month, photos, active, callback }: MonthProps) => <div key={`${year} 年 ${month} 月`}>
+const Category = ({ category, photos, active, callback }: MonthProps) => <div key={category}>
   <article className="columns">
     <div className="column is-one-third has-text-centered">
       <div className="content">
-        <h3 style={{margin: "1.5rem 0 .5rem 0"}}>{`${year} 年 ${month} 月`}</h3>
+        <h3 style={{margin: "1.5rem 0 .5rem 0"}}>{category}</h3>
       </div>
     </div>
     <div className="column" style={{display: "flex", flexWrap: "wrap"}}>
       {photos.map(x => <Preview {...x} active={active} changeActive={callback} />)}
     </div>
   </article>
-  <article>
+  {/* <article>
     {photos.map(x => <Modal {...x} active={active} changeActive={callback} />)}
-  </article>
+  </article> */}
 </div>
 
 class Gallery extends Component<GalleryProps, GalleryState> {
@@ -80,28 +76,42 @@ class Gallery extends Component<GalleryProps, GalleryState> {
   }
 
   render() {
-    let map = new Map<number, PhotoData[]>();
+    const map = new Map<string, IPhoto[]>();
     this.props.nodes.sort((a, b) => (b.date.getTime() - a.date.getTime()));
-    for (let photo of this.props.nodes) {
-      let year = photo.date.getFullYear(), month = photo.date.getMonth() + 1;
-      let key = year * 100 + month;
+    for (const photo of this.props.nodes) {
+      const key = photo.category;
       map.set(key, (map.get(key) || []).concat([photo]))
     }
     const changeActive = (active?: string) => { this.setState({ active: active }) };
     let groups: MonthProps[] = [];
     for (let [key, value] of map.entries()) {
-      groups.push({year: Math.floor(key / 100), month: key % 100, photos: value, active: this.state.active, callback: changeActive});
+      groups.push({category: key, photos: value, active: this.state.active, callback: changeActive});
     }
     return <section className="section">
       <div className="container is-max-widescreen">
-        {groups.map(Month)}
+        {groups.map(Category)}
       </div>
     </section>
   }
 }
 
-const Photos = ({ data }: PageProps<Queries.PhotosQuery>) => {
-  const nodes: PhotoData[] = data.allPhotosYaml.nodes.map(({ caption, date, url }) => ({caption: caption || "", date: new Date((new Date(date || "1970-01-01")).getTime() + 8 * 3600 * 1000), url: imageDomain + url}));
+export default function({ data }: PageProps<Queries.PhotosQuery>) {
+  const nodes: IPhoto[] = data.notionDatabase!.childrenNotionPage!.map(page => {
+    const { title, properties, image } = page!;
+    const exif = preprocessExif(image!.childImageSharp!.fields!.exif!);
+    return {
+      name: title!,
+      date: exif.datetime,
+      category: properties!.Category!,
+      tags: properties!.Tags!.map(s => s || "").filter(s => s),
+      description: properties!.Description!,
+      suite: properties!.Suite !== null ? properties!.Suite : undefined,
+      exifImage: {
+        image: image!.childImageSharp!.gatsbyImageData! as any as IGatsbyImageData,
+        exif: exif
+      }
+    }
+  });
   return (
     <Layout slug="photos">
       <Introduction />
@@ -113,14 +123,43 @@ const Photos = ({ data }: PageProps<Queries.PhotosQuery>) => {
 
 export const query = graphql`
   query Photos {
-    allPhotosYaml {
-      nodes {
-        caption
-        date
-        url
+    notionDatabase(title: {eq: "照片"}) {
+      childrenNotionPage {
+        title
+        properties {
+          Category
+          Tags
+          Description
+          Suite
+        }
+        image {
+          childImageSharp {
+            gatsbyImageData(width: 300, height: 300, placeholder: BLURRED, formats: [AUTO, WEBP])
+            fields {
+              exif {
+                exif {
+                  DateTimeOriginal
+                  LensModel
+                  FocalLength
+                  ISO
+                  FNumber
+                  ExposureTime
+                  ExposureBiasValue
+                }
+                image {
+                  Model
+                }
+                gps {
+                  GPSLatitudeRef
+                  GPSLatitude
+                  GPSLongitudeRef
+                  GPSLongitude
+                }
+              }
+            }
+          }
+        }
       }
     }
   }
 `
-
-export default Photos

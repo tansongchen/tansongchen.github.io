@@ -1,10 +1,14 @@
 import type { GatsbyConfig } from "gatsby";
 import { config as env } from "dotenv";
+import feeds from "./src/utils/rss";
 
-env({path: `.env.${process.env.NODE_ENV}`});
+env({path: `.env`});
 
+const ARTICLES_DATABASE = 'cd484e70f8344b30b738922a15424d56';
 const RECIPES_DATABASE = '7a13ff42f6174106be20fa0401af6ff3';
 const VIDEOS_DATABASE = 'ad2cddcf3e644aa1b7582ec34b5f8f34';
+const DRESSES_DATABASE = '8001b0eba0a5401c8ffe343ad1ce07ca';
+const PHOTOS_DATABASE = '34e2befe9a77492c825996d6e238880d';
 
 const config: GatsbyConfig = {
   siteMetadata: {
@@ -36,7 +40,8 @@ const config: GatsbyConfig = {
           pngOptions: {},
           webpOptions: {},
           avifOptions: {},
-        }
+        },
+        stripMetadata: false,
       }
     },
     "gatsby-transformer-sharp",
@@ -49,14 +54,6 @@ const config: GatsbyConfig = {
       },
       __key: "images",
     },
-    {
-      resolve: "gatsby-source-filesystem",
-      options: {
-        name: "contents",
-        path: "contents/",
-      },
-      __key: "contents",
-    },
     "gatsby-plugin-sass",
     `gatsby-plugin-react-helmet`,
     {
@@ -64,8 +61,11 @@ const config: GatsbyConfig = {
       options: {
         previewCallRate: 0,
         databases: [
+          ARTICLES_DATABASE,
+          PHOTOS_DATABASE,
+          VIDEOS_DATABASE,
           RECIPES_DATABASE,
-          VIDEOS_DATABASE
+          DRESSES_DATABASE,
         ]
       }
     },
@@ -84,57 +84,7 @@ const config: GatsbyConfig = {
     {
       resolve: `gatsby-plugin-feed`,
       options: {
-        feeds: [
-          {
-            serialize: ({ query: { site, notionDatabase }}) => {
-              return notionDatabase.childrenNotionPage.filter(node => node.image).map(node => {
-                return {
-                  title: node.title,
-                  categories: [node.properties.Category],
-                  description: node.properties.Rating,
-                  url: site.siteMetadata.siteUrl + '/recipes/',
-                  guid: node.title,
-                  enclosure: {
-                    url: site.siteMetadata.siteUrl + node.image.childImageSharp.resize.src
-                  },
-                  date: new Date(node.lastEditedTime)
-                }
-              })
-            },
-            query: `
-            {
-              notionDatabase(title: {eq: "菜谱"}) {
-                childrenNotionPage {
-                  title
-                  properties {
-                    Category
-                    Complexity
-                    Rating
-                  }
-                  lastEditedTime
-                  image {
-                    childImageSharp {
-                      resize(width: 500, height: 500, toFormat: WEBP) {
-                        src
-                      }
-                    }
-                  }
-                }
-              }
-            }
-            `,
-            output: `/rss.xml`,
-            title: "众妙斋",
-            description: "让您可以在您喜爱的 RSS 阅读器上获取众妙斋的更新（目前仅支持美食板块）",
-            feed_url: 'https://tansongchen.com/rss.xml',
-            site_url: 'https://tansongchen.com',
-            image_url: 'https://tansongchen.com/favicon-32x32.png',
-            managingEditor: '谭淞宸',
-            webMaster: '谭淞宸',
-            copyright: '谭淞宸 2017 - 2022',
-            languages: 'zh'
-          }
-        ]
+        feeds: feeds
       }
     }
   ],

@@ -121,7 +121,7 @@ const Gallery = ({ repositories }: GalleryProps) => <section className="section"
   </div>
 </section>
 
-const Code = () => <Layout slug="/code/">
+const Code = () => <Layout slug="code">
   <Introduction />
   <hr />
   <Gallery repositories={repositories}/>

@@ -24,8 +24,8 @@ jobs:
             ${{ runner.os }}-node-
       - name: Create env file
         run: |
-          touch .env.production
-          echo GATSBY_NOTION_TOKEN=${{ secrets.GATSBY_NOTION_TOKEN }} >> .env.production
+          touch .env
+          echo GATSBY_NOTION_TOKEN=${{ secrets.GATSBY_NOTION_TOKEN }} >> .env
       - run: npm ci && npm run build
       - uses: peaceiris/actions-gh-pages@v3
         with:
