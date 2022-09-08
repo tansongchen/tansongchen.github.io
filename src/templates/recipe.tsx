@@ -3,12 +3,12 @@ import React, { Component } from 'react';
 import { graphql, PageProps } from 'gatsby';
 import { MDXRenderer } from 'gatsby-plugin-mdx';
 import Layout from '../components/Layout';
-import { pinyin } from "pinyin-pro";
+import slugify from '../utils/slugify';
 
-export default function Recipe({ data }: PageProps<Queries.RecipeQuery>) {
+export default function ({ data }: PageProps<Queries.RecipeQuery>) {
   const { title, properties, childMdx } = data.notionPage || {};
   return (
-      <Layout slug={`cuisine/${pinyin(title || "菜名", {toneType: 'none', type: 'array'}).join('-')}`}>
+      <Layout slug={`cuisine/${slugify(title!)}`}>
         <section className="section" style={{backgroundColor: "rgba(230, 240, 255, 0.5)"}}>
           <div className="content has-text-centered">
             <h2>{title || "菜名"}</h2>

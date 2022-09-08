@@ -1,10 +1,10 @@
-import "../styles/index.scss"
-import React, { Component, Fragment } from "react"
-import Layout from "../components/Layout"
-import Dropdown from "../components/Dropdown"
-import { graphql, Link, PageProps } from "gatsby"
-import { Piece } from "../utils/types"
-import { GatsbyImage, IGatsbyImageData } from "gatsby-plugin-image"
+import "../styles/index.scss";
+import React, { Component } from "react";
+import Layout from "../components/Layout";
+import Dropdown from "../components/Dropdown";
+import { graphql, Link, PageProps } from "gatsby";
+import { Article } from "../utils/metadata";
+import { GatsbyImage, IGatsbyImageData } from "gatsby-plugin-image";
 import slugify from "../utils/slugify";
 
 enum SortMethod {
@@ -22,10 +22,6 @@ const Introduction = () => <section className="section" style={{backgroundImage:
     </p>
   </div>
 </section>
-
-interface IArticle extends Piece {
-  image: IGatsbyImageData
-}
 
 interface TagProps {
   tag: string,
@@ -75,7 +71,7 @@ const Selector = ({ sortMethod, changeSortMethod, intervalStart, changeIntervalS
 
 const format = (d: Date) => `${d.getFullYear()} 年 ${d.getMonth() + 1} 月 ${d.getDate()} 日`
 
-const Article = ({ name, date, image, tags, description }: IArticle) => <article key={name} className="container section">
+const ArticleDigest = ({ name, date, image, tags, description }: Article) => <article key={name} className="container section">
 <Link to={`${slugify(name)}`}>
   <div className="box columns" style={{padding: 0, overflow: "hidden", zIndex: 0, position: "relative"}}>
     <div className="column" style={{padding: 0}}>
@@ -103,7 +99,7 @@ interface MainState {
 }
 
 interface MainProps {
-  nodes: IArticle[]
+  nodes: Article[]
 }
 
 interface ArticleListProps {
@@ -111,17 +107,17 @@ interface ArticleListProps {
   intervalStart: Date,
   intervalEnd: Date,
   activeTag?: string
-  nodes: IArticle[]
+  nodes: Article[]
 }
 
 const ArticleList = ({ sortMethod: sort, intervalStart, intervalEnd, activeTag, nodes }: ArticleListProps) => {
-  let dt = (blog: IArticle) => new Date(blog.date);
+  let dt = (blog: Article) => new Date(blog.date);
   let filteredArticles =
     activeTag ?
     nodes.filter(
-      (blog: IArticle) => intervalStart <= new Date(blog.date) && new Date(blog.date) <= intervalEnd && blog.tags.includes(activeTag)
+      (blog: Article) => intervalStart <= new Date(blog.date) && new Date(blog.date) <= intervalEnd && blog.tags.includes(activeTag)
     ) : nodes.filter(
-      (blog: IArticle) => intervalStart <= new Date(blog.date) && new Date(blog.date) <= intervalEnd
+      (blog: Article) => intervalStart <= new Date(blog.date) && new Date(blog.date) <= intervalEnd
     );
   if (sort == SortMethod.FromNewestToOldest) {
     filteredArticles.sort((a, b) => dt(b).getTime() - dt(a).getTime())
@@ -130,7 +126,7 @@ const ArticleList = ({ sortMethod: sort, intervalStart, intervalEnd, activeTag, 
   }
   return <section className="section">
     <div className="container is-max-desktop">
-      {filteredArticles.map(Article)}
+      {filteredArticles.map(ArticleDigest)}
     </div>
   </section>
 }
@@ -161,7 +157,7 @@ class Main extends Component<MainProps, MainState> {
 }
 
 export default function({ data }: PageProps<Queries.ArticlesQuery>){
-  const nodes: IArticle[] = data.notionDatabase!.childrenNotionPage!.map(page => {
+  const nodes: Article[] = data.notionDatabase!.childrenNotionPage!.map(page => {
     const { title, properties, image } = page!;
     return {
       name: title!,

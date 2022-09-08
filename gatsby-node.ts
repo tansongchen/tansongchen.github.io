@@ -4,6 +4,7 @@ import { resolve } from "path";
 import { pinyin } from "pinyin-pro";
 import { ExifData, read } from "fast-exif";
 import slugify from "./src/utils/slugify";
+import { arts } from "./src/utils/metadata";
 
 export const onCreateWebpackConfig: GatsbyNode['onCreateWebpackConfig'] = ({
   actions,
@@ -32,13 +33,13 @@ export const onCreateWebpackConfig: GatsbyNode['onCreateWebpackConfig'] = ({
 }
 
 export const createSchemaCustomization: GatsbyNode['createSchemaCustomization'] = ({ actions }) => {
-  const { createTypes } = actions
+  const { createTypes } = actions;
 
   createTypes(`
     type NotionPage implements Node {
       image: File @link(from: "fields.localFile")
     }
-  `)
+  `);
 }
 
 export const createPages: GatsbyNode['createPages'] = async ({ actions, graphql }) => {
@@ -55,21 +56,14 @@ export const createPages: GatsbyNode['createPages'] = async ({ actions, graphql 
       }
     }
   `);
-  const api = new Map<string, [string, string]>([
-    ['女装', ['dresses', 'dress']],
-    ['文章', ['articles', 'article']],
-    ['照片', ['photos', 'photo']],
-    ['视频', ['videos', 'video']],
-    ['菜谱', ['recipes', 'recipe']],
-  ]);
   data!.allNotionDatabase!.nodes!.forEach(database => {
     const { title, childrenNotionPage } = database;
-    const [plural, singular] = api.get(title!)!;
-    childrenNotionPage!.forEach(page => {
+    const art = arts.find(x => x.name === title);
+    art && childrenNotionPage!.forEach(page => {
       page && page.title &&
       actions.createPage({
-        path: `${plural}/${slugify(page.title)}`,
-        component: resolve(`./src/templates/${singular}.tsx`),
+        path: `${art.slug}/${slugify(page.title)}`,
+        component: resolve(`./src/templates/${art.single}.tsx`),
         context: { id: page.id },
       });
     });
@@ -105,33 +99,37 @@ export const onCreateNode: GatsbyNode['onCreateNode'] = async ({
     node.parent &&
     getNode(node.parent)?.internal.type === 'File'
   ) {
-    let exif: ExifData | undefined = undefined;
+    const exif: ExifData = {
+      exif: {
+        DateTimeOriginal: '1970-01-01',
+        LensModel: '',
+        FocalLength: 0.1,
+        ISO: 0.1,
+        FNumber: 0.1,
+        ExposureTime: 0.1,
+        ExposureBiasValue: 0.1,
+      },
+      gps: {
+        GPSLatitudeRef: '',
+        GPSLatitude: [0.1, 0.1, 0.1],
+        GPSLongitudeRef: '',
+        GPSLongitude: [0.1, 0.1, 0.1],
+      },
+      image: {
+        Model: ''
+      }
+    };
     try {
-      exif = await read(getNode(node.parent)!.absolutePath as string);
-    } catch (error) {}
+      const raw = await read(getNode(node.parent)!.absolutePath as string);
+      Object.assign(exif.exif, raw.exif);
+      Object.assign(exif.gps, raw.gps);
+      Object.assign(exif.image, raw.image);
+    } catch (error) {
+    }
     createNodeField({
       node,
       name: 'exif',
-      value: {
-        exif: {
-          DateTimeOriginal: '',
-          LensModel: '',
-          FocalLength: 0,
-          ISO: 0,
-          FNumber: 0,
-          ExposureTime: 0,
-          ExposureBiasValue: 0,
-        },
-        gps: {
-          GPSLatitudeRef: '',
-          GPSLatitude: [0, 0, 0],
-          GPSLongitudeRef: '',
-          GPSLongitude: [0, 0, 0],
-        },
-        image: {
-          Model: ''
-        }
-      }
+      value: exif
     });
   }
 }

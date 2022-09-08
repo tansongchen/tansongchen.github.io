@@ -1,6 +1,6 @@
 import React from "react";
-import { Helmet } from "react-helmet"
-import { title } from "../utils/metadata"
+import { Helmet } from "react-helmet";
+import { title } from "../utils/metadata";
 
 const Meta = () => <Helmet>
   <meta name="description" content="谭淞宸的个人网站" />

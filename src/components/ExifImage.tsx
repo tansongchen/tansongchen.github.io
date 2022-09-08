@@ -25,13 +25,17 @@ export interface IExif {
   }
 }
 
+const localize = (s: string) => {
+  return s.replace('back dual wide camera', '广角相机');
+}
+
 export interface IExifImage {
   exif: IExif,
   image: IGatsbyImageData
 };
 
 type ExifImageProps = IExifImage & { alt: string };
-export default class ExifImage extends Component<ExifImageProps, { active: boolean }> {
+export default class extends Component<ExifImageProps, { active: boolean }> {
   state = {
     active: false
   }
@@ -42,7 +46,7 @@ export default class ExifImage extends Component<ExifImageProps, { active: boole
     return <Fragment>
     <section className="section">
       <div className="container is-max-desktop content">
-        <GatsbyImage image={image} alt={alt} onClick={() => this.setState({active: true})}/>
+        <GatsbyImage image={image} alt={alt} aria-haspopup="true" onClick={() => this.setState({active: true})}/>
       </div>
       <div className={"modal" + (this.state.active ? " is-active" : "")} key={alt}>
         <div className="modal-background"></div>
@@ -72,7 +76,7 @@ export default class ExifImage extends Component<ExifImageProps, { active: boole
             <p><FaCamera />&nbsp; &nbsp; {exif.camera}</p>
           </div>
           <div className="column">
-            <p><RiCameraLensFill />&nbsp; &nbsp; {exif.lens}</p>
+            <p><RiCameraLensFill />&nbsp; &nbsp; {localize(exif.lens)}</p>
           </div>
           <div className='column'>
             <p>

@@ -28,9 +28,9 @@ class Header extends Component<NavProps, NavState> {
     return <nav className="navbar is-fixed-top" role="navigation" aria-label="main navigation">
       <div className="content is-medium container">
         <div className="navbar-brand">
-          <a className="navbar-item" style={{fontSize: "1.5rem", padding: "0 1.5rem"}} href="/">
+          <Link className="navbar-item" style={{fontSize: "1.5rem", padding: "0 1.5rem"}} to="/">
             🍭️ {title}
-          </a>
+          </Link>
 
           <a role="button" className="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample" onClick={() => { this.setState({ expand: !this.state.expand }) }}>
             <span aria-hidden="true"></span>

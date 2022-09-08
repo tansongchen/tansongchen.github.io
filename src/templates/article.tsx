@@ -9,7 +9,7 @@ import katex from 'katex';
 import slugify from "../utils/slugify";
 import { yymmdd } from "../utils/metadata";
 
-export default class Article extends Component<PageProps<Queries.ArticleQuery>, object> {
+export default class extends Component<PageProps<Queries.ArticleQuery>, object> {
   componentDidMount() {
     for (let display of document.getElementsByClassName("math-display")) {
       katex.render(display.textContent || "", display as HTMLElement, {throwOnError: false, displayMode: true});

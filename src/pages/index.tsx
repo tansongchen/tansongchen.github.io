@@ -1,24 +1,15 @@
-import "../styles/index.scss"
-import React, { Fragment, ReactElement } from "react"
-import { Link } from "gatsby"
-import Layout from "../components/Layout"
-import { StaticImage } from "gatsby-plugin-image"
-import summary from "../utils/metadata"
-import { title } from "../utils/metadata"
-
-const imageDomain = "https://cdn.jsdelivr.net/gh/tansongchen/images@0.0.2/"
+import "../styles/index.scss";
+import React, { Fragment, ReactElement } from "react";
+import { Link } from "gatsby";
+import { StaticImage } from "gatsby-plugin-image";
+import Layout from "../components/Layout";
+import summary, { title, Page } from "../utils/metadata";
 
 const Introduction = () => <section className="section" style={{backgroundImage: "linear-gradient(to bottom, rgba(200,240,255,0.5), rgba(255,255,255,0.5))"}}>
   <div className="container is-max-widescreen">
     <div className="columns is-vcentered">
       <div className="column is-one-third" style={{padding: "3rem"}}>
-        <figure className="image">
-          <img src={"https://cdn.jsdelivr.net/gh/tansongchen/images@master/mitao.gif"} alt="avatar"/>
-        </figure>
-        {/* <div className="card" style={{background: "transparent"}}>
-          <div className="card-image">
-          </div>
-        </div> */}
+        <StaticImage src="../images/mitao.gif" alt="avatar"/>
       </div>
       <div className="column content" style={{padding: "5%", fontSize: "125%"}}>
         <p>
@@ -35,14 +26,7 @@ const Introduction = () => <section className="section" style={{backgroundImage:
   </div>
 </section>
 
-interface SummaryProps {
-  slug: string,
-  image: ReactElement,
-  name: string,
-  description: string
-}
-
-const Summary = ({ slug, image, name, description }: SummaryProps) => <Link to={`/${slug}/`} key={slug}>
+const Summary = ({ slug, image, name, description }: Page) => <Link to={`/${slug}/`} key={slug}>
   <div className="column" style={{margin: "1rem", justifyContent: "center"}} key={slug}>
     <div className="card" style={{width: 300, margin: "auto"}}>
       <div className="card-image">
@@ -62,20 +46,16 @@ const Summary = ({ slug, image, name, description }: SummaryProps) => <Link to={
 
 const Overview = () => <section className="section container">
   <div className="columns" style={{flexWrap: "wrap", justifyContent: "center"}}>
-    {summary.slice(1).map(Summary)}
+    {summary.map(Summary)}
   </div>
 </section>
 
 export default function() {
-  return (
-    <Fragment>
-      <Layout slug="">
-        <main>
-          <Introduction />
-          <hr />
-          <Overview />
-        </main>
-      </Layout>
-    </Fragment>
-  )
+  return <Layout slug="">
+    <main>
+      <Introduction />
+      <hr />
+      <Overview />
+    </main>
+  </Layout>
 }

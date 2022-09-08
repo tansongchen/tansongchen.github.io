@@ -3,9 +3,8 @@ import React, { Fragment, Component } from 'react';
 import { graphql, Link, PageProps } from 'gatsby';
 import { GatsbyImage, IGatsbyImageData } from "gatsby-plugin-image";
 import Layout from '../components/Layout';
-import { Dress as IDress } from "../templates/dress";
+import { Dress } from "../utils/metadata";
 import ExifImage, { IExifImage, preprocessExif } from '../components/ExifImage';
-import { Suite, Art } from "../utils/types";
 import slugify from "../utils/slugify";
 
 const Introduction = () => <section className="section" style={{backgroundImage: "linear-gradient(to bottom, rgba(200,250,250,0.5), rgba(255,255,255,0.5))"}}>
@@ -19,13 +18,13 @@ const Introduction = () => <section className="section" style={{backgroundImage:
   </div>
 </section>
 
-const Dress = ({exifImage, name}: IDress) => {
+const DressDigest = ({exifImage, name}: Dress) => {
   return <Link to={slugify(name)} key={name}>
     <GatsbyImage image={exifImage.image} alt={name}/>
   </Link>
 }
 
-const Category = ({name, data}: {name: string, data: IDress[]}) => {
+const Category = ({name, data}: {name: string, data: Dress[]}) => {
   return <article className="columns" key={name}>
     <div className="column is-one-quarter has-text-centered">
       <div className="content">
@@ -33,17 +32,17 @@ const Category = ({name, data}: {name: string, data: IDress[]}) => {
       </div>
     </div>
     <div className="column" style={{display: "flex", flexWrap: "wrap", justifyContent: "center", padding: 0}}>
-      {data.map(Dress)}
+      {data.map(DressDigest)}
     </div>
   </article>
 }
 
-const Main = ({nodes}: {nodes: IDress[]}) => {
-  const map = new Map<string, IDress[]>();
+const Main = ({nodes}: {nodes: Dress[]}) => {
+  const map = new Map<string, Dress[]>();
   for (const dress of nodes) {
     map.set(dress.category, (map.get(dress.category) || []).concat([dress]));
   }
-  const groups: {name: string, data: IDress[]}[] = [{name: "Lolita", data: map.get("Lolita")!}];
+  const groups: {name: string, data: Dress[]}[] = [{name: "Lolita", data: map.get("Lolita")!}];
   return <section className="section">
     {
       groups.map(Category)
@@ -52,7 +51,7 @@ const Main = ({nodes}: {nodes: IDress[]}) => {
 }
 
 export default function({ data }: PageProps<Queries.DressesQuery>) {
-  const nodes: IDress[] = data.notionDatabase!.childrenNotionPage!.map(page => {
+  const nodes: Dress[] = data.notionDatabase!.childrenNotionPage!.map(page => {
     const { title, properties, image } = page!;
     const exif = preprocessExif(image!.childImageSharp!.fields!.exif!);
     return {
