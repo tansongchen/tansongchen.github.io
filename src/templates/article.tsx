@@ -19,7 +19,6 @@ export default class extends Component<PageProps<Queries.ArticleQuery>, object> 
   render() {
     const { title, date, tags } = this.props.data?.mdx?.frontmatter || {};
     const slug = this.props.data?.mdx?.slug || "articles/404";
-    const short = slug.split('/')[1];
     return (
         <Layout slug={slug}>
           <Helmet>
@@ -42,7 +41,7 @@ export default class extends Component<PageProps<Queries.ArticleQuery>, object> 
               </MDXRenderer>
             </div>
           </main>
-          <Commenter slug={short} />
+          <Commenter slug={slug} />
         </Layout>
     )
   }

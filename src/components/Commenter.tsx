@@ -118,7 +118,7 @@ class Commenter extends Component<CommenterProps, CommenterState> {
     }
   }
 
-  async onSubmitComment(form: FormState) {
+  onSubmitComment = async (form: FormState) => {
     this.setState({ submitting: true });
     const [art, slug] = this.props.slug.split('/');
     const comment: CommentProps = {...form, datetime: new Date(), slug: slug, art: art, id: hash([form, slug, art], {algorithm: 'md5'})}
