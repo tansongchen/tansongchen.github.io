@@ -4,7 +4,6 @@ import feeds from "./src/utils/rss";
 
 env({path: `.env`});
 
-const ARTICLES_DATABASE = 'cd484e70f8344b30b738922a15424d56';
 const RECIPES_DATABASE = '7a13ff42f6174106be20fa0401af6ff3';
 const VIDEOS_DATABASE = 'ad2cddcf3e644aa1b7582ec34b5f8f34';
 const DRESSES_DATABASE = '8001b0eba0a5401c8ffe343ad1ce07ca';
@@ -54,6 +53,14 @@ const config: GatsbyConfig = {
       },
       __key: "images",
     },
+    {
+      resolve: "gatsby-source-filesystem",
+      options: {
+        name: "contents",
+        path: "contents/",
+      },
+      __key: "contents",
+    },
     "gatsby-plugin-sass",
     `gatsby-plugin-react-helmet`,
     {
@@ -61,7 +68,6 @@ const config: GatsbyConfig = {
       options: {
         previewCallRate: 0,
         databases: [
-          ARTICLES_DATABASE,
           PHOTOS_DATABASE,
           VIDEOS_DATABASE,
           RECIPES_DATABASE,

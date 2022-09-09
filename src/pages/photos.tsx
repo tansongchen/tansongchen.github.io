@@ -26,11 +26,11 @@ interface GalleryProps { nodes: Photo[] }
 const Gallery = ({ nodes }: GalleryProps) => {
   const map = new Map<string, Photo[]>();
   nodes.sort((a, b) => (b.date.getTime() - a.date.getTime()));
-  return <section className="section">
+  return <section className="section" style={{paddingLeft: "0", paddingRight: "0"}}>
     <div className="container is-max-widescreen">
       {/* {groups.map(Category)} */}
 
-    <div className="column" style={{display: "flex", flexWrap: "wrap"}}>
+    <div className="column" style={{display: "flex", flexWrap: "wrap", padding: "0", justifyContent: "center"}}>
       {nodes.map(x => <Preview {...x} />)}
     </div>
     </div>

@@ -56,9 +56,8 @@ const articles: Art = {slug: "articles", single: 'article', image: <StaticImage 
 const photos: Art = {slug: "photos", single: 'photo', image: <StaticImage src="../images/index/photos.jpg" alt="photos" width={300} height={300}/>, name: "照片", icon: faImage, description: "欣赏我拍的照片"};
 const videos: Art = {slug: "videos", single: 'video', image: <StaticImage src="../images/index/videos.jpg" alt="photos" width={300} height={300}/>, name: "视频", icon: faVideo, description: "观看我拍的视频"};
 const recipes: Art = {slug: "recipes", single: 'recipe', image: <StaticImage src="../images/index/recipes.jpg" alt="recipes" width={300} height={300}/>, name: "菜谱", icon: faUtensils, description: "品尝我做的佳肴"};
-const code: Page = {slug: "code", image: <StaticImage src="../images/index/code.jpg" alt="code" width={300} height={300}/>, name: "代码", icon: faCode, description: "研究我写的代码"};
 const dresses: Art = {slug: "dresses", single: 'dress', image: <StaticImage src="../images/index/recipes.jpg" alt="dresses" width={300} height={300}/>, name: "女装", icon: faFemale, description: "好耶，是女装！"};
 
 export const arts = [articles, photos, videos, recipes, dresses];
 
-export default [about, articles, photos, videos, recipes, code];
+export default [about, articles, photos, videos, recipes];

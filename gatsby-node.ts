@@ -43,6 +43,23 @@ export const createSchemaCustomization: GatsbyNode['createSchemaCustomization'] 
 }
 
 export const createPages: GatsbyNode['createPages'] = async ({ actions, graphql }) => {
+  const { data: articlesData } = await graphql<Queries.ArticleIndexQuery>(`
+    query ArticleIndex {
+      allMdx(filter: {slug: {ne: null}}) {
+        nodes {
+          slug
+          id
+        }
+      }
+    }
+  `);
+  articlesData!.allMdx.nodes.forEach(({ slug, id }) => {
+    actions.createPage({
+      path: slug!,
+      component: resolve("./src/templates/article.tsx"),
+      context: { id: id },
+    });
+  });
   const { data } = await graphql<Queries.IndexQuery>(`
     query Index {
       allNotionDatabase {
