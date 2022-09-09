@@ -1,15 +1,12 @@
-import React from "react"
-import "../styles/index.scss"
-import { Link } from "gatsby"
-import Layout from "../components/Layout"
-import { Helmet } from "react-helmet"
+import React from "react";
+import "../styles/index.scss";
+import { Link } from "gatsby";
+import Layout from "../components/Layout";
+import { Helmet } from "react-helmet";
 
 const NotFound = () => {
   return (
-    <Layout slug="404">
-      <Helmet>
-        <title>正在建设中</title>
-      </Helmet>
+    <Layout slug="/404">
       <main className="section">
         <div className="container is-max-desktop content has-text-centered">
           <h1>未找到页面</h1>

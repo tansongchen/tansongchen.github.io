@@ -4,7 +4,8 @@ import { graphql, Link, PageProps } from 'gatsby';
 import { GatsbyImage, IGatsbyImageData } from "gatsby-plugin-image";
 import Layout from '../components/Layout';
 import Order from '../components/Order';
-import { pinyin } from "pinyin-pro";
+import { Recipe } from "../utils/metadata";
+import slugify from "../utils/slugify";
 
 const Introduction = () => <section className="section" style={{backgroundImage: "linear-gradient(to bottom, rgba(200,250,250,0.5), rgba(255,255,255,0.5))"}}>
   <div className="container content is-max-desktop" style={{fontSize: "125%"}}>
@@ -20,38 +21,31 @@ const Introduction = () => <section className="section" style={{backgroundImage:
   </div>
 </section>
 
-interface DishData {
-  caption: string,
-  image?: IGatsbyImageData,
-  category: string,
-  rating: string
-}
-
-interface DishProps extends DishData {
+interface DishProps extends Recipe {
   ordered: number,
   update: (a: string, b: number) => void,
   shouldSelect: boolean
 }
 
-const Dish = ({ caption, image, category, rating, ordered, update, shouldSelect }: DishProps) => <div className="box" style={{margin: "1rem", display: "flex", padding: 0, overflow: "hidden", position: "relative", zIndex: 0}}>
+const Dish = ({ name, date, image, category, rating, ordered, update, shouldSelect }: DishProps) => <div className="box" style={{margin: "1rem", display: "flex", padding: 0, overflow: "hidden", position: "relative", zIndex: 0}}>
   <div style={{width: "180px", height: "180px", padding: 0}}>
-    <Link to={`/recipes/${pinyin(caption, {toneType: 'none', type: 'array'}).join('-')}`}>
-      {image ? <GatsbyImage image={image} alt={caption}/> : <div></div>}
+    <Link to={slugify(name)}>
+      {image ? <GatsbyImage image={image} alt={name}/> : <div></div>}
     </Link>
   </div>
   <div style={{textAlign: "center", padding: "0 1.5rem", display: "flex", justifyContent: "center", flexDirection: "column", width: "150px", height: "180px"}}>
-    <p className="block" style={{fontSize: "1.2rem"}}>{caption}</p>
+    <p className="block" style={{fontSize: "1.2rem"}}>{name}</p>
     <p className="block content is-small">{rating}</p>
     { !shouldSelect ?
       <button className="button is-success is-static">添加</button> :
       ordered ?
-      <button className="button is-danger" onClick={() => update(caption, 0)}>取消</button> :
-      <button className="button is-success" onClick={() => update(caption, 1)}>添加</button>
+      <button className="button is-danger" onClick={() => update(name, 0)}>取消</button> :
+      <button className="button is-success" onClick={() => update(name, 1)}>添加</button>
     }
   </div>
 </div>
 
-interface MenuProps { nodes: DishData[] }
+interface MenuProps { nodes: Recipe[] }
 interface MenuState {
   selected: Map<string, number>,
   shouldSelect: boolean
@@ -59,7 +53,7 @@ interface MenuState {
 
 interface SubmenuProps {
   title: string,
-  dishes: DishData[],
+  dishes: Recipe[],
   selected: Map<string, number>,
   update: (a: string, b: number) => void,
   shouldSelect: boolean
@@ -72,7 +66,7 @@ const Submenu = ({ title, dishes, selected, update, shouldSelect }: SubmenuProps
     </div>
   </div>
   <div className="column" style={{display: "flex", flexWrap: "wrap", justifyContent: "center", padding: 0}}>
-    {dishes.map(x => <Dish {...x} key={x.caption} update={update} ordered={selected.get(x.caption)!} shouldSelect={shouldSelect}/>)}
+    {dishes.map(x => <Dish {...x} key={x.name} update={update} ordered={selected.get(x.name)!} shouldSelect={shouldSelect}/>)}
   </div>
 </article>
 
@@ -84,19 +78,19 @@ class Menu extends Component<MenuProps, MenuState> {
 
   componentDidMount() {
     for (let dish of this.props.nodes) {
-      this.state.selected.set(dish.caption, 0);
+      this.state.selected.set(dish.name, 0);
     }
   }
 
   render() {
-    let map = new Map<string, DishData[]>();
+    let map = new Map<string, Recipe[]>();
     for (let dish of this.props.nodes) {
       map.set(dish.category, (map.get(dish.category) || []).concat([dish]))
     }
-    let groups: {title: string, dishes: DishData[]}[] = [];
+    let groups: {title: string, dishes: Recipe[]}[] = [];
     for (let key of ["鲁菜", "川菜", "粤菜", "淮扬菜", "面点"]) {
       let value = map.get(key) || [];
-      value.sort((a: DishData, b: DishData) => b.rating.length - a.rating.length);
+      value.sort((a: Recipe, b: Recipe) => b.rating.length - a.rating.length);
       groups.push({title: key, dishes: value});
     }
     const update = (name: string, count: number) => {
@@ -114,15 +108,20 @@ class Menu extends Component<MenuProps, MenuState> {
 }
 
 const Recipes = ({ data }: PageProps<Queries.RecipesQuery>) => {
-  const nodes = data.notionDatabase?.childrenNotionPage?.filter(page => page?.image).map(page => {
-    const { title, properties, image } = page || {};
-    return {
-      caption: title || "",
-      category: properties?.Category || "鲁菜",
-      rating: properties?.Rating || '⭐️️️️⭐️️️️⭐️️️️⭐️️️️',
-      image: image?.childImageSharp?.gatsbyImageData
-    } as DishData
-  }) || [];
+  const nodes: Recipe[] = [];
+  data.notionDatabase!.childrenNotionPage!.forEach(page => {
+    const { title, properties, image } = page!;
+    title && nodes.push({
+      name: title,
+      category: properties!.Category!,
+      tags: [],
+      date: new Date(image!.childImageSharp!.fields!.exif!.exif!.DateTimeOriginal!),
+      description: properties!.Description!,
+      rating: properties!.Rating!,
+      image: image!.childImageSharp!.gatsbyImageData as any as
+      IGatsbyImageData
+    });
+  });
   return (
     <Layout slug="recipes">
       <Introduction />
@@ -139,12 +138,19 @@ export const query = graphql`
         title
         properties {
           Category
-          Complexity
+          Description
           Rating
         }
         image {
           childImageSharp {
             gatsbyImageData(width: 180, height: 180, placeholder: BLURRED, formats: [AUTO, WEBP])
+            fields {
+              exif {
+                exif {
+                  DateTimeOriginal
+                }
+              }
+            }
           }
         }
       }

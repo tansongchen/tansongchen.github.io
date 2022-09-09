@@ -1,7 +1,7 @@
-import "../styles/index.scss"
-import React, { Fragment, Component } from 'react'
-import { graphql, PageProps, Link } from 'gatsby'
-import Layout from '../components/Layout'
+import "../styles/index.scss";
+import React, { Fragment, Component } from 'react';
+import { graphql, PageProps, Link } from 'gatsby';
+import Layout from '../components/Layout';
 import { Photo } from "../utils/metadata";
 import { IExifImage, preprocessExif } from "../components/ExifImage";
 import { GatsbyImage, IGatsbyImageData } from "gatsby-plugin-image";

@@ -1,7 +1,6 @@
 import type { GatsbyNode } from "gatsby";
 import { createRemoteFileNode } from "gatsby-source-filesystem";
 import { resolve } from "path";
-import { pinyin } from "pinyin-pro";
 import { ExifData, read } from "fast-exif";
 import slugify from "./src/utils/slugify";
 import { arts } from "./src/utils/metadata";

@@ -30,6 +30,11 @@ export interface Video extends Piece {
   url: string
 }
 
+export interface Recipe extends Piece {
+  image: IGatsbyImageData,
+  rating: string
+}
+
 export interface Suite<T extends Piece> {
   name: string,
 }

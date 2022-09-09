@@ -59,7 +59,7 @@ export default function({ data }: PageProps<Queries.DressesQuery>) {
       date: exif.datetime,
       category: properties!.Category!,
       tags: properties!.Tags!.map(s => s || "").filter(s => s),
-      description: '',
+      description: properties!.Description!,
       photographer: properties!.Photographer!,
       suite: properties!.Suite !== null ? properties!.Suite : undefined,
       exifImage: {
@@ -87,6 +87,7 @@ export const query = graphql`
           Tags
           Photographer
           Suite
+          Description
         }
         image {
           childImageSharp {

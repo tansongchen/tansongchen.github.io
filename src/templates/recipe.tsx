@@ -4,24 +4,27 @@ import { graphql, PageProps } from 'gatsby';
 import { MDXRenderer } from 'gatsby-plugin-mdx';
 import Layout from '../components/Layout';
 import slugify from '../utils/slugify';
+import { yymmdd } from "../utils/metadata";
 
 export default function ({ data }: PageProps<Queries.RecipeQuery>) {
-  const { title, properties, childMdx } = data.notionPage || {};
+  const { title, properties, childMdx, image } = data.notionPage!;
+  const date = new Date(image!.childImageSharp!.fields!.exif!.exif!.DateTimeOriginal!);
   return (
       <Layout slug={`cuisine/${slugify(title!)}`}>
         <section className="section" style={{backgroundColor: "rgba(230, 240, 255, 0.5)"}}>
           <div className="content has-text-centered">
-            <h2>{title || "菜名"}</h2>
-            <p>{properties?.Rating || "⭐️️⭐️️⭐️️⭐️️"}</p>
+            <h2>{title!}</h2>
+            <p>{properties!.Rating!}</p>
+            <p>{yymmdd(date)}</p>
             <div className="tags" style={{justifyContent: "center"}}>
-              {<span className="tag is-medium is-info">{properties?.Category || "其他"}</span>}
+              {<span className="tag is-medium is-info">{properties!.Category!}</span>}
             </div>
           </div>
         </section>
         <main className="section">
           <div className="container is-max-desktop content">
             <MDXRenderer>
-              {childMdx?.body || ""}
+              {childMdx!.body!}
             </MDXRenderer>
           </div>
         </main>
@@ -39,6 +42,17 @@ export const query = graphql`
       }
       childMdx {
         body
+      }
+      image {
+        childImageSharp {
+          fields {
+            exif {
+              exif {
+                DateTimeOriginal
+              }
+            }
+          }
+        }
       }
     }
   }

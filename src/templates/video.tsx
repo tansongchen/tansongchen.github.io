@@ -4,17 +4,21 @@ import { graphql, PageProps } from 'gatsby';
 import Layout from '../components/Layout';
 import slugify from '../utils/slugify';
 import Commenter from '../components/Commenter';
+import { yymmdd } from '../utils/metadata';
 
 export default function ({ data }: PageProps<Queries.VideoQuery>) {
   const { title, properties } = data.notionPage!;
-  return <Layout slug={`photos/${slugify(title!)}`}>
+  return <Layout slug={`videos/${slugify(title!)}`}>
     <section className="section" style={{backgroundColor: "rgba(230, 240, 255, 0.5)"}}>
       <div className="content has-text-centered">
         <h2>{title}</h2>
         <p>
           <span className="tag is-medium is-info is-light">{properties!.Category}</span>
         </p>
-        <p>{properties!.Description}</p>
+        <p>{properties!.Description!}</p>
+        <p>
+          {yymmdd(new Date(properties!.Date!.start!))}
+        </p>
       </div>
     </section>
     <section className='section'>

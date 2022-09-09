@@ -3,7 +3,7 @@ import React from 'react';
 import { graphql, Link, PageProps } from 'gatsby';
 import Layout from '../components/Layout';
 import slugify from '../utils/slugify';
-import { Video } from '../utils/metadata';
+import { Video, yymmdd } from '../utils/metadata';
 
 const Introduction = () => <section className="section" style={{backgroundImage: "linear-gradient(to bottom, rgba(230,220,250,0.5), rgba(255,255,255,0.5))"}}>
   <div className="container content is-max-desktop" style={{fontSize: "125%"}}>
@@ -13,10 +13,13 @@ const Introduction = () => <section className="section" style={{backgroundImage:
   </div>
 </section>
 
-const VideoFrame = ({url, name, category}: Video) => <article className="container content is-max-desktop" key={url}>
+const VideoFrame = ({url, name, category, date}: Video) => <article className="container content is-max-desktop" key={url}>
   <h2>
     <Link to={slugify(name)}>{name}</Link>
   </h2>
+  <p>
+    {yymmdd(date)}
+  </p>
   <div style={{position: "relative", padding: "30% 45%"}}>
     <iframe style={{position: "absolute", width: "100%", height: "100%", left: "0", top: "0"}} src={url + "&high_quality=1"} scrolling="no" data-border="0" data-frameborder="no" data-framespacing="0" data-allowfullscreen="true">
     </iframe>
