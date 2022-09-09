@@ -1,5 +1,5 @@
 import slugify from "./slugify";
-import { arts } from "./metadata";
+import { arts, createDate } from "./metadata";
 
 interface Item {
   title: string,
@@ -31,7 +31,7 @@ const feeds = [
         const { title, date, cover, abstract } = frontmatter;
         result.push({
           title: title,
-          date: date,
+          date: createDate(date),
           enclosure: {
             url: cover,
           },
@@ -43,14 +43,14 @@ const feeds = [
         const title = database.title;
         const art = arts.find(x => x.name === title)!;
         for (const page of database.childrenNotionPage as RSSPage[]) {
-          result.push({
+          page.title && result.push({
             title: page.title,
             description: page.properties.Description,
             url: `${site.siteMetadata.siteUrl}/${art.slug}/${slugify(page.title)}`,
             enclosure: page.image ? {
               url: `${site.siteMetadata.siteUrl}${page.image?.childImageSharp?.original?.src}`
             } : undefined,
-            date: new Date(page.properties.Date?.start || page.image?.childImageSharp?.fields?.exif?.exif?.DateTimeOriginal)
+            date: createDate(page.properties.Date?.start || page.image?.childImageSharp?.fields?.exif?.exif?.DateTimeOriginal)
           });
         }
       }

@@ -4,7 +4,7 @@ import { graphql, Link, PageProps } from 'gatsby';
 import { GatsbyImage, IGatsbyImageData } from "gatsby-plugin-image";
 import Layout from '../components/Layout';
 import Order from '../components/Order';
-import { Recipe } from "../utils/metadata";
+import { createDate, Recipe } from "../utils/metadata";
 import slugify from "../utils/slugify";
 
 const Introduction = () => <section className="section" style={{backgroundImage: "linear-gradient(to bottom, rgba(200,250,250,0.5), rgba(255,255,255,0.5))"}}>
@@ -114,8 +114,7 @@ const Recipes = ({ data }: PageProps<Queries.RecipesQuery>) => {
     title && nodes.push({
       name: title,
       category: properties!.Category!,
-      tags: [],
-      date: new Date(image!.childImageSharp!.fields!.exif!.exif!.DateTimeOriginal!),
+      date: createDate(image!.childImageSharp!.fields!.exif!.exif!.DateTimeOriginal!),
       description: properties!.Description!,
       rating: properties!.Rating!,
       image: image!.childImageSharp!.gatsbyImageData as any as

@@ -58,7 +58,6 @@ export default function({ data }: PageProps<Queries.DressesQuery>) {
       name: title!,
       date: exif.datetime,
       category: properties!.Category!,
-      tags: properties!.Tags!.map(s => s || "").filter(s => s),
       description: properties!.Description!,
       photographer: properties!.Photographer!,
       suite: properties!.Suite !== null ? properties!.Suite : undefined,
@@ -84,7 +83,6 @@ export const query = graphql`
         title
         properties {
           Category
-          Tags
           Photographer
           Suite
           Description
@@ -96,6 +94,7 @@ export const query = graphql`
               exif {
                 exif {
                   DateTimeOriginal
+                  LensMake
                   LensModel
                   FocalLength
                   ISO
@@ -104,6 +103,7 @@ export const query = graphql`
                   ExposureBiasValue
                 }
                 image {
+                  Make
                   Model
                 }
                 gps {

@@ -4,11 +4,11 @@ import { graphql, PageProps } from 'gatsby';
 import { MDXRenderer } from 'gatsby-plugin-mdx';
 import Layout from '../components/Layout';
 import slugify from '../utils/slugify';
-import { yymmdd } from "../utils/metadata";
+import { createDate, yymmdd } from "../utils/metadata";
 
 export default function ({ data }: PageProps<Queries.RecipeQuery>) {
   const { title, properties, childMdx, image } = data.notionPage!;
-  const date = new Date(image!.childImageSharp!.fields!.exif!.exif!.DateTimeOriginal!);
+  const date = createDate(image!.childImageSharp!.fields!.exif!.exif!.DateTimeOriginal!);
   return (
       <Layout slug={`cuisine/${slugify(title!)}`}>
         <section className="section" style={{backgroundColor: "rgba(230, 240, 255, 0.5)"}}>

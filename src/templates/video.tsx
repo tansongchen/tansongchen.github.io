@@ -4,7 +4,7 @@ import { graphql, PageProps } from 'gatsby';
 import Layout from '../components/Layout';
 import slugify from '../utils/slugify';
 import Commenter from '../components/Commenter';
-import { yymmdd } from '../utils/metadata';
+import { createDate, yymmdd } from '../utils/metadata';
 
 export default function ({ data }: PageProps<Queries.VideoQuery>) {
   const { title, properties } = data.notionPage!;
@@ -17,7 +17,7 @@ export default function ({ data }: PageProps<Queries.VideoQuery>) {
         </p>
         <p>{properties!.Description!}</p>
         <p>
-          {yymmdd(new Date(properties!.Date!.start!))}
+          {yymmdd(createDate(properties!.Date!.start!))}
         </p>
       </div>
     </section>
@@ -44,7 +44,6 @@ export const query = graphql`
         }
         Category
         Description
-        Tags
         Suite
         Bilibili_URL
       }

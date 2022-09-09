@@ -8,8 +8,14 @@ import { ExifData } from 'fast-exif';
 
 export interface IExif {
   datetime: Date,
-  camera: string,
-  lens: string,
+  camera: {
+    make: string,
+    model: string,
+  }
+  lens: {
+    make: string | null,
+    model: string,
+  }
   focalLength: number,
   gps: {
     latitudeRef: string,
@@ -73,10 +79,10 @@ export default class extends Component<ExifImageProps, { active: boolean }> {
         </div>
         <div className='columns'>
           <div className="column">
-            <p><FaCamera />&nbsp; &nbsp; {exif.camera}</p>
+            <p><FaCamera />&nbsp; &nbsp; {exif.camera.make} {exif.camera.model}</p>
           </div>
           <div className="column">
-            <p><RiCameraLensFill />&nbsp; &nbsp; {localize(exif.lens)}</p>
+            <p><RiCameraLensFill />&nbsp; &nbsp; {localize(exif.lens.model)}</p>
           </div>
           <div className='column'>
             <p>
@@ -106,8 +112,14 @@ export function preprocessExif(exif: Nullable<ExifData>): IExif {
   const { exif: ex, image, gps } = exif!;
   return {
     datetime: new Date(ex!.DateTimeOriginal!),
-    camera: image!.Model!,
-    lens: ex!.LensModel!,
+    camera: {
+      make: image!.Make!,
+      model: image!.Model!,
+    },
+    lens: {
+      make: ex!.LensMake!,
+      model: ex!.LensModel!,
+    },
     focalLength: ex!.FocalLength!,
     exposure: {
       iso: ex!.ISO!,

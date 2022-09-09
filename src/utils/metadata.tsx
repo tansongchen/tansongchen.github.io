@@ -8,7 +8,6 @@ interface Piece {
   name: string,
   date: Date,
   category: string,
-  tags: string[],
   description: string,
   suite?: string
 }
@@ -55,6 +54,10 @@ export const title = "众妙斋";
 
 export const yymmdd = (d: Date) => `${d.getFullYear()} 年 ${d.getMonth() + 1} 月 ${d.getDate()} 日`;
 export const mmdd = (d: Date) => `${d.getMonth() + 1} 月 ${d.getDate()} 日`;
+export const createDate = (s: string) => {
+  const date = new Date(s);
+  return new Date(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate(), date.getUTCHours(), date.getUTCMinutes(), date.getUTCSeconds());
+}
 
 const about: Page = {slug: "about", image: <StaticImage src="../images/index/mitao.jpg" alt="mitao" width={300} height={300}/>, name: "关于", icon: faPortrait, description: "了解更多关于我的背景"};
 const articles: Art = {slug: "articles", single: 'article', image: <StaticImage src="../images/index/articles.jpg" alt="articles" width={300} height={300}/>, name: "文章", icon: faPen, description: "阅读我笔下的文字"};

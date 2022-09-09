@@ -132,6 +132,7 @@ export const onCreateNode: GatsbyNode['onCreateNode'] = async ({
         GPSLongitude: [0.1, 0.1, 0.1],
       },
       image: {
+        Make: '',
         Model: ''
       }
     };

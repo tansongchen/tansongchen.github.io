@@ -2,6 +2,7 @@ declare module 'fast-exif' {
   type ExifData = {
     exif: {
       DateTimeOriginal: string,
+      LensMake: string,
       LensModel: string,
       FocalLength: number,
       ISO: number,
@@ -16,6 +17,7 @@ declare module 'fast-exif' {
       GPSLongitude: number[],
     },
     image: {
+      Make: string,
       Model: string
     }
   }

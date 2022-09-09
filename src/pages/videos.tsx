@@ -3,7 +3,7 @@ import React from 'react';
 import { graphql, Link, PageProps } from 'gatsby';
 import Layout from '../components/Layout';
 import slugify from '../utils/slugify';
-import { Video, yymmdd } from '../utils/metadata';
+import { createDate, Video, yymmdd } from '../utils/metadata';
 
 const Introduction = () => <section className="section" style={{backgroundImage: "linear-gradient(to bottom, rgba(230,220,250,0.5), rgba(255,255,255,0.5))"}}>
   <div className="container content is-max-desktop" style={{fontSize: "125%"}}>
@@ -35,9 +35,8 @@ export default function ({ data }: PageProps<Queries.VideosQuery>) {
     const { title, properties } = page!
     return {
       name: title!,
-      date: new Date(properties!.Date!.start!),
+      date: createDate(properties!.Date!.start!),
       category: properties!.Category!,
-      tags: properties!.Tags!.map(s => s || "").filter(s => s),
       description: properties!.Description!,
       suite: properties!.Suite !== null ? properties!.Suite : undefined,
       url: properties?.Bilibili_URL!
@@ -65,7 +64,6 @@ export const query = graphql`
           }
           Category
           Suite
-          Tags
           Description
           Bilibili_URL
         }

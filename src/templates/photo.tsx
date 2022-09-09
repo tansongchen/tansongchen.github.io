@@ -10,11 +10,10 @@ import Commenter from '../components/Commenter';
 export default function ({ data }: PageProps<Queries.PhotoQuery>) {
   const { title, properties, image } = data.notionPage!;
   const exif = preprocessExif(image!.childImageSharp!.fields!.exif!);
-  const { name, date, category, tags, description, suite, exifImage } = {
+  const { name, date, category, description, suite, exifImage } = {
     name: title!,
     date: exif.datetime,
     category: properties!.Category!,
-    tags: properties!.Tags!.map(s => s || "").filter(s => s),
     description: properties!.Description!,
     suite: properties!.Suite !== null ? properties!.Suite : undefined,
     exifImage: {
@@ -30,9 +29,6 @@ export default function ({ data }: PageProps<Queries.PhotoQuery>) {
           <span key={category} className="tag is-medium is-info is-light">{category}</span>
         </p>
         <p>{description}</p>
-        {/* <div className="tags" style={{justifyContent: "center"}}>
-          {(tags || []).map(x => <span key={x} className="tag is-medium is-info">{x}</span>)}
-        </div> */}
       </div>
     </section>
     <ExifImage {...exifImage} alt={name}/>
@@ -48,7 +44,6 @@ export const query = graphql`
       properties {
         Category
         Description
-        Tags
         Suite
       }
       image {
@@ -58,6 +53,7 @@ export const query = graphql`
             exif {
               exif {
                 DateTimeOriginal
+                LensMake
                 LensModel
                 FocalLength
                 ISO
@@ -66,6 +62,7 @@ export const query = graphql`
                 ExposureBiasValue
               }
               image {
+                Make
                 Model
               }
               gps {
