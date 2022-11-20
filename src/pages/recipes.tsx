@@ -142,7 +142,7 @@ export const query = graphql`
         }
         image {
           childImageSharp {
-            gatsbyImageData(width: 180, height: 180, placeholder: BLURRED, formats: [AUTO, WEBP])
+            gatsbyImageData(width: 180, height: 180)
             fields {
               exif {
                 exif {

@@ -24,7 +24,7 @@ const config: GatsbyConfig = {
         short_name: `众妙斋`,
         start_url: `/`,
         background_color: `#f7f0eb`,
-        theme_color: `#a2466c`,
+        theme_color: `#ffffff`,
         display: `standalone`,
         icon: "src/images/icon-pwa.png",
         icon_options: {
@@ -37,7 +37,7 @@ const config: GatsbyConfig = {
       resolve: `gatsby-plugin-sharp`,
       options: {
         defaults: {
-          formats: [`auto`, `webp`],
+          formats: [`webp`],
           placeholder: `blurred`,
           quality: 50,
           breakpoints: [750, 1080, 1366, 1920],
