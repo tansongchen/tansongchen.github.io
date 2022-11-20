@@ -60,4 +60,4 @@ export default function() {
   </Layout>
 }
 
-// export const Head = () => <Meta title="众妙斋"/>
+export const Head = () => <Meta title="众妙斋"/>

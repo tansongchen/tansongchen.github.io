@@ -56,15 +56,15 @@ export const query = graphql`
   }
 `
 
-// export const Head = ({
-//   data: {
-//     mdx: {
-//       frontmatter: { title }
-//     }
-//   }
-// }: { data: { mdx: { frontmatter: { title: string }}}}) => {
-//   return <>
-//     <Meta title={title} />
-//     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.3/dist/katex.min.css" integrity="sha384-Juol1FqnotbkyZUT5Z7gUPjQ9gzlwCENvUZTpQBAPxtusdwFLRy382PSDx5UUJ4/" crossOrigin="anonymous" />
-//   </>;
-// };
+export const Head = ({
+  data: {
+    mdx: {
+      frontmatter: { title }
+    }
+  }
+}: { data: { mdx: { frontmatter: { title: string }}}}) => {
+  return <>
+    <Meta title={title} />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.3/dist/katex.min.css" integrity="sha384-Juol1FqnotbkyZUT5Z7gUPjQ9gzlwCENvUZTpQBAPxtusdwFLRy382PSDx5UUJ4/" crossOrigin="anonymous" />
+  </>;
+};

@@ -106,4 +106,4 @@ export const query = graphql`
   }
 `
 
-// export const Head = () => <Meta title="照片"/>
+export const Head = () => <Meta title="照片"/>

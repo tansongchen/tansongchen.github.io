@@ -157,4 +157,4 @@ export const query = graphql`
   }
 `
 
-// export const Head = () => <Meta title="菜谱"/>
+export const Head = () => <Meta title="菜谱"/>

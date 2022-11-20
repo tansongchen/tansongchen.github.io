@@ -10,6 +10,9 @@ const DRESSES_DATABASE = '8001b0eba0a5401c8ffe343ad1ce07ca';
 const PHOTOS_DATABASE = '34e2befe9a77492c825996d6e238880d';
 
 const config: GatsbyConfig = {
+  flags: {
+    DEV_SSR: true
+  },
   siteMetadata: {
     siteUrl: "https://tansongchen.com",
     title: "众妙斋",

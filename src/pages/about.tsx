@@ -373,4 +373,4 @@ export default function() {
   )
 }
 
-// export const Head = () => <Meta title="关于"/>
+export const Head = () => <Meta title="关于"/>
