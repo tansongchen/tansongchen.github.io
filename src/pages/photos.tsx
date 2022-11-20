@@ -1,11 +1,11 @@
-import "../styles/index.scss";
-import React, { Fragment, Component } from 'react';
-import { graphql, PageProps, Link } from 'gatsby';
-import Layout from '../components/Layout';
+import React from "react";
+import { graphql, PageProps, Link } from "gatsby";
+import Layout from "../components/Layout";
 import { Photo } from "../utils/metadata";
 import { IExifImage, preprocessExif } from "../components/ExifImage";
 import { GatsbyImage, IGatsbyImageData } from "gatsby-plugin-image";
 import slugify from "../utils/slugify";
+import Meta from "../components/Meta";
 
 const Introduction = () => <section className="section" style={{backgroundImage: "linear-gradient(to bottom, rgba(200,240,230,0.5), rgba(255,255,255,0.5))"}}>
   <div className="container content is-max-desktop" style={{fontSize: "125%"}}>
@@ -105,3 +105,5 @@ export const query = graphql`
     }
   }
 `
+
+export const Head = () => <Meta title="照片"/>

@@ -1,8 +1,6 @@
-import { faCheck, faClock, faEnvelope, faExclamationTriangle, faUser, faUtensils } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { FaCheck, FaClock, FaEnvelope, FaExclamationTriangle, FaUser, FaUtensils } from 'react-icons/fa';
 import React, { Component, Fragment } from 'react';
 import { mmdd } from '../utils/metadata';
-import hash from 'object-hash';
 import Dropdown from './Dropdown';
 
 const endpoint = 'https://n49dt2t564.execute-api.us-east-1.amazonaws.com/';
@@ -93,7 +91,7 @@ class Form extends Component<FormProps, FormState> {
             <div className="control has-icons-left has-icons-right">
               <input className="input" type="text" placeholder="您的姓名" value={this.state.name} onChange={e => this.setState({name: e.target.value})} />
               <span className="icon is-small is-left">
-                <FontAwesomeIcon icon={faUser} />
+                <FaUser />
               </span>
             </div>
           </div>
@@ -102,10 +100,10 @@ class Form extends Component<FormProps, FormState> {
             <div className="control has-icons-left has-icons-right">
               <input className={"input" + classSuffix} type="email" placeholder="您的邮箱" value={this.state.email} onChange={e => this.setState({email: e.target.value})} />
               <span className="icon is-small is-left">
-                <FontAwesomeIcon icon={faEnvelope} />
+                <FaEnvelope />
               </span>
               <span className="icon is-small is-right">
-                <FontAwesomeIcon icon={isEmailValid === 1 ? faCheck : (isEmailValid === 0 ? faClock : faExclamationTriangle)} />
+                {isEmailValid === 1 ? <FaCheck /> : (isEmailValid === 0 ? <FaClock /> : <FaExclamationTriangle />)}
               </span>
             </div>
             <p className={"help" + classSuffix}>{(isEmailValid >= 0) ? "邮箱仅用于回复，不会公开展示" : "这不是一个正确的邮箱地址"}</p>
@@ -174,7 +172,7 @@ class Order extends Component<OrderProps, OrderState> {
       }
     }
 
-    let comment: CommentProps = {...form, id: hash(form, {algorithm: 'md5'}), summary: summary};
+    let comment: CommentProps = {...form, id: Date.now().toString(), summary: summary};
     try {
       console.log(comment);
       const response = await fetch(endpoint, {

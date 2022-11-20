@@ -1,8 +1,7 @@
 import "../../styles/index.scss"
 import React, { Fragment, ReactElement } from "react"
-import { faCode, faMusic, faStickyNote } from "@fortawesome/free-solid-svg-icons"
+import { FaCode, FaMusic, FaStickyNote } from "react-icons/fa";
 import Layout from "../../components/Layout"
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 
 const Introduction = () => <section className="section" style={{backgroundImage: "linear-gradient(to bottom, rgba(220,230,255,0.5), rgba(255,255,255,0.5))"}}>
   <div className="container content is-max-desktop">
@@ -18,9 +17,15 @@ const Introduction = () => <section className="section" style={{backgroundImage:
   </div>
 </section>
 
-const DownloadItem = ({ name, url, icon }) => <div className="column" style={{display: "flex", alignItems: "center", justifyContent: "center"}}>
+interface DownloadItemProps {
+  name: string,
+  url: string,
+  icon: ReactElement
+}
+
+const DownloadItem = ({ name, url, icon }: DownloadItemProps) => <div className="column" style={{display: "flex", alignItems: "center", justifyContent: "center"}}>
   <div style={{padding: "1rem"}}>
-    <FontAwesomeIcon icon={icon}/>
+    { icon }
     <span>  {name}</span>
   </div>
   <div style={{padding: "1rem"}}>
@@ -33,9 +38,9 @@ const DownloadItem = ({ name, url, icon }) => <div className="column" style={{di
 const Download = () => <section className="section">
   <div className="container is-max-desktop">
     <div className="columns">
-      <DownloadItem name={"音频"} url={"/op1no5.mp3"} icon={faMusic}/>
-      <DownloadItem name={"乐谱"} url={"/op1no5.pdf"} icon={faStickyNote}/>
-      <DownloadItem name={"源码"} url={"/op1no5.ly"} icon={faCode}/>
+      <DownloadItem name={"音频"} url={"/op1no5.mp3"} icon={<FaMusic />}/>
+      <DownloadItem name={"乐谱"} url={"/op1no5.pdf"} icon={<FaStickyNote />}/>
+      <DownloadItem name={"源码"} url={"/op1no5.ly"} icon={<FaCode />}/>
     </div>
   </div>
 </section>

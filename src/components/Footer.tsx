@@ -1,19 +1,18 @@
 import { Link } from "gatsby";
 import React from "react"
-import { faPhone, faEnvelope } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { FaPhone, FaEnvelope } from "react-icons/fa";
 
 const Contact = () => <section className="column has-text-centered content">
   <h4>联系方式</h4>
   <p style={{marginBottom: ".5rem"}}>
     <a href="tel:+18572989702">
-      <FontAwesomeIcon icon={faPhone} className="icon is-small"/>
+      <FaPhone />
       &nbsp;&nbsp;+1 (857) 298-9702
     </a>
   </p>
   <p>
     <a href="mailto:songchen@mit.edu">
-      <FontAwesomeIcon icon={faEnvelope} className="icon is-small"/>
+      <FaEnvelope />
       &nbsp;&nbsp;songchen@mit.edu
     </a>
   </p>

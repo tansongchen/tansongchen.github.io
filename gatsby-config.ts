@@ -16,14 +16,23 @@ const config: GatsbyConfig = {
   },
   plugins: [
     "gatsby-plugin-image",
-    "gatsby-plugin-react-helmet",
     "gatsby-plugin-sitemap",
     {
       resolve: "gatsby-plugin-manifest",
       options: {
-        icon: "src/images/icon.png",
+        name: `众妙斋`,
+        short_name: `众妙斋`,
+        start_url: `/`,
+        background_color: `#f7f0eb`,
+        theme_color: `#a2466c`,
+        display: `standalone`,
+        icon: "src/images/icon-pwa.png",
+        icon_options: {
+          purpose: `maskable`,
+        },
       },
     },
+    // `gatsby-plugin-offline`,
     {
       resolve: `gatsby-plugin-sharp`,
       options: {
@@ -62,7 +71,6 @@ const config: GatsbyConfig = {
       __key: "contents",
     },
     "gatsby-plugin-sass",
-    `gatsby-plugin-react-helmet`,
     {
       resolve: `gatsby-source-notion`,
       options: {
@@ -84,7 +92,7 @@ const config: GatsbyConfig = {
     {
       resolve: `gatsby-plugin-purgecss`,
       options: {
-        purgeOnly: ['src/styles/index.scss'], // Purge only these files/folders
+        purgeOnly: ['src/styles/index.scss'],
       },
     },
     {

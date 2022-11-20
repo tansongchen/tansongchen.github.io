@@ -1,9 +1,9 @@
-import "../styles/index.scss";
 import React, { Fragment, ReactElement } from "react";
 import { Link } from "gatsby";
 import { StaticImage } from "gatsby-plugin-image";
 import Layout from "../components/Layout";
 import summary, { title, Page } from "../utils/metadata";
+import Meta from "../components/Meta";
 
 const Introduction = () => <section className="section" style={{backgroundImage: "linear-gradient(to bottom, rgba(200,240,255,0.5), rgba(255,255,255,0.5))"}}>
   <div className="container is-max-widescreen">
@@ -59,3 +59,5 @@ export default function() {
     </main>
   </Layout>
 }
+
+export const Head = () => <Meta title="众妙斋"/>

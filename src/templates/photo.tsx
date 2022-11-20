@@ -1,11 +1,10 @@
-import '../styles/index.scss';
-import React, { Component } from 'react';
-import { graphql, PageProps } from 'gatsby';
+import React from "react";
+import { graphql, PageProps } from "gatsby";
 import { GatsbyImage, IGatsbyImageData } from "gatsby-plugin-image";
-import Layout from '../components/Layout';
-import slugify from '../utils/slugify';
-import ExifImage, { IExifImage, preprocessExif } from '../components/ExifImage';
-import Commenter from '../components/Commenter';
+import Layout from "../components/Layout";
+import slugify from "../utils/slugify";
+import ExifImage, { IExifImage, preprocessExif } from "../components/ExifImage";
+import Commenter from "../components/Commenter";
 
 export default function ({ data }: PageProps<Queries.PhotoQuery>) {
   const { title, properties, image } = data.notionPage!;

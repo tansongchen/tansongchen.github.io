@@ -119,6 +119,7 @@ export const onCreateNode: GatsbyNode['onCreateNode'] = async ({
       exif: {
         DateTimeOriginal: '1970-01-01',
         LensModel: '',
+        LensMake: '',
         FocalLength: 0.1,
         ISO: 0.1,
         FNumber: 0.1,

@@ -1,11 +1,11 @@
-import "../styles/index.scss";
-import React, { Fragment, Component } from 'react';
-import { graphql, Link, PageProps } from 'gatsby';
+import React, { Fragment, Component } from "react";
+import { graphql, Link, PageProps } from "gatsby";
 import { GatsbyImage, IGatsbyImageData } from "gatsby-plugin-image";
-import Layout from '../components/Layout';
-import Order from '../components/Order';
+import Layout from "../components/Layout";
+import Order from "../components/Order";
 import { createDate, Recipe } from "../utils/metadata";
 import slugify from "../utils/slugify";
+import Meta from "../components/Meta";
 
 const Introduction = () => <section className="section" style={{backgroundImage: "linear-gradient(to bottom, rgba(200,250,250,0.5), rgba(255,255,255,0.5))"}}>
   <div className="container content is-max-desktop" style={{fontSize: "125%"}}>
@@ -107,7 +107,7 @@ class Menu extends Component<MenuProps, MenuState> {
   }
 }
 
-const Recipes = ({ data }: PageProps<Queries.RecipesQuery>) => {
+export default function ({ data }: PageProps<Queries.RecipesQuery>) {
   const nodes: Recipe[] = [];
   data.notionDatabase!.childrenNotionPage!.forEach(page => {
     const { title, properties, image } = page!;
@@ -157,4 +157,4 @@ export const query = graphql`
   }
 `
 
-export default Recipes
+export const Head = () => <Meta title="菜谱"/>

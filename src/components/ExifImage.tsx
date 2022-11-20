@@ -3,7 +3,7 @@ import { IGatsbyImageData, GatsbyImage } from 'gatsby-plugin-image';
 import { FaCamera, FaCalendar, FaLocationArrow } from 'react-icons/fa';
 import { RiCameraLensFill } from 'react-icons/ri';
 import { MdTune } from 'react-icons/md';
-import { yymmdd } from '../utils/metadata';
+import { createDate, yymmdd } from '../utils/metadata';
 import { ExifData } from 'fast-exif';
 
 export interface IExif {
@@ -111,7 +111,7 @@ type Nullable<T> = {
 export function preprocessExif(exif: Nullable<ExifData>): IExif {
   const { exif: ex, image, gps } = exif!;
   return {
-    datetime: new Date(ex!.DateTimeOriginal!),
+    datetime: createDate(ex!.DateTimeOriginal!),
     camera: {
       make: image!.Make!,
       model: image!.Model!,

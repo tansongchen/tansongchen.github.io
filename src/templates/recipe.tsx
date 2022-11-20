@@ -1,9 +1,8 @@
-import "../styles/index.scss";
-import React, { Component } from 'react';
-import { graphql, PageProps } from 'gatsby';
-import { MDXRenderer } from 'gatsby-plugin-mdx';
-import Layout from '../components/Layout';
-import slugify from '../utils/slugify';
+import React from "react";
+import { graphql, PageProps } from "gatsby";
+import Layout from "../components/Layout";
+import slugify from "../utils/slugify";
+import { MDXRenderer } from "gatsby-plugin-mdx";
 import { createDate, yymmdd } from "../utils/metadata";
 
 export default function ({ data }: PageProps<Queries.RecipeQuery>) {

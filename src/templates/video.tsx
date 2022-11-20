@@ -1,10 +1,9 @@
-import '../styles/index.scss';
-import React, { Component } from 'react';
-import { graphql, PageProps } from 'gatsby';
-import Layout from '../components/Layout';
-import slugify from '../utils/slugify';
-import Commenter from '../components/Commenter';
-import { createDate, yymmdd } from '../utils/metadata';
+import React from "react";
+import { graphql, PageProps } from "gatsby";
+import Layout from "../components/Layout";
+import slugify from "../utils/slugify";
+import Commenter from "../components/Commenter";
+import { createDate, yymmdd } from "../utils/metadata";
 
 export default function ({ data }: PageProps<Queries.VideoQuery>) {
   const { title, properties } = data.notionPage!;

@@ -1,8 +1,8 @@
-import "../styles/index.scss";
 import React, { Component } from "react";
 import Layout from "../components/Layout";
 import Dropdown from "../components/Dropdown";
 import { graphql, Link, PageProps } from "gatsby";
+import Meta from "../components/Meta";
 
 enum SortMethod {
   FromNewestToOldest,
@@ -164,7 +164,7 @@ class Main extends Component<MainProps, MainState> {
   }
 }
 
-const Articles = ({ data }: PageProps<Queries.ArticlesQuery>) => {
+export default function ({ data }: PageProps<Queries.ArticlesQuery>) {
   const nodes: ArticleProps[] = data.allMdx.nodes.map(({ frontmatter, slug }) => {
     return {
       title: frontmatter?.title || "Title",
@@ -199,4 +199,4 @@ export const query = graphql`
   }
 `
 
-export default Articles
+export const Head = () => <Meta title="文章"/>

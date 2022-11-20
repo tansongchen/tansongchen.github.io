@@ -1,8 +1,6 @@
-import { faCheck, faClock, faEnvelope, faExclamationTriangle, faUser } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { Component } from 'react';
+import { FaUser, FaEnvelope, FaExclamationTriangle, FaClock, FaCheck } from 'react-icons/fa';
 import { yymmdd } from '../utils/metadata';
-import hash from 'object-hash';
 
 const endpoint = 'https://mac5hbk0qb.execute-api.us-east-1.amazonaws.com/';
 
@@ -33,20 +31,16 @@ class Form extends Component<FormProps, FormState> {
           <div className="column field">
             <div className="control has-icons-left has-icons-right">
               <input className="input" type="text" placeholder="您的昵称（可选）" value={this.state.name} onChange={e => this.setState({name: e.target.value})} />
-              <span className="icon is-small is-left">
-                <FontAwesomeIcon icon={faUser} />
-              </span>
+              <span className="icon is-small is-left"><FaUser /></span>
             </div>
           </div>
 
           <div className="column field">
             <div className="control has-icons-left has-icons-right">
               <input className={"input" + classSuffix} type="email" placeholder="您的邮箱（可选）" value={this.state.email} onChange={e => this.setState({email: e.target.value})} />
-              <span className="icon is-small is-left">
-                <FontAwesomeIcon icon={faEnvelope} />
-              </span>
+              <span className="icon is-small is-left"><FaEnvelope /></span>
               <span className="icon is-small is-right">
-                <FontAwesomeIcon icon={isEmailValid === 1 ? faCheck : (isEmailValid === 0 ? faClock : faExclamationTriangle)} />
+                { isEmailValid === 1 ? <FaCheck /> : (isEmailValid === 0 ? <FaClock /> : <FaExclamationTriangle />) }
               </span>
             </div>
             <p className={"help" + classSuffix}>{(isEmailValid >= 0) ? "邮箱仅用于回复提醒，不会公开展示" : "这不是一个正确的邮箱地址"}</p>
@@ -121,7 +115,7 @@ class Commenter extends Component<CommenterProps, CommenterState> {
   onSubmitComment = async (form: FormState) => {
     this.setState({ submitting: true });
     const [art, slug] = this.props.slug.split('/');
-    const comment: CommentProps = {...form, datetime: new Date(), slug: slug, art: art, id: hash([form, slug, art], {algorithm: 'md5'})}
+    const comment: CommentProps = {...form, datetime: new Date(), slug: slug, art: art, id: Date.now().toString()}
     try {
       await fetch(endpoint, {
         headers: {

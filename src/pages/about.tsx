@@ -1,11 +1,9 @@
-import "../styles/index.scss";
 import React, { Component, Fragment, ReactElement } from "react";
-import { faCalendar, faCheckCircle, faMapMarker, faPlayCircle } from "@fortawesome/free-solid-svg-icons";
 import Layout from "../components/Layout";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { StaticImage } from "gatsby-plugin-image";
 import { request } from "@octokit/request";
-import { faCodeBranch, faEye, faStar } from '@fortawesome/free-solid-svg-icons';
+import { FaCalendar, FaCheckCircle, FaMapMarker, FaPlayCircle, FaCodeBranch, FaEye, FaStar, FaMap } from "react-icons/fa";
+import Meta from "../components/Meta";
 
 const imageDomain = "https://cdn.jsdelivr.net/gh/tansongchen/images@0.0.2/"
 
@@ -48,11 +46,11 @@ const EducationItem = ({ photo, institutionName, institutionUrl, degrees, durati
       </div>
       <div className="columns">
         <div className="column" style={{margin: "0 2%", padding: ".5rem"}}>
-          <FontAwesomeIcon icon={faCalendar} className="icon is-small" style={{width: "10%"}}/>
+          <FaCalendar className="icon is-small" style={{width: "10%"}}/>
           <p className="has-text-centered" style={{display: "inline-block"}}>&nbsp; &nbsp; {duration}</p>
         </div>
         <div className="column" style={{margin: "0 2%", padding: ".5rem"}}>
-          <FontAwesomeIcon icon={faMapMarker} className="icon is-small" style={{width: "10%"}}/>
+          <FaMapMarker className="icon is-small" style={{width: "10%"}}/>
           <p className="has-text-centered" style={{display: "inline-block"}}>&nbsp; &nbsp; {location}</p>
         </div>
       </div>
@@ -149,7 +147,7 @@ interface ExperienceData {
 
 const ExperienceItem = ({ title, company, companyUrl, photo, description, duration, location, isCurrent }: ExperienceData) => <article className="timeline-item">
   <div className="timeline-marker is-icon">
-    {isCurrent ? <FontAwesomeIcon icon={faPlayCircle} className="icon is-info" /> : <FontAwesomeIcon icon={faCheckCircle} className="icon is-info" />}
+    {isCurrent ? <FaPlayCircle className="icon is-info" /> : <FaCheckCircle className="icon is-info" />}
   </div>
   <div className="timeline-content" style={{width: "100%"}}>
     <div className="columns">
@@ -162,8 +160,8 @@ const ExperienceItem = ({ title, company, companyUrl, photo, description, durati
             <p> @ {company}</p>
           </div>
         </div>
-        <p><FontAwesomeIcon icon={faCalendar} className="icon is-small"/>&nbsp;&nbsp;{duration}</p>
-        <p><FontAwesomeIcon icon={faMapMarker} className="icon is-small"/>&nbsp;&nbsp;{location}</p>
+        <p><FaCalendar className="icon is-small"/>&nbsp;&nbsp;{duration}</p>
+        <p><FaMapMarker className="icon is-small"/>&nbsp;&nbsp;{location}</p>
         {description}
       </div>
       <div className="column">
@@ -314,15 +312,15 @@ class Repository extends Component<RepositoryProps, RepositoryState> {
       </div>
       <footer className="card-footer">
         <a href={subscribers_url} className="card-footer-item">
-          <FontAwesomeIcon icon={faEye} className="icon is-small"/>
+          <FaEye className="icon is-small"/>
           <span style={{padding: "0 .5rem"}}>{subscribers_count}</span>
         </a>
         <a href={stargazers_url} className="card-footer-item">
-          <FontAwesomeIcon icon={faStar} className="icon is-small"/>
+          <FaStar className="icon is-small"/>
           <span style={{padding: "0 .5rem"}}>{stargazers_count}</span>
         </a>
         <a href={forks_url} className="card-footer-item">
-          <FontAwesomeIcon icon={faCodeBranch} className="icon is-small"/>
+          <FaCodeBranch className="icon is-small"/>
           <span style={{padding: "0 .5rem"}}>{forks_count}</span>
         </a>
       </footer>
@@ -374,3 +372,5 @@ export default function() {
     </Fragment>
   )
 }
+
+export const Head = () => <Meta title="关于"/>

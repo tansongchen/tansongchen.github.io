@@ -1,9 +1,9 @@
-import "../styles/index.scss";
-import React from 'react';
-import { graphql, Link, PageProps } from 'gatsby';
-import Layout from '../components/Layout';
-import slugify from '../utils/slugify';
-import { createDate, Video, yymmdd } from '../utils/metadata';
+import React from "react";
+import { graphql, Link, PageProps } from "gatsby";
+import Layout from "../components/Layout";
+import slugify from "../utils/slugify";
+import { createDate, Video, yymmdd } from "../utils/metadata";
+import Meta from "../components/Meta";
 
 const Introduction = () => <section className="section" style={{backgroundImage: "linear-gradient(to bottom, rgba(230,220,250,0.5), rgba(255,255,255,0.5))"}}>
   <div className="container content is-max-desktop" style={{fontSize: "125%"}}>
@@ -71,3 +71,5 @@ export const query = graphql`
     }
   }
 `
+
+export const Head = () => <Meta title="视频"/>

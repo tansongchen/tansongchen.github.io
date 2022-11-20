@@ -1,18 +1,16 @@
-import { Link } from "gatsby"
-import React, {Component, Fragment} from "react"
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { faCode, faHome, faPen, faPhotoVideo, faPortrait, IconDefinition } from "@fortawesome/free-solid-svg-icons"
-import summary, { title } from "../utils/metadata"
+import { Link } from "gatsby";
+import React, { Component, Fragment, ReactElement } from "react";
+import summary, { title } from "../utils/metadata";
 
 interface NavItemProps {
-  icon: IconDefinition,
+  icon: ReactElement,
   name: string,
   slug: string,
   current: string,
 }
 
 const NavItem = ({icon, name, slug, current}: NavItemProps) => <Link to={`/${slug}/`.replace('//', '/')} key={slug} className={"navbar-item" + (slug === current ? " navbar-item-current" : "")}>
-  <FontAwesomeIcon icon={icon} className="icon is-small"/>
+  { icon }
   <span>&nbsp;&nbsp;{name}</span>
 </Link>
 
