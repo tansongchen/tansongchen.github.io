@@ -41,7 +41,7 @@ export default function ({ data }: PageProps<Queries.VideosQuery>) {
       suite: properties!.Suite !== null ? properties!.Suite : undefined,
       url: properties?.Bilibili_URL!
     }
-  })
+  });
   return (
     <Layout slug="videos">
       <main>

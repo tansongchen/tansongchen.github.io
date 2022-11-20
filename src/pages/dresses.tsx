@@ -18,11 +18,11 @@ const Introduction = () => <section className="section" style={{backgroundImage:
   </div>
 </section>
 
-const DressDigest = ({exifImage, name}: Dress) => {
-  return <Link to={slugify(name)} key={name}>
+const DressDigest = ({exifImage, name}: Dress) => <div className="box" style={{padding: 0, overflow: "hidden", zIndex: 0, position: "relative", margin: "2rem"}}>
+  <Link to={slugify(name)} key={name}>
     <GatsbyImage image={exifImage.image} alt={name}/>
   </Link>
-}
+</div>
 
 const Category = ({name, data}: {name: string, data: Dress[]}) => {
   return <article className="columns" key={name}>

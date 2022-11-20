@@ -1,6 +1,6 @@
 import React, { ReactElement } from "react";
 import { IGatsbyImageData, StaticImage } from "gatsby-plugin-image";
-import { FaCode, FaPen, FaImage, FaVideo, FaPortrait, FaUtensils, FaFemale } from "react-icons/fa";
+import { FaMusic, FaPen, FaImage, FaVideo, FaPortrait, FaUtensils, FaFemale } from "react-icons/fa";
 import { IExifImage } from "../components/ExifImage";
 
 interface Piece {
@@ -28,6 +28,14 @@ export interface Video extends Piece {
   url: string
 }
 
+export interface Music extends Piece {
+  opus: number,
+  number: number,
+  lilypond: string,
+  score: string,
+  url?: string,
+}
+
 export interface Recipe extends Piece {
   image: IGatsbyImageData,
   rating: string
@@ -37,15 +45,12 @@ export interface Suite<T extends Piece> {
   name: string,
 }
 
-export interface Page {
+export interface Art {
   slug: string,
   image: ReactElement,
   name: string,
   icon: ReactElement,
   description: string
-}
-
-interface Art extends Page {
   single: string
 }
 
@@ -58,13 +63,13 @@ export const createDate = (s: string) => {
   return new Date(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate(), date.getUTCHours(), date.getUTCMinutes(), date.getUTCSeconds());
 }
 
-const about: Page = {slug: "about", image: <StaticImage src="../images/index/mitao.jpg" alt="mitao" width={300} height={300}/>, name: "关于", icon: <FaPortrait />, description: "了解更多关于我的背景"};
 const articles: Art = {slug: "articles", single: 'article', image: <StaticImage src="../images/index/articles.jpg" alt="articles" width={300} height={300}/>, name: "文章", icon: <FaPen />, description: "阅读我笔下的文字"};
 const photos: Art = {slug: "photos", single: 'photo', image: <StaticImage src="../images/index/photos.jpg" alt="photos" width={300} height={300}/>, name: "照片", icon: <FaImage />, description: "欣赏我拍的照片"};
 const videos: Art = {slug: "videos", single: 'video', image: <StaticImage src="../images/index/videos.jpg" alt="photos" width={300} height={300}/>, name: "视频", icon: <FaVideo />, description: "观看我拍的视频"};
+const musics: Art = {slug: "musics", single: 'music', image: <StaticImage src="../images/index/musics.jpg" alt="musics" width={300} height={300}/>, name: "音乐", icon: <FaMusic />, description: "聆听我写的音乐"};
 const recipes: Art = {slug: "recipes", single: 'recipe', image: <StaticImage src="../images/index/recipes.jpg" alt="recipes" width={300} height={300}/>, name: "菜谱", icon: <FaUtensils />, description: "品尝我做的佳肴"};
 const dresses: Art = {slug: "dresses", single: 'dress', image: <StaticImage src="../images/index/recipes.jpg" alt="dresses" width={300} height={300}/>, name: "女装", icon: <FaFemale />, description: "好耶，是女装！"};
 
-export const arts = [articles, photos, videos, recipes, dresses];
+export const arts = [articles, photos, videos, musics, recipes, dresses];
 
-export default [about, articles, photos, videos, recipes];
+export default arts.slice(0, -1);
