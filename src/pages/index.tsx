@@ -21,7 +21,10 @@ const Introduction = () => <section className="section" style={{backgroundImage:
           1974 年，Internet 一词第一次出现在 RFC 提案中，标志着世界各地的小型网络走向互联。1987 年 9 月 14 日，北京计算机应用技术研究所发出了中国第一封电子邮件：「<i>Across the Great Wall we can reach every corner in the world.</i>」。几十年后的今天，商业化的互联网中我们接收到的绝大多数信息来自科技公司的整合与推送，但是我们仍然可以以个人网站的形式保留并发出自己独立的声音。
         </p>
         <p>
-          我自诩为一位创造者，凡是将人类的心智外化于物、创造出本不属于这个世界的实体从而实现自我的活动都令我兴致勃勃，写文章、敲代码、玩音乐、拍视频……我想自古以来的文人墨客都要给自己的书斋、画室起个名号，我也不能免俗地依志趣把这个网站称作「<span>{title}</span>」。下面列出了本站的几个版块，更多的版块也会慢慢上线；您也可以在导航栏中发现它们。祝您浏览愉快！
+          我自诩为一位创造者，凡是将人类的心智外化于物、创造出本不属于这个世界的实体从而实现自我的活动都令我兴致勃勃，写文章、敲代码、玩音乐、拍视频……我想自古以来的文人墨客都要给自己的书斋、画室起个名号，我也不能免俗地依志趣把这个网站称作「<span>{title}</span>」。您可以在导航栏中发现各个版块。祝您浏览愉快！
+        </p>
+        <p>
+          除此之外，本页面的下方区域还包含了我的经历的简单介绍，希望这些经历可以更好地让您了解我自己。另外，如果您认为我的专长可能对您有所帮助，欢迎您通过页面下方的联系方式与我联系。
         </p>
       </div>
     </div>
@@ -53,8 +56,6 @@ const Overview = () => <section className="section container">
 </section>
 
 
-const imageDomain = "https://cdn.jsdelivr.net/gh/tansongchen/images@0.0.2/"
-
 const ExperienceSummary = () => <section className="section" style={{backgroundImage: "linear-gradient(to bottom, rgba(220,230,255,0.5), rgba(255,255,255,0.5))"}}>
   <div className="container content is-max-desktop" style={{fontSize: "125%"}}>
     <p>
@@ -79,11 +80,9 @@ interface EducationProps {
 const EducationItem = ({ photo, institutionName, institutionUrl, degrees, duration, location, description } : EducationProps) => <article className="section container is-max-desktop">
   <div className="box columns" style={{padding: 0, overflow: "hidden", position: "relative", zIndex: 0}}>
     <div className="column" style={{padding: 0}}>
-      <figure className="image is-4by3">
-        <a href={institutionUrl}>
-          {photo}
-        </a>
-      </figure>
+      <a href={institutionUrl}>
+        {photo}
+      </a>
     </div>
     <div className="column content" style={{padding: "2rem"}}>
       <h3 className="has-text-centered">
@@ -108,7 +107,7 @@ const EducationItem = ({ photo, institutionName, institutionUrl, degrees, durati
 </article>
 
 const mit: EducationProps = {
-  photo: <StaticImage src={imageDomain + "mit.webp"} alt="mit" />,
+  photo: <StaticImage src="../images/education/mit.jpg" alt="mit" width={480} height={360} />,
   institutionName: "麻省理工学院",
   institutionUrl: "https://mit.edu",
   degrees: [["理学硕士，计算科学与工程", "https://cse.mit.edu"]],
@@ -118,7 +117,7 @@ const mit: EducationProps = {
 }
 
 const ucla: EducationProps = {
-  photo: <StaticImage src={imageDomain + "ucla.webp"} alt="ucla" />,
+  photo: <StaticImage src="../images/education/ucla.jpg" alt="ucla" width={480} height={360} />,
   institutionName: "加州大学洛杉矶分校",
   institutionUrl: "https://ucla.edu",
   degrees: [["学期交换", "https://chemistry.ucla.edu"]],
@@ -128,7 +127,7 @@ const ucla: EducationProps = {
 }
 
 const pku: EducationProps = {
-  photo: <StaticImage src={imageDomain + "pku.webp"} alt="pku" />,
+  photo: <StaticImage src="../images/education/pku.jpg" alt="pku" width={480} height={360} />,
   institutionName: "北京大学",
   institutionUrl: "https://pku.edu.cn",
   degrees: [["理学学士，化学", "https://chem.pku.edu.cn"], ["理学学士，物理", "https://phy.pku.edu.cn"]],
@@ -138,7 +137,7 @@ const pku: EducationProps = {
 }
 
 const rdfz: EducationProps = {
-  photo: <StaticImage src={imageDomain + "rdfz.webp"} alt="rdfz" />,
+  photo: <StaticImage src="../images/education/rdfz.jpg" alt="rdfz" width={480} height={360} />,
   institutionName: "中国人民大学附属中学",
   institutionUrl: "http://www.rdfz.cn/",
   degrees: [["初中、高中，早培班项目", "http://www.rdfz.cn/"]],
@@ -212,22 +211,31 @@ const ExperienceItem = ({ title, company, companyUrl, photo, description, durati
         <p><FaMapMarker className="icon is-small"/>&nbsp;&nbsp;{location}</p>
         {description}
       </div>
-      <div className="column">
-        <figure className="image box" style={{textAlign: "center", padding: 0, overflow: "hidden", position: "relative", zIndex: 0}}>
-          <a href={companyUrl}>
-            {photo}
-          </a>
-        </figure>
+      <div className="column box" style={{textAlign: "center", padding: 0, overflow: "hidden", position: "relative", zIndex: 0}}>
+        <a href={companyUrl}>
+          {photo}
+        </a>
       </div>
     </div>
   </div>
 </article>
 
+const nvidia: ExperienceData = {
+  title: "深度学习编译器实习生",
+  company: "NVIDIA",
+  companyUrl: "https://nvidia.com",
+  photo: <StaticImage src="../images/experience/nvidia.jpg" alt="nvidia" />,
+  description: <p>在 NVIDIA 深度学习编译器团队，我探究了深度神经网络编译过程中的层融合（fusion）优化，提高了自动调优的效果并提升了编译效率。</p>,
+  duration: "2022 年 5 月至 2022 年 8 月",
+  location: "Santa Clara, CA",
+  isCurrent: false
+}
+
 const julia: ExperienceData = {
   title: "研究助理",
   company: "麻省理工学院 Julia 实验室",
   companyUrl: "https://julia.mit.edu",
-  photo: <StaticImage src={imageDomain + "stata.webp"} alt="stata" />,
+  photo: <StaticImage src="../images/experience/stata.jpg" alt="stata" />,
   description: <p>在 Julia 实验室，我们利用 Julia 语言的一系列编译基础设施（元编程、IR 反射和 LLVM 代码生成）研究如何将高级语言表达的抽象语义有效地编译为并行计算、异构计算等高性能场景下的机器代码。</p>,
   duration: "2021 年 8 月至今",
   location: "Cambridge, MA",
@@ -238,7 +246,7 @@ const dptech: ExperienceData = {
   title: "算法工程师实习",
   company: "北京深势科技有限公司",
   companyUrl: "https://dp.tech/index.html",
-  photo: <StaticImage src={imageDomain + "dptech.webp"} alt="dptech" />,
+  photo: <StaticImage src="../images/experience/dptech.jpg" alt="dptech" />,
   description: <p>在深势科技，我们利用 DeePKS 方法构建参数化的密度泛函模型，并设计有效的训练方案来系统改善这样的模型；我们还将模型部署到 ABACUS 等开源密度泛函软件上实现高效的推理。</p>,
   duration: "2021 年 3 月至 2021 年 7 月",
   location: "北京市"
@@ -248,7 +256,7 @@ const binz: ExperienceData = {
   title: "研究助理实习",
   company: "麻省理工学院",
   companyUrl: "https://zhanggroup.mit.edu",
-  photo: <StaticImage src={imageDomain + "mitchem.webp"} alt="mitchem" />,
+  photo: <StaticImage src="../images/experience/chemistry.jpg" alt="mitchem" />,
   description: <p>在 Zhang 组，我们利用深度生成模型对 DNA 体系进行粗粒化建模，并利用噪声对比学习进行优化，相较于传统的 force-matching 方法在统计量的准确性上得到了较大的提升。</p>,
   duration: "2020 年 6 月至 2020 年 10 月",
   location: "Cambridge, MA (Remote)"
@@ -258,7 +266,7 @@ const thg: ExperienceData = {
   title: "访问学者",
   company: "加州大学伯克利分校",
   companyUrl: "https://thglab.berkeley.edu",
-  photo: <StaticImage src={imageDomain + "stanley.webp"} alt="stanley" />,
+  photo: <StaticImage src="../images/experience/stanley.jpg" alt="stanley" />,
   description: <Fragment>
     <p>在 Head-Gordon 组，我们发展了一种利用扩展 Langrange 量对经典电荷平衡模型进行近似模拟的方法，并基于 MPI 高效地在大规模分子体系中实现了这一方法。该方法已加入了开源分子动力学软件 LAMMPS。请参考以下两篇发表的文章：</p>
     <ul>
@@ -278,8 +286,9 @@ const Experience = () => <section className="section">
   <Preface {...experiencePreface}/>
   <div className="timeline container is-max-desktop">
     <DateTag date="..." />
-    {/* <DateTag date={2022} /> */}
     <ExperienceItem {...julia}/>
+    <ExperienceItem {...nvidia}/>
+    <DateTag date="2022" />
     <ExperienceItem {...dptech}/>
     <DateTag date="2021" />
     <ExperienceItem {...binz}/>
@@ -323,8 +332,8 @@ export default function() {
     <main>
       <Introduction />
       <hr />
-      <Overview />
-      <hr />
+      {/* <Overview /> */}
+      {/* <hr /> */}
       <Education />
       <hr />
       <Experience />

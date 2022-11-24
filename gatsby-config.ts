@@ -97,7 +97,11 @@ const config: GatsbyConfig = {
     {
       resolve: `gatsby-plugin-purgecss`,
       options: {
-        purgeOnly: ['src/styles/index.scss'],
+        printRejected: true,
+        develop: true,
+        purgeCSSOptions: {
+          safelist: ['has-navbar-fixed-top'],
+        },
       },
     },
     {

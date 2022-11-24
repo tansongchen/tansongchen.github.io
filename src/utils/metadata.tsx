@@ -65,7 +65,7 @@ export const createDate = (s: string) => {
 
 const articles: Art = {slug: "articles", single: 'article', image: <StaticImage src="../images/index/articles.jpg" alt="articles" width={300} height={300}/>, name: "文章", icon: <FaPen />, description: "阅读我笔下的文字"};
 const photos: Art = {slug: "photos", single: 'photo', image: <StaticImage src="../images/index/photos.jpg" alt="photos" width={300} height={300}/>, name: "照片", icon: <FaImage />, description: "欣赏我拍的照片"};
-const videos: Art = {slug: "videos", single: 'video', image: <StaticImage src="../images/index/videos.jpg" alt="photos" width={300} height={300}/>, name: "视频", icon: <FaVideo />, description: "观看我拍的视频"};
+const videos: Art = {slug: "videos", single: 'video', image: <StaticImage src="../images/index/videos.jpg" alt="videos" width={300} height={300}/>, name: "视频", icon: <FaVideo />, description: "观看我拍的视频"};
 const musics: Art = {slug: "musics", single: 'music', image: <StaticImage src="../images/index/musics.jpg" alt="musics" width={300} height={300}/>, name: "音乐", icon: <FaMusic />, description: "聆听我写的音乐"};
 const recipes: Art = {slug: "recipes", single: 'recipe', image: <StaticImage src="../images/index/recipes.jpg" alt="recipes" width={300} height={300}/>, name: "菜谱", icon: <FaUtensils />, description: "品尝我做的佳肴"};
 const dresses: Art = {slug: "dresses", single: 'dress', image: <StaticImage src="../images/index/recipes.jpg" alt="dresses" width={300} height={300}/>, name: "女装", icon: <FaFemale />, description: "好耶，是女装！"};
