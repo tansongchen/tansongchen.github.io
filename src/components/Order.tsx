@@ -1,9 +1,8 @@
 import { FaCheck, FaClock, FaEnvelope, FaExclamationTriangle, FaUser, FaUtensils } from 'react-icons/fa';
 import React, { Component, Fragment } from 'react';
 import { mmdd } from '../utils/metadata';
+import { put } from '../utils/client';
 import Dropdown from './Dropdown';
-
-const endpoint = 'https://n49dt2t564.execute-api.us-east-1.amazonaws.com/';
 
 enum MealType {
   breakfast,
@@ -128,13 +127,6 @@ class Form extends Component<FormProps, FormState> {
   }
 }
 
-interface CommentProps {
-  id: string,
-  name: string,
-  email: string,
-  summary: string[],
-  content: string
-}
 
 interface OrderProps {
   selected: Map<string, number>,
@@ -165,28 +157,9 @@ class Order extends Component<OrderProps, OrderState> {
 
   onSubmitOrder = async (form: FormState) => {
     this.setState({ submitting: true });
-    let summary: string[] = [];
-    for (let [key, value] of this.props.selected) {
-      if (value === 1) {
-        summary.push(key);
-      }
-    }
-
-    let comment: CommentProps = {...form, id: Date.now().toString(), summary: summary};
-    try {
-      console.log(comment);
-      const response = await fetch(endpoint, {
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
-        method: "PUT",
-        body: JSON.stringify(comment),
-      });
-      window.alert('提交成功！');
-    } catch (error) {
-      window.alert('提交失败！');
-    }
+    const summary: string[] = [...this.props.selected.entries()].filter(([key, value]) => value === 1).map(([key, _]) => key);
+    const order = {...form, id: Date.now().toString(), summary: summary};
+    put('/order', order);
     this.setState({ submitting: false });
   }
 
@@ -202,4 +175,4 @@ class Order extends Component<OrderProps, OrderState> {
   }
 }
 
-export default Order
+export default Order;

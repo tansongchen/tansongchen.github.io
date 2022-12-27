@@ -18,6 +18,7 @@ export default class extends Component<PageProps<Queries.ArticleQuery>, object> 
   render() {
     const { title, date, tags } = this.props.data?.mdx?.frontmatter || {};
     const slug = this.props.data?.mdx?.slug || "articles/404";
+    const [art, _slug] = slug.split('/');
     return <Layout slug={slug}>
       <section className="section" style={{backgroundColor: "rgba(230, 240, 255, 0.5)"}}>
         <div className="content has-text-centered">
@@ -35,7 +36,7 @@ export default class extends Component<PageProps<Queries.ArticleQuery>, object> 
           </MDXRenderer>
         </div>
       </main>
-      <Commenter slug={slug} />
+      <Commenter art={art} slug={_slug} />
     </Layout>
   }
 }

@@ -32,7 +32,7 @@ export default function ({ data }: PageProps<Queries.PhotoQuery>) {
     </section>
     <ExifImage {...exifImage} alt={name}/>
     <hr />
-    <Commenter slug={`photos/${slugify(name)}`}/>
+    <Commenter art="photos" slug={slugify(name)}/>
   </Layout>
 }
 

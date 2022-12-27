@@ -4,6 +4,7 @@ import Layout from "../components/Layout";
 import slugify from "../utils/slugify";
 import { MDXRenderer } from "gatsby-plugin-mdx";
 import { createDate, yymmdd } from "../utils/metadata";
+import Commenter from "../components/Commenter";
 
 export default function ({ data }: PageProps<Queries.RecipeQuery>) {
   const { title, properties, childMdx, image } = data.notionPage!;
@@ -27,6 +28,7 @@ export default function ({ data }: PageProps<Queries.RecipeQuery>) {
             </MDXRenderer>
           </div>
         </main>
+        <Commenter art="recipes" slug={slugify(title!)}/>
       </Layout>
   )
 }

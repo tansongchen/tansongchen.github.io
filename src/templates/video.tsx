@@ -29,7 +29,7 @@ export default function ({ data }: PageProps<Queries.VideoQuery>) {
       </article>
     </section>
     <hr />
-    <Commenter slug={`photos/${slugify(title!)}`}/>
+    <Commenter art="videos" slug={slugify(title!)}/>
   </Layout>
 }
 

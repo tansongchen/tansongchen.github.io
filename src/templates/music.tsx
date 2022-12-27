@@ -3,6 +3,8 @@ import { graphql, PageProps } from "gatsby";
 import { FaCode, FaMusic, FaStickyNote } from "react-icons/fa";
 import Layout from "../components/Layout";
 import { createDate, Music, yymmdd } from "../utils/metadata";
+import Commenter from "../components/Commenter";
+import slugify from "../utils/slugify";
 
 interface DownloadItemProps {
   name: string,
@@ -66,6 +68,7 @@ export default function ({ data }: PageProps<Queries.MusicQuery>) {
       </article> :
       <div></div>
     }
+    <Commenter art="dresses" slug={slugify(name)}/>
     </section>
   </Layout>
 }

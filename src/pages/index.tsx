@@ -299,8 +299,10 @@ const Experience = () => <section className="section">
 </section>
 
 const repositories: RepositoryProps[] = [
+  {name: "tansongchen.github.io", owner: "tansongchen"},
   {name: "julia", owner: "JuliaLang"},
-  {name: "Enzyme", owner: "wsmoses"},
+  {name: "TaylorDiff.jl", owner: "JuliaDiff"},
+  {name: "Enzyme", owner: "EnzymeAD"},
   {name: "lammps", owner: "lammps"},
   {name: "deepks-kit", owner: "deepmodeling"},
   {name: "abacus-develop", owner: "deepmodeling"},
@@ -321,7 +323,7 @@ const Code = () => <section className="section">
   <Preface {...codePreface}/>
   <div className="container is-max-desktop">
     <div className="columns is-multiline">
-      {repositories.map(x => <Repository {...x} />)}
+      {repositories.map(x => <Repository key={x.name} {...x} />)}
     </div>
   </div>
 </section>

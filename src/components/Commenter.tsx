@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 import { FaUser, FaEnvelope, FaExclamationTriangle, FaClock, FaCheck } from 'react-icons/fa';
 import { yymmdd } from '../utils/metadata';
-
-const endpoint = 'https://mac5hbk0qb.execute-api.us-east-1.amazonaws.com/';
+import { get, put } from '../utils/client';
 
 interface FormState {
   name: string,
@@ -82,6 +81,7 @@ const Comment = ({ id, name, datetime, content }: CommentProps) => {
 }
 
 interface CommenterProps {
+  art: string,
   slug: string,
 }
 
@@ -96,39 +96,29 @@ class Commenter extends Component<CommenterProps, CommenterState> {
     comments: [],
     error: false,
     submitting: false,
-    // success: false,
-    // error: false,
   }
 
   async componentDidMount() {
-    try {
-      const response = await fetch(endpoint + this.props.slug);
-      const rawComments = (await response.json()).Items as CommentProps[];
+    const response = await get('/comment', {art: this.props.art, slug: this.props.slug});
+    if (response !== undefined) {
+      const rawComments = response as CommentProps[];
+      console.log(rawComments);
       this.setState({ comments: rawComments.map(
         a => ({...a, datetime: new Date(a.datetime)})
       )});
-    } catch (e) {
+    } else {
       this.setState({ error: true });
     }
   }
 
   onSubmitComment = async (form: FormState) => {
     this.setState({ submitting: true });
-    const [art, slug] = this.props.slug.split('/');
-    const comment: CommentProps = {...form, datetime: new Date(), slug: slug, art: art, id: Date.now().toString()}
-    try {
-      await fetch(endpoint, {
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
-        method: "PUT",
-        body: JSON.stringify(comment),
-      });
-      this.setState({ comments: [...this.state.comments, comment]});
-      window.alert('提交成功！')
-    } catch (error) {
-      this.setState({ error: true })
+    const comment: CommentProps = {...form, id: Date.now().toString(), datetime: new Date(), slug: this.props.slug, art: this.props.art};
+    const response = put('/comment', comment);
+    if (response !== undefined) {
+      this.setState({ comments: [...this.state.comments, comment] });
+    } else {
+      this.setState({ error: true });
     }
     this.setState({ submitting: false });
   }
@@ -147,4 +137,4 @@ class Commenter extends Component<CommenterProps, CommenterState> {
   }
 }
 
-export default Commenter
+export default Commenter;

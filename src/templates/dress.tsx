@@ -33,7 +33,7 @@ export default function ({ data }: PageProps<Queries.DressQuery>) {
     </section>
     <ExifImage {...exifImage} alt={name}/>
     <hr />
-    <Commenter slug={`dresses/${slugify(name)}`}/>
+    <Commenter art="dresses" slug={slugify(name)}/>
   </Layout>
 }
 
