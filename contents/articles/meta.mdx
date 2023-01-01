@@ -2,7 +2,7 @@
 title: 个人网站迁移小记
 date: 2021-11-20
 tags: [技术]
-cover: https://cdn.jsdelivr.net/gh/tansongchen/images@master/lh.webp
+cover: https://images.tansongchen.com/lh.webp
 abstract: 兼论如何搭建一个快得吓人的网站
 ---
 
@@ -88,7 +88,7 @@ Gatsby 本身就提供了很多针对静态网页的优化，例如 `<Link>` 标
 
 1. Gatsby 的 `<StaticImage>` 组件会针对每一个大图片生成一些低分辨率的替代品，在打开页面时首先加载这些并渲染，然后等大图下载好之后再替换；
 2. 把图片转换成 Google 开发的 `webp` 格式，可以压缩很多倍而不使图片质量变差很多；
-3. 把 GitHub 仓库的图床链接通过 jsDelivr 这样的 CDN 服务加速（例如，[https://cdn.jsdelivr.net/gh/tansongchen/images@master/lh.webp](https://cdn.jsdelivr.net/gh/tansongchen/images@master/lh.webp)）；
+3. 把 GitHub 仓库的图床链接通过 jsDelivr 这样的 CDN 服务加速（例如，[https://images.tansongchen.com/lh.webp](https://images.tansongchen.com/lh.webp)）；
 
 ## 公式相关优化
 
@@ -104,7 +104,7 @@ Bulma 本身有接近 200K，我用了 PurgeCSS 把没有用到的选择器都�
 
 做完这些优化之后，Google Lighthouse 四项打分都达到了满分。
 
-![](https://cdn.jsdelivr.net/gh/tansongchen/images@master/lh.webp)
+![](https://images.tansongchen.com/lh.webp)
 
 # 后续工作
 
