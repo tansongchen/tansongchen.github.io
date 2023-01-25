@@ -9,7 +9,7 @@
   ],
   "scripts": {
     "develop": "gatsby develop",
-    "start": "gatsby develop",
+    "start": "wrangler pages dev --proxy 8000 --kv ORDERS --persist --compatibility-date=2023-01-24 -- gatsby develop",
     "build": "gatsby build",
     "serve": "gatsby serve",
     "clean": "gatsby clean",
@@ -44,6 +44,7 @@
     "sass": "^1.56.1"
   },
   "devDependencies": {
+    "@cloudflare/workers-types": "^4.20221111.1",
     "@types/katex": "^0.14.0",
     "@types/node": "^18.11.9",
     "@types/react": "^18.0.25",
