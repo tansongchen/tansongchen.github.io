@@ -43,7 +43,9 @@ $footer-padding: 3rem 1.5rem 4rem;
   font-weight: 700;
 }
 
-figure.is-4by3 img, figure.is-2by1 img, figure.is-128x128 img {
+figure.is-4by3 img,
+figure.is-2by1 img,
+figure.is-128x128 img {
   object-fit: cover;
   object-position: center;
   height: 100%;

@@ -7,78 +7,107 @@ import ExifImage, { IExifImage, preprocessExif } from "../components/ExifImage";
 import slugify from "../utils/slugify";
 import Meta from "../components/Meta";
 
-const Introduction = () => <section className="section" style={{backgroundImage: "linear-gradient(to bottom, rgba(200,250,250,0.5), rgba(255,255,255,0.5))"}}>
-  <div className="container content is-max-desktop" style={{fontSize: "125%"}}>
-    <p>
-      我想成为美少女！！！
-    </p>
-    <p>
-      本页面正在建设中，过一段时间回来看看会发现更多内容哦～
-    </p>
+const Introduction = () => (
+  <section
+    className="section"
+    style={{
+      backgroundImage:
+        "linear-gradient(to bottom, rgba(200,250,250,0.5), rgba(255,255,255,0.5))",
+    }}
+  >
+    <div
+      className="container content is-max-desktop"
+      style={{ fontSize: "125%" }}
+    >
+      <p>我想成为美少女！！！</p>
+      <p>本页面正在建设中，过一段时间回来看看会发现更多内容哦～</p>
+    </div>
+  </section>
+);
+
+const DressDigest = ({ exifImage, name }: Dress) => (
+  <div
+    className="box"
+    style={{
+      padding: 0,
+      overflow: "hidden",
+      zIndex: 0,
+      position: "relative",
+      margin: "2rem",
+    }}
+  >
+    <Link to={slugify(name)} key={name}>
+      <GatsbyImage image={exifImage.image} alt={name} />
+    </Link>
   </div>
-</section>
+);
 
-const DressDigest = ({exifImage, name}: Dress) => <div className="box" style={{padding: 0, overflow: "hidden", zIndex: 0, position: "relative", margin: "2rem"}}>
-  <Link to={slugify(name)} key={name}>
-    <GatsbyImage image={exifImage.image} alt={name}/>
-  </Link>
-</div>
-
-const Category = ({name, data}: {name: string, data: Dress[]}) => {
-  return <article className="columns" key={name}>
-    <div className="column is-one-quarter has-text-centered">
-      <div className="content">
-        <h3 style={{margin: "1.5rem 0 .5rem 0"}}>{name}</h3>
+const Category = ({ name, data }: { name: string; data: Dress[] }) => {
+  return (
+    <article className="columns" key={name}>
+      <div className="column is-one-quarter has-text-centered">
+        <div className="content">
+          <h3 style={{ margin: "1.5rem 0 .5rem 0" }}>{name}</h3>
+        </div>
       </div>
-    </div>
-    <div className="column" style={{display: "flex", flexWrap: "wrap", justifyContent: "center", padding: 0}}>
-      {data.map(DressDigest)}
-    </div>
-  </article>
-}
+      <div
+        className="column"
+        style={{
+          display: "flex",
+          flexWrap: "wrap",
+          justifyContent: "center",
+          padding: 0,
+        }}
+      >
+        {data.map(DressDigest)}
+      </div>
+    </article>
+  );
+};
 
-const Main = ({nodes}: {nodes: Dress[]}) => {
+const Main = ({ nodes }: { nodes: Dress[] }) => {
   const map = new Map<string, Dress[]>();
   for (const dress of nodes) {
     map.set(dress.category, (map.get(dress.category) || []).concat([dress]));
   }
-  const groups: {name: string, data: Dress[]}[] = [{name: "Lolita", data: map.get("Lolita")!}];
-  return <section className="section">
-    {
-      groups.map(Category)
-    }
-  </section>
-}
+  const groups: { name: string; data: Dress[] }[] = [
+    { name: "Lolita", data: map.get("Lolita")! },
+  ];
+  return <section className="section">{groups.map(Category)}</section>;
+};
 
-export default function({ data }: PageProps<Queries.DressesQuery>) {
-  const nodes: Dress[] = data.notionDatabase!.childrenNotionPage!.map(page => {
-    const { title, properties, image } = page!;
-    const exif = preprocessExif(image!.childImageSharp!.fields!.exif!);
-    return {
-      name: title!,
-      date: exif.datetime,
-      category: properties!.Category!,
-      description: properties!.Description!,
-      photographer: properties!.Photographer!,
-      suite: properties!.Suite !== null ? properties!.Suite : undefined,
-      exifImage: {
-        image: image!.childImageSharp!.gatsbyImageData! as any as IGatsbyImageData,
-        exif: exif
-      }
+export default function ({ data }: PageProps<Queries.DressesQuery>) {
+  const nodes: Dress[] = data.notionDatabase!.childrenNotionPage!.map(
+    (page) => {
+      const { title, properties, image } = page!;
+      const exif = preprocessExif(image!.childImageSharp!.fields!.exif!);
+      return {
+        name: title!,
+        date: exif.datetime,
+        category: properties!.Category!,
+        description: properties!.Description!,
+        photographer: properties!.Photographer!,
+        suite: properties!.Suite !== null ? properties!.Suite : undefined,
+        exifImage: {
+          image: image!.childImageSharp!
+            .gatsbyImageData! as any as IGatsbyImageData,
+          exif: exif,
+        },
+      };
     }
-  });
+  );
   return (
     <Layout slug="dresses">
       <Introduction />
       <hr />
-      <Main nodes={nodes}/>
+      <Main nodes={nodes} />
     </Layout>
-  )
+  );
 }
 
 export const query = graphql`
   query Dresses {
-    notionDatabase(title: {eq: "女装"}) {
+    notionDatabase(title: { eq: "女装" }) {
       childrenNotionPage {
         title
         properties {
@@ -119,6 +148,6 @@ export const query = graphql`
       }
     }
   }
-`
+`;
 
-export const Head = () => <Meta title="女装"/>
+export const Head = () => <Meta title="女装" />;

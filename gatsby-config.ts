@@ -2,13 +2,13 @@ import type { GatsbyConfig } from "gatsby";
 import { config as env } from "dotenv";
 import feeds from "./src/utils/rss";
 
-env({path: `.env`});
+env({ path: `.env` });
 
-const PHOTOS_DATABASE = '34e2befe9a77492c825996d6e238880d';
-const VIDEOS_DATABASE = 'ad2cddcf3e644aa1b7582ec34b5f8f34';
-const MUSICS_DATABASE = '297a072af5854bf38a23e1fa11c23349';
-const RECIPES_DATABASE = '7a13ff42f6174106be20fa0401af6ff3';
-const DRESSES_DATABASE = '8001b0eba0a5401c8ffe343ad1ce07ca';
+const PHOTOS_DATABASE = "34e2befe9a77492c825996d6e238880d";
+const VIDEOS_DATABASE = "ad2cddcf3e644aa1b7582ec34b5f8f34";
+const MUSICS_DATABASE = "297a072af5854bf38a23e1fa11c23349";
+const RECIPES_DATABASE = "7a13ff42f6174106be20fa0401af6ff3";
+const DRESSES_DATABASE = "8001b0eba0a5401c8ffe343ad1ce07ca";
 
 const config: GatsbyConfig = {
   siteMetadata: {
@@ -51,7 +51,7 @@ const config: GatsbyConfig = {
           avifOptions: {},
         },
         stripMetadata: false,
-      }
+      },
     },
     "gatsby-transformer-sharp",
     "gatsby-transformer-yaml",
@@ -82,8 +82,8 @@ const config: GatsbyConfig = {
           MUSICS_DATABASE,
           RECIPES_DATABASE,
           DRESSES_DATABASE,
-        ]
-      }
+        ],
+      },
     },
     // {
     //   resolve: "gatsby-plugin-mdx",
@@ -104,16 +104,16 @@ const config: GatsbyConfig = {
         printRejected: true,
         develop: true,
         purgeCSSOptions: {
-          safelist: ['has-navbar-fixed-top'],
+          safelist: ["has-navbar-fixed-top"],
         },
       },
     },
     {
       resolve: `gatsby-plugin-feed`,
       options: {
-        feeds: feeds
-      }
-    }
+        feeds: feeds,
+      },
+    },
   ],
   graphqlTypegen: true,
 };

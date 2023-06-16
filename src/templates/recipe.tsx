@@ -7,32 +7,39 @@ import Commenter from "../components/Commenter";
 
 export default function ({ data }: PageProps<Queries.RecipeQuery>) {
   const { title, properties, image } = data.notionPage!;
-  const date = createDate(image!.childImageSharp!.fields!.exif!.exif!.DateTimeOriginal!);
+  const date = createDate(
+    image!.childImageSharp!.fields!.exif!.exif!.DateTimeOriginal!
+  );
   return (
-      <Layout slug={`cuisine/${slugify(title!)}`}>
-        <section className="section" style={{backgroundColor: "rgba(230, 240, 255, 0.5)"}}>
-          <div className="content has-text-centered">
-            <h2>{title!}</h2>
-            <p>{properties!.Rating!}</p>
-            <p>{yymmdd(date)}</p>
-            <div className="tags" style={{justifyContent: "center"}}>
-              {<span className="tag is-medium is-info">{properties!.Category!}</span>}
-            </div>
+    <Layout slug={`cuisine/${slugify(title!)}`}>
+      <section
+        className="section"
+        style={{ backgroundColor: "rgba(230, 240, 255, 0.5)" }}
+      >
+        <div className="content has-text-centered">
+          <h2>{title!}</h2>
+          <p>{properties!.Rating!}</p>
+          <p>{yymmdd(date)}</p>
+          <div className="tags" style={{ justifyContent: "center" }}>
+            {
+              <span className="tag is-medium is-info">
+                {properties!.Category!}
+              </span>
+            }
           </div>
-        </section>
-        <main className="section">
-          <div className="container is-max-desktop content">
-            Placeholder
-          </div>
-        </main>
-        <Commenter art="recipes" slug={slugify(title!)}/>
-      </Layout>
-  )
+        </div>
+      </section>
+      <main className="section">
+        <div className="container is-max-desktop content">Placeholder</div>
+      </main>
+      <Commenter art="recipes" slug={slugify(title!)} />
+    </Layout>
+  );
 }
 
 export const query = graphql`
-  query Recipe ($id: String) {
-    notionPage(id: {eq: $id}) {
+  query Recipe($id: String) {
+    notionPage(id: { eq: $id }) {
       title
       properties {
         Category
@@ -51,4 +58,4 @@ export const query = graphql`
       }
     }
   }
-`
+`;

@@ -1,8 +1,13 @@
-const endpoint = 'https://api.tansongchen.com';
+const endpoint = "https://api.tansongchen.com";
 
-export async function get(route: string, query: Record<string, string>): Promise<any | void> {
+export async function get(
+  route: string,
+  query: Record<string, string>
+): Promise<any | void> {
   try {
-    const url = `${endpoint}${route}?${Object.entries(query).map(([key, value]) => `${key}=${value}`).join('&')}`;
+    const url = `${endpoint}${route}?${Object.entries(query)
+      .map(([key, value]) => `${key}=${value}`)
+      .join("&")}`;
     const response = await fetch(url);
     return await response.json();
   } catch (error) {}
@@ -16,11 +21,11 @@ export async function put(route: string, data: any): Promise<any | void> {
         "Content-Type": "application/json",
       },
       method: "PUT",
-      body: JSON.stringify(data)
+      body: JSON.stringify(data),
     });
-    window.alert('提交成功！');
+    window.alert("提交成功！");
     return response.json();
   } catch (error) {
-    window.alert('提交失败！');
+    window.alert("提交失败！");
   }
 }

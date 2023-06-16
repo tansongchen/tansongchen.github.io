@@ -2,29 +2,29 @@ import slugify from "./slugify";
 import { arts, createDate } from "./metadata";
 
 interface Item {
-  title: string,
-  description: string,
-  url: string,
-  date: Date,
+  title: string;
+  description: string;
+  url: string;
+  date: Date;
   enclosure?: {
-    url: string,
-  }
+    url: string;
+  };
 }
 
 interface RSSPage {
-  title: string,
+  title: string;
   properties: {
     Date: {
-      start: string
-    } | null
+      start: string;
+    } | null;
     Description: string;
-  }
-  image: any
+  };
+  image: any;
 }
 
 const feeds = [
   {
-    serialize: ({ query: { allNotionDatabase, allMdx, site }}: any) => {
+    serialize: ({ query: { allNotionDatabase, allMdx, site } }: any) => {
       const result: Item[] = [];
       for (const mdx of allMdx.nodes) {
         const { slug, frontmatter } = mdx;
@@ -36,22 +36,31 @@ const feeds = [
             url: cover,
           },
           description: abstract,
-          url: `${site.siteMetadata.siteUrl}/${slug}`
+          url: `${site.siteMetadata.siteUrl}/${slug}`,
         });
       }
       for (const database of allNotionDatabase.nodes) {
         const title = database.title;
-        const art = arts.find(x => x.name === title)!;
+        const art = arts.find((x) => x.name === title)!;
         for (const page of database.childrenNotionPage as RSSPage[]) {
-          page.title && result.push({
-            title: page.title,
-            description: page.properties.Description,
-            url: `${site.siteMetadata.siteUrl}/${art.slug}/${slugify(page.title)}`,
-            enclosure: page.image ? {
-              url: `${site.siteMetadata.siteUrl}${page.image?.childImageSharp?.original?.src}`
-            } : undefined,
-            date: createDate(page.properties.Date?.start || page.image?.childImageSharp?.fields?.exif?.exif?.DateTimeOriginal)
-          });
+          page.title &&
+            result.push({
+              title: page.title,
+              description: page.properties.Description,
+              url: `${site.siteMetadata.siteUrl}/${art.slug}/${slugify(
+                page.title
+              )}`,
+              enclosure: page.image
+                ? {
+                    url: `${site.siteMetadata.siteUrl}${page.image?.childImageSharp?.original?.src}`,
+                  }
+                : undefined,
+              date: createDate(
+                page.properties.Date?.start ||
+                  page.image?.childImageSharp?.fields?.exif?.exif
+                    ?.DateTimeOriginal
+              ),
+            });
         }
       }
       result.sort((a, b) => b.date.getTime() - a.date.getTime());
@@ -103,14 +112,14 @@ const feeds = [
     output: `/rss.xml`,
     title: "众妙斋",
     description: "让您可以在您喜爱的 RSS 阅读器上获取众妙斋的更新",
-    feed_url: 'https://tansongchen.com/rss.xml',
-    site_url: 'https://tansongchen.com',
-    image_url: 'https://tansongchen.com/favicon-32x32.png',
-    managingEditor: '谭淞宸',
-    webMaster: '谭淞宸',
-    copyright: '谭淞宸 2017 - 2022',
-    languages: 'zh'
-  }
+    feed_url: "https://tansongchen.com/rss.xml",
+    site_url: "https://tansongchen.com",
+    image_url: "https://tansongchen.com/favicon-32x32.png",
+    managingEditor: "谭淞宸",
+    webMaster: "谭淞宸",
+    copyright: "谭淞宸 2017 - 2022",
+    languages: "zh",
+  },
 ];
 
 export default feeds;
