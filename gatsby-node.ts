@@ -3,7 +3,7 @@ import { createRemoteFileNode } from "gatsby-source-filesystem";
 import { resolve } from "path";
 import { ExifData, read } from "fast-exif";
 import slugify from "./src/utils/slugify";
-import { arts } from "./src/utils/metadata";
+import { arts, basename } from "./src/utils/metadata";
 
 export const onCreateWebpackConfig: GatsbyNode['onCreateWebpackConfig'] = ({
   actions,
@@ -46,18 +46,18 @@ export const createSchemaCustomization: GatsbyNode['createSchemaCustomization'] 
 export const createPages: GatsbyNode['createPages'] = async ({ actions, graphql }) => {
   const { data: articlesData } = await graphql<Queries.ArticleIndexQuery>(`
     query ArticleIndex {
-      allMdx(filter: {slug: {ne: null}}) {
+      allMarkdownRemark(filter: {fileAbsolutePath: {ne: null}}) {
         nodes {
-          slug
           id
+          fileAbsolutePath
         }
       }
     }
   `);
-  articlesData!.allMdx.nodes.forEach(({ slug, id }) => {
+  articlesData!.allMarkdownRemark.nodes.forEach(({ id, fileAbsolutePath }) => {
     actions.createPage({
-      path: slug!,
-      component: resolve("./src/templates/article.tsx"),
+      path: 'articles/' + basename(fileAbsolutePath!),
+      component: resolve(`./src/templates/article.tsx`),
       context: { id: id },
     });
   });

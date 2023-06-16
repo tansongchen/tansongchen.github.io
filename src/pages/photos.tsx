@@ -31,7 +31,7 @@ const Gallery = ({ nodes }: GalleryProps) => {
       {/* {groups.map(Category)} */}
 
     <div className="column" style={{display: "flex", flexWrap: "wrap", padding: "0", justifyContent: "center"}}>
-      {nodes.map(x => <Preview {...x} />)}
+      {nodes.map(x => <Preview {...x} key={x.name}/>)}
     </div>
     </div>
   </section>

@@ -11,9 +11,6 @@ const RECIPES_DATABASE = '7a13ff42f6174106be20fa0401af6ff3';
 const DRESSES_DATABASE = '8001b0eba0a5401c8ffe343ad1ce07ca';
 
 const config: GatsbyConfig = {
-  flags: {
-    DEV_SSR: true
-  },
   siteMetadata: {
     siteUrl: "https://tansongchen.com",
     title: "众妙斋",
@@ -88,11 +85,18 @@ const config: GatsbyConfig = {
         ]
       }
     },
+    // {
+    //   resolve: "gatsby-plugin-mdx",
+    //   options: {
+    //     mdxOptions: {
+    //       remarkPlugins: [require("remark-math")]
+    //     }
+    //   },
+    // },
+
     {
-      resolve: "gatsby-plugin-mdx",
-      options: {
-        remarkPlugins: [require("remark-math")]
-      },
+      resolve: `gatsby-transformer-remark`,
+      options: {},
     },
     {
       resolve: `gatsby-plugin-purgecss`,

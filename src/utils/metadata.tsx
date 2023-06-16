@@ -58,6 +58,7 @@ export const title = "众妙斋";
 
 export const yymmdd = (d: Date) => `${d.getFullYear()} 年 ${d.getMonth() + 1} 月 ${d.getDate()} 日`;
 export const mmdd = (d: Date) => `${d.getMonth() + 1} 月 ${d.getDate()} 日`;
+export const basename = (path: string) => path.split('/').pop()!.split('.')[0];
 export const createDate = (s: string) => {
   const date = new Date(s);
   return new Date(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate(), date.getUTCHours(), date.getUTCMinutes(), date.getUTCSeconds());

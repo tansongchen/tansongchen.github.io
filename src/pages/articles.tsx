@@ -3,6 +3,7 @@ import Layout from "../components/Layout";
 import Dropdown from "../components/Dropdown";
 import { graphql, Link, PageProps } from "gatsby";
 import Meta from "../components/Meta";
+import { basename } from "../utils/metadata";
 
 enum SortMethod {
   FromNewestToOldest,
@@ -165,11 +166,11 @@ class Main extends Component<MainProps, MainState> {
 }
 
 export default function ({ data }: PageProps<Queries.ArticlesQuery>) {
-  const nodes: ArticleProps[] = data.allMdx.nodes.map(({ frontmatter, slug }) => {
+  const nodes: ArticleProps[] = data.allMarkdownRemark.nodes.map(({ frontmatter, fileAbsolutePath }) => {
     return {
       title: frontmatter?.title || "Title",
       date: new Date(frontmatter?.date || "1970-01-01"),
-      slug: slug || "unknown",
+      slug: "articles/" + basename(fileAbsolutePath || ""),
       tags: (frontmatter?.tags || []).map(s => s || ""),
       abstract: frontmatter?.abstract || "",
       cover: frontmatter?.cover || ""
@@ -184,8 +185,9 @@ export default function ({ data }: PageProps<Queries.ArticlesQuery>) {
 
 export const query = graphql`
   query Articles {
-    allMdx {
+    allMarkdownRemark {
       nodes {
+        fileAbsolutePath
         frontmatter {
           title
           date
@@ -193,7 +195,6 @@ export const query = graphql`
           cover
           abstract
         }
-        slug
       }
     }
   }

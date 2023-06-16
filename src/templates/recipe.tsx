@@ -2,12 +2,11 @@ import React from "react";
 import { graphql, PageProps } from "gatsby";
 import Layout from "../components/Layout";
 import slugify from "../utils/slugify";
-import { MDXRenderer } from "gatsby-plugin-mdx";
 import { createDate, yymmdd } from "../utils/metadata";
 import Commenter from "../components/Commenter";
 
 export default function ({ data }: PageProps<Queries.RecipeQuery>) {
-  const { title, properties, childMdx, image } = data.notionPage!;
+  const { title, properties, image } = data.notionPage!;
   const date = createDate(image!.childImageSharp!.fields!.exif!.exif!.DateTimeOriginal!);
   return (
       <Layout slug={`cuisine/${slugify(title!)}`}>
@@ -23,9 +22,7 @@ export default function ({ data }: PageProps<Queries.RecipeQuery>) {
         </section>
         <main className="section">
           <div className="container is-max-desktop content">
-            <MDXRenderer>
-              {childMdx!.body!}
-            </MDXRenderer>
+            Placeholder
           </div>
         </main>
         <Commenter art="recipes" slug={slugify(title!)}/>
@@ -40,9 +37,6 @@ export const query = graphql`
       properties {
         Category
         Rating
-      }
-      childMdx {
-        body
       }
       image {
         childImageSharp {
