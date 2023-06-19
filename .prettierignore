@@ -1,5 +1,4 @@
 # Ignore artifacts:
 .cache
 contents
-functions
 public

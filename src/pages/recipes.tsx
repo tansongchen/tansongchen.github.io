@@ -1,11 +1,249 @@
-import React, { Fragment, Component } from "react";
+import React, { useState, useContext } from "react";
 import { graphql, Link, PageProps } from "gatsby";
 import { GatsbyImage, IGatsbyImageData } from "gatsby-plugin-image";
 import Layout from "../components/Layout";
-import Order from "../components/Order";
 import { createDate, Recipe } from "../utils/metadata";
 import slugify from "../utils/slugify";
 import Meta from "../components/Meta";
+
+import {
+  FaCheck,
+  FaClock,
+  FaEnvelope,
+  FaExclamationTriangle,
+  FaUser,
+} from "react-icons/fa";
+import { mmdd } from "../utils/metadata";
+import { put } from "../utils/client";
+import Dropdown from "../components/Dropdown";
+
+enum MealType {
+  breakfast,
+  lunch,
+  dinner,
+}
+
+enum OrderType {
+  select,
+  random,
+}
+
+interface FormState {
+  name: string;
+  email: string;
+  date: Date;
+  mealtype: MealType;
+  ordertype: OrderType;
+  content: string;
+}
+
+interface FormProps {
+  submit: (s: FormState) => void;
+  submitting: boolean;
+}
+
+function Form({ submit, submitting }: FormProps) {
+  const [state, setState] = useState<FormState>({
+    name: "",
+    email: "",
+    content: "",
+    date: new Date(new Date().getTime() + 86400 * 1000),
+    ordertype: OrderType.select,
+    mealtype: MealType.dinner,
+  });
+  const isEmailValid =
+    state.email === ""
+      ? 0
+      : /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(state.email)
+      ? 1
+      : -1;
+  const classSuffix =
+    isEmailValid === 0 ? "" : isEmailValid === 1 ? " is-success" : " is-danger";
+  const buttonSuffix =
+    isEmailValid === -1 ? " is-disabled" : submitting ? " is-loading" : "";
+  const now = new Date();
+  const dateOptions = [1, 2, 3, 4, 5, 6, 7].map(
+    (d) => new Date(now.getTime() + d * 86400 * 1000)
+  );
+  const mealOptions =
+    state.date.getDay() === 0 || state.date.getDay() === 6
+      ? [MealType.breakfast, MealType.lunch, MealType.dinner]
+      : [MealType.dinner];
+  const displayMealType = (s: MealType) =>
+    s === MealType.breakfast ? "早餐" : s === MealType.lunch ? "午餐" : "晚餐";
+  const { menu, shouldSelect, update, setShouldSelect } =
+    useContext(MenuContext);
+  return (
+    <article style={{ margin: "2rem 0" }}>
+      <p className="title is-4">您的订单</p>
+      <div className="level">
+        <div className="level-left">
+          <div
+            style={{ padding: ".5rem .5rem .5rem 0", display: "inline-flex" }}
+          >
+            您希望
+          </div>
+          <Dropdown<OrderType>
+            options={[OrderType.select, OrderType.random]}
+            callback={(x) => {
+              setState({ ...state, ordertype: x });
+              setShouldSelect(x === OrderType.select ? true : false);
+            }}
+            current={state.ordertype}
+            display={(o: OrderType) =>
+              o === OrderType.select ? "提前选择菜品" : "请我即兴发挥"
+            }
+          />
+        </div>
+        <div className="level-right">
+          <div
+            style={{ padding: ".5rem .5rem .5rem 0", display: "inline-flex" }}
+          >
+            在
+          </div>
+          <Dropdown<Date>
+            options={dateOptions}
+            callback={(d: Date) => setState({ ...state, date: d })}
+            current={state.date}
+            display={mmdd}
+          />
+          <div style={{ padding: ".5rem", display: "inline-flex" }}>的</div>
+          <Dropdown<MealType>
+            options={mealOptions}
+            callback={(s: MealType) => setState({ ...state, mealtype: s })}
+            current={state.mealtype}
+            display={displayMealType}
+          />
+          <div style={{ padding: ".5rem", display: "inline-flex" }}>品尝</div>
+        </div>
+      </div>
+      {shouldSelect ? (
+        <ul className="block">
+          {Object.keys(menu).map((x) => (
+            <SummaryItem key={x} name={x} />
+          ))}
+        </ul>
+      ) : (
+        <div></div>
+      )}
+      <div className="columns" style={{ marginBottom: 0 }}>
+        <div className="column field">
+          <div className="control has-icons-left has-icons-right">
+            <input
+              className="input"
+              type="text"
+              placeholder="您的姓名"
+              value={state.name}
+              onChange={(e) => setState({ ...state, name: e.target.value })}
+            />
+            <span className="icon is-small is-left">
+              <FaUser />
+            </span>
+          </div>
+        </div>
+
+        <div className="column field">
+          <div className="control has-icons-left has-icons-right">
+            <input
+              className={"input" + classSuffix}
+              type="email"
+              placeholder="您的邮箱"
+              value={state.email}
+              onChange={(e) => setState({ ...state, email: e.target.value })}
+            />
+            <span className="icon is-small is-left">
+              <FaEnvelope />
+            </span>
+            <span className="icon is-small is-right">
+              {isEmailValid === 1 ? (
+                <FaCheck />
+              ) : isEmailValid === 0 ? (
+                <FaClock />
+              ) : (
+                <FaExclamationTriangle />
+              )}
+            </span>
+          </div>
+          <p className={"help" + classSuffix}>
+            {isEmailValid >= 0
+              ? "邮箱仅用于回复，不会公开展示"
+              : "这不是一个正确的邮箱地址"}
+          </p>
+        </div>
+      </div>
+
+      <div className="columns field" style={{ marginTop: 0 }}>
+        <div className="column">
+          <div className="control">
+            <textarea
+              className="textarea"
+              placeholder="备注"
+              value={state.content}
+              onChange={(e) => setState({ ...state, content: e.target.value })}
+            ></textarea>
+          </div>
+        </div>
+      </div>
+
+      <div
+        className="column field is-grouped"
+        style={{ justifyContent: "center" }}
+      >
+        <div className="control">
+          <button
+            className={"button is-link" + buttonSuffix}
+            onClick={() => submit(state)}
+          >
+            提交
+          </button>
+        </div>
+      </div>
+    </article>
+  );
+}
+
+const SummaryItem = ({ name }: { name: string }) => {
+  const { update } = useContext(MenuContext);
+  return (
+    <div className="block" style={{ display: "flex" }}>
+      <div className="button" style={{ width: "70%" }}>
+        {name}
+      </div>
+      <button
+        className="button is-danger"
+        style={{ marginLeft: "auto" }}
+        onClick={() => update(name, 0)}
+      >
+        取消
+      </button>
+    </div>
+  );
+};
+
+function Order() {
+  const [submitting, setSubmitting] = useState(false);
+  const menu = useContext(MenuContext);
+  return (
+    <section className="section">
+      <div className="container is-max-desktop">
+        <Form
+          submit={async (form: FormState) => {
+            setSubmitting(true);
+            const summary: string[] = Object.keys(menu);
+            const order = {
+              ...form,
+              id: Date.now().toString(),
+              summary: summary,
+            };
+            await put("/order", order);
+            setSubmitting(false);
+          }}
+          submitting={submitting}
+        />
+      </div>
+    </section>
+  );
+}
 
 const Introduction = () => (
   <section
@@ -30,91 +268,74 @@ const Introduction = () => (
   </section>
 );
 
-interface DishProps extends Recipe {
-  ordered: number;
-  update: (a: string, b: number) => void;
-  shouldSelect: boolean;
-}
+export const MenuContext = React.createContext({
+  menu: {} as Record<string, number>,
+  update: (a: string, b: number) => {},
+  shouldSelect: true,
+  setShouldSelect: (b: boolean) => {},
+});
 
-const Dish = ({
-  name,
-  date,
-  image,
-  category,
-  rating,
-  ordered,
-  update,
-  shouldSelect,
-}: DishProps) => (
-  <div
-    className="box"
-    style={{
-      margin: "1rem",
-      display: "flex",
-      padding: 0,
-      overflow: "hidden",
-      position: "relative",
-      zIndex: 0,
-    }}
-  >
-    <div style={{ width: "180px", height: "180px", padding: 0 }}>
-      <Link to={slugify(name)}>
-        {image ? <GatsbyImage image={image} alt={name} /> : <div></div>}
-      </Link>
-    </div>
+const Dish = ({ name, date, image, category, rating }: Recipe) => {
+  const { menu, shouldSelect, update } = useContext(MenuContext);
+  const count = menu[name];
+  return (
     <div
+      className="box"
       style={{
-        textAlign: "center",
-        padding: "0 1.5rem",
+        margin: "1rem",
         display: "flex",
-        justifyContent: "center",
-        flexDirection: "column",
-        width: "150px",
-        height: "180px",
+        padding: 0,
+        overflow: "hidden",
+        position: "relative",
+        zIndex: 0,
       }}
     >
-      <p className="block" style={{ fontSize: "1.2rem" }}>
-        {name}
-      </p>
-      <p className="block content is-small">{rating}</p>
-      {!shouldSelect ? (
-        <button className="button is-success is-static">添加</button>
-      ) : ordered ? (
-        <button className="button is-danger" onClick={() => update(name, 0)}>
-          取消
-        </button>
-      ) : (
-        <button className="button is-success" onClick={() => update(name, 1)}>
-          添加
-        </button>
-      )}
+      <div style={{ width: "180px", height: "180px", padding: 0 }}>
+        <Link to={slugify(name)}>
+          {image ? <GatsbyImage image={image} alt={name} /> : <div></div>}
+        </Link>
+      </div>
+      <div
+        style={{
+          textAlign: "center",
+          padding: "0 1.5rem",
+          display: "flex",
+          justifyContent: "center",
+          flexDirection: "column",
+          width: "150px",
+          height: "180px",
+        }}
+      >
+        <p className="block" style={{ fontSize: "1.2rem" }}>
+          {name}
+        </p>
+        <p className="block content is-small">{rating}</p>
+        {!shouldSelect ? (
+          <button className="button is-success is-static">添加</button>
+        ) : count > 0 ? (
+          <button className="button is-danger" onClick={() => update(name, 0)}>
+            取消
+          </button>
+        ) : (
+          <button className="button is-success" onClick={() => update(name, 1)}>
+            添加
+          </button>
+        )}
+      </div>
     </div>
-  </div>
-);
+  );
+};
 
 interface MenuProps {
   nodes: Recipe[];
-}
-interface MenuState {
-  selected: Map<string, number>;
-  shouldSelect: boolean;
 }
 
 interface SubmenuProps {
   title: string;
   dishes: Recipe[];
-  selected: Map<string, number>;
-  update: (a: string, b: number) => void;
-  shouldSelect: boolean;
 }
 
-const Submenu = ({
-  title,
-  dishes,
-  selected,
-  update,
-  shouldSelect,
-}: SubmenuProps) => (
+const Submenu = ({ title, dishes }: SubmenuProps) => (
   <article className="columns">
     <div className="column is-one-quarter has-text-centered">
       <div className="content">
@@ -131,68 +352,44 @@ const Submenu = ({
       }}
     >
       {dishes.map((x) => (
-        <Dish
-          {...x}
-          key={x.name}
-          update={update}
-          ordered={selected.get(x.name)!}
-          shouldSelect={shouldSelect}
-        />
+        <Dish {...x} key={x.name} />
       ))}
     </div>
   </article>
 );
 
-class Menu extends Component<MenuProps, MenuState> {
-  state: MenuState = {
-    selected: new Map<string, number>(),
-    shouldSelect: true,
+function Menu({ nodes }: MenuProps) {
+  const [selected, setSelected] = useState({} as Record<string, number>);
+  const [shouldSelect, setShouldSelect] = useState(true);
+  const groups = ["鲁菜", "川菜", "粤菜", "淮扬菜", "面点"].map((k) => ({
+    title: k,
+    dishes: [] as Recipe[],
+  }));
+  for (const dish of nodes) {
+    groups.find((x) => x.title === dish.category)!.dishes.push(dish);
+  }
+  for (const { dishes } of groups) {
+    dishes.sort((a, b) => b.rating.length - a.rating.length);
+  }
+  const update = (name: string, count: number) => {
+    const newSelected = { ...selected, [name]: count };
+    if (count === 0) {
+      delete newSelected[name];
+    }
+    setSelected(newSelected);
   };
-
-  componentDidMount() {
-    for (let dish of this.props.nodes) {
-      this.state.selected.set(dish.name, 0);
-    }
-  }
-
-  render() {
-    let map = new Map<string, Recipe[]>();
-    for (let dish of this.props.nodes) {
-      map.set(dish.category, (map.get(dish.category) || []).concat([dish]));
-    }
-    let groups: { title: string; dishes: Recipe[] }[] = [];
-    for (let key of ["鲁菜", "川菜", "粤菜", "淮扬菜", "面点"]) {
-      let value = map.get(key) || [];
-      value.sort((a: Recipe, b: Recipe) => b.rating.length - a.rating.length);
-      groups.push({ title: key, dishes: value });
-    }
-    const update = (name: string, count: number) => {
-      this.state.selected.set(name, count);
-      this.setState({ selected: this.state.selected });
-    };
-    const changeSelect = (b: boolean) => this.setState({ shouldSelect: b });
-    return (
-      <Fragment>
-        <section className="section" style={{ padding: "3rem 1rem" }}>
-          {groups.map((x) => (
-            <Submenu
-              {...x}
-              key={x.title}
-              update={update}
-              selected={this.state.selected}
-              shouldSelect={this.state.shouldSelect}
-            />
-          ))}
-        </section>
-        <Order
-          selected={this.state.selected}
-          update={update}
-          changeSelect={changeSelect}
-          shouldSelect={this.state.shouldSelect}
-        />
-      </Fragment>
-    );
-  }
+  return (
+    <MenuContext.Provider
+      value={{ menu: selected, update, shouldSelect, setShouldSelect }}
+    >
+      <section className="section" style={{ padding: "3rem 1rem" }}>
+        {groups.map((x) => (
+          <Submenu {...x} key={x.title} />
+        ))}
+      </section>
+      <Order />
+    </MenuContext.Provider>
+  );
 }
 
 export default function ({ data }: PageProps<Queries.RecipesQuery>) {

@@ -6,7 +6,7 @@ import { createDate, yymmdd } from "../utils/metadata";
 import Commenter from "../components/Commenter";
 
 export default function ({ data }: PageProps<Queries.RecipeQuery>) {
-  const { title, properties, image } = data.notionPage!;
+  const { title, properties, childMarkdownRemark, image } = data.notionPage!;
   const date = createDate(
     image!.childImageSharp!.fields!.exif!.exif!.DateTimeOriginal!
   );
@@ -30,7 +30,10 @@ export default function ({ data }: PageProps<Queries.RecipeQuery>) {
         </div>
       </section>
       <main className="section">
-        <div className="container is-max-desktop content">Placeholder</div>
+        <div
+          className="container is-max-desktop content"
+          dangerouslySetInnerHTML={{ __html: childMarkdownRemark!.html! }}
+        ></div>
       </main>
       <Commenter art="recipes" slug={slugify(title!)} />
     </Layout>
@@ -44,6 +47,9 @@ export const query = graphql`
       properties {
         Category
         Rating
+      }
+      childMarkdownRemark {
+        html
       }
       image {
         childImageSharp {

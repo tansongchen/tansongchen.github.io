@@ -1,22 +1,17 @@
 import Header from "./Header";
 import Footer from "./Footer";
-import React, { Component, Fragment, ReactElement } from "react";
+import React, { PropsWithChildren } from "react";
 
 interface LayoutProps {
   slug: string;
-  children: any;
 }
 
-class Layout extends Component<LayoutProps, object> {
-  render() {
-    return (
-      <Fragment>
-        <Header slug={this.props.slug} />
-        {this.props.children}
-        <Footer />
-      </Fragment>
-    );
-  }
+export default function ({ slug, children }: PropsWithChildren<LayoutProps>) {
+  return (
+    <>
+      <Header slug={slug} />
+      {children}
+      <Footer />
+    </>
+  );
 }
-
-export default Layout;

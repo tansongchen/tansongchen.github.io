@@ -1,4 +1,4 @@
-const endpoint = "https://api.tansongchen.com";
+const endpoint = "https://www.tansongchen.workers.dev";
 
 export async function get(
   route: string,

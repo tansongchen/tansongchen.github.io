@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component, useState } from "react";
 import Layout from "../components/Layout";
 import Dropdown from "../components/Dropdown";
 import { graphql, Link, PageProps } from "gatsby";
@@ -236,51 +236,49 @@ const ArticleList = ({
   );
 };
 
-class Main extends Component<MainProps, MainState> {
-  state: MainState = {
-    sortMethod: SortMethod.FromNewestToOldest,
-    intervalStart: new Date("2019-01-01T00:00:00"),
-    intervalEnd: new Date("2021-12-31T23:59:59"),
-    activeTag: undefined,
+function Main({ nodes }: MainProps) {
+  const [sortMethod, changeSortMethod] = useState(
+    SortMethod.FromNewestToOldest
+  );
+  const [intervalStart, changeIntervalStart] = useState(
+    new Date("2019-01-01T00:00:00")
+  );
+  const [intervalEnd, changeIntervalEnd] = useState(
+    new Date("2021-12-31T23:59:59")
+  );
+  const [activeTag, changeActiveTag] = useState(
+    undefined as string | undefined
+  );
+  const tagArrays = nodes.map((node) => node.tags);
+  const tagArray = ([] as string[]).concat(...tagArrays);
+  const allTags = Array.from(new Set(tagArray));
+  const changeTag = (activeTag?: string, tag?: string) => {
+    activeTag === tag ? changeActiveTag(undefined) : changeActiveTag(tag);
   };
-
-  render() {
-    const tagArrays = this.props.nodes.map((node) => node.tags);
-    const tagArray = ([] as string[]).concat(...tagArrays);
-    const allTags = Array.from(new Set(tagArray));
-    const changeSortMethod = (sortMethod: SortMethod) => {
-      this.setState({ sortMethod: sortMethod });
-    };
-    const changeIntervalStart = (intervalStart: Date) => {
-      this.setState({ intervalStart: intervalStart });
-    };
-    const changeIntervalEnd = (intervalEnd: Date) => {
-      this.setState({ intervalEnd: intervalEnd });
-    };
-    const changeTag = (activeTag?: string, tag?: string) => {
-      activeTag === tag
-        ? this.setState({ activeTag: undefined })
-        : this.setState({ activeTag: tag });
-    };
-    return (
-      <main>
-        <Introduction />
-        <hr />
-        <Selector
-          sortMethod={this.state.sortMethod}
-          changeSortMethod={changeSortMethod}
-          intervalStart={this.state.intervalStart}
-          changeIntervalStart={changeIntervalStart}
-          intervalEnd={this.state.intervalEnd}
-          changeIntervalEnd={changeIntervalEnd}
-          changeTag={changeTag}
-          activeTag={this.state.activeTag}
-          allTags={allTags}
-        />
-        <ArticleList {...this.state} nodes={this.props.nodes} />
-      </main>
-    );
-  }
+  return (
+    <main>
+      <Introduction />
+      <hr />
+      <Selector
+        sortMethod={sortMethod}
+        changeSortMethod={changeSortMethod}
+        intervalStart={intervalStart}
+        changeIntervalStart={changeIntervalStart}
+        intervalEnd={intervalEnd}
+        changeIntervalEnd={changeIntervalEnd}
+        changeTag={changeTag}
+        activeTag={activeTag}
+        allTags={allTags}
+      />
+      <ArticleList
+        sortMethod={sortMethod}
+        intervalStart={intervalStart}
+        intervalEnd={intervalEnd}
+        activeTag={activeTag}
+        nodes={nodes}
+      />
+    </main>
+  );
 }
 
 export default function ({ data }: PageProps<Queries.ArticlesQuery>) {

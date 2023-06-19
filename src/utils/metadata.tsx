@@ -63,6 +63,7 @@ export interface Art {
 }
 
 export const title = "众妙斋";
+export const endpoint = "https://www.tansongchen.workers.dev";
 
 export const yymmdd = (d: Date) =>
   `${d.getFullYear()} 年 ${d.getMonth() + 1} 月 ${d.getDate()} 日`;

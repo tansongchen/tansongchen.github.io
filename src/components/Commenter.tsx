@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component, useState } from "react";
 import {
   FaUser,
   FaEnvelope,
@@ -6,8 +6,10 @@ import {
   FaClock,
   FaCheck,
 } from "react-icons/fa";
-import { yymmdd } from "../utils/metadata";
+import { endpoint, yymmdd } from "../utils/metadata";
 import { get, put } from "../utils/client";
+import useSWR from "swr";
+import useSWRImmutable from "swr/immutable";
 
 interface FormState {
   name: string;
@@ -145,73 +147,53 @@ const Comment = ({ id, name, datetime, content }: CommentProps) => {
   );
 };
 
-interface CommenterProps {
-  art: string;
-  slug: string;
-}
+function Commenter({ art, slug }: Record<string, string>) {
+  const [submitting, setSubmitting] = useState(false);
+  const key = `/comment?art=${art}&slug=${slug}`;
+  const {
+    data: rawComments,
+    error,
+    mutate,
+  } = useSWRImmutable(key, (key) => fetch(endpoint + key).then((res) => res.json()));
 
-interface CommenterState {
-  comments: CommentProps[];
-  error: boolean;
-  submitting: boolean;
-}
-
-class Commenter extends Component<CommenterProps, CommenterState> {
-  state: CommenterState = {
-    comments: [],
-    error: false,
-    submitting: false,
-  };
-
-  async componentDidMount() {
-    const response = await get("/comment", {
-      art: this.props.art,
-      slug: this.props.slug,
-    });
-    if (response !== undefined) {
-      const rawComments = response as CommentProps[];
-      console.log(rawComments);
-      this.setState({
-        comments: rawComments.map((a) => ({
-          ...a,
-          datetime: new Date(a.datetime),
-        })),
-      });
-    } else {
-      this.setState({ error: true });
-    }
-  }
-
-  onSubmitComment = async (form: FormState) => {
-    this.setState({ submitting: true });
-    const comment: CommentProps = {
-      ...form,
-      id: Date.now().toString(),
-      datetime: new Date(),
-      slug: this.props.slug,
-      art: this.props.art,
-    };
-    const response = put("/comment", comment);
-    if (response !== undefined) {
-      this.setState({ comments: [...this.state.comments, comment] });
-    } else {
-      this.setState({ error: true });
-    }
-    this.setState({ submitting: false });
-  };
-
-  render() {
-    const { submitting, error, comments } = this.state;
+  if (!rawComments || error)
     return (
       <section className="section">
         <div className="container is-max-desktop">
-          <Form submit={this.onSubmitComment} submitting={submitting} />
-          <hr />
-          {error ? <p>评论系统出现故障</p> : comments.map(Comment)}
+          <p>评论系统出现故障</p>
         </div>
       </section>
     );
-  }
+  const comments = rawComments.map((a: any) => ({
+    ...a,
+    datetime: new Date(a.datetime),
+  })) as CommentProps[];
+  const onSubmitComment = async (form: FormState) => {
+    const datetime = new Date();
+    const comment: CommentProps = {
+      ...form,
+      id: datetime.getTime().toString(),
+      datetime,
+      slug: slug,
+      art: art,
+    };
+    const optimisticData = [...comments, comment];
+    const updateFn = async () => {
+      await put("/comment", comment);
+      return optimisticData;
+    };
+    mutate(updateFn, { optimisticData, populateCache: true, revalidate: false });
+  };
+
+  return (
+    <section className="section">
+      <div className="container is-max-desktop">
+        <Form submit={onSubmitComment} submitting={submitting} />
+        <hr />
+        {comments.map(Comment)}
+      </div>
+    </section>
+  );
 }
 
 export default Commenter;

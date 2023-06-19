@@ -4,9 +4,11 @@ import Layout from "../components/Layout";
 import slugify from "../utils/slugify";
 import Commenter from "../components/Commenter";
 import { createDate, yymmdd } from "../utils/metadata";
+import { Stream } from "@cloudflare/stream-react";
 
 export default function ({ data }: PageProps<Queries.VideoQuery>) {
   const { title, properties } = data.notionPage!;
+  const { Category, Description, Date, UID } = properties!;
   return (
     <Layout slug={`videos/${slugify(title!)}`}>
       <section
@@ -16,32 +18,16 @@ export default function ({ data }: PageProps<Queries.VideoQuery>) {
         <div className="content has-text-centered">
           <h2>{title}</h2>
           <p>
-            <span className="tag is-medium is-info is-light">
-              {properties!.Category}
-            </span>
+            <span className="tag is-medium is-info is-light">{Category}</span>
           </p>
-          <p>{properties!.Description!}</p>
-          <p>{yymmdd(createDate(properties!.Date!.start!))}</p>
+          <p>{Description!}</p>
+          <p>{yymmdd(createDate(Date!.start!))}</p>
         </div>
       </section>
       <section className="section">
         <article className="container is-max-desktop">
-          <div style={{ position: "relative", padding: "30% 45%" }}>
-            <iframe
-              style={{
-                position: "absolute",
-                width: "100%",
-                height: "100%",
-                left: "0",
-                top: "0",
-              }}
-              src={properties!.Bilibili_URL + "&high_quality=1"}
-              scrolling="no"
-              data-border="0"
-              data-frameborder="no"
-              data-framespacing="0"
-              data-allowfullscreen="true"
-            ></iframe>
+          <div>
+            <Stream controls src={UID!} />
           </div>
         </article>
       </section>
@@ -62,7 +48,7 @@ export const query = graphql`
         Category
         Description
         Suite
-        Bilibili_URL
+        UID
       }
     }
   }

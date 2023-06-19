@@ -4,6 +4,7 @@ import Layout from "../components/Layout";
 import slugify from "../utils/slugify";
 import { createDate, Video, yymmdd } from "../utils/metadata";
 import Meta from "../components/Meta";
+import { Stream } from "@cloudflare/stream-react";
 
 const Introduction = () => (
   <section
@@ -28,22 +29,8 @@ const VideoFrame = ({ url, name, category, date }: Video) => (
       <Link to={slugify(name)}>{name}</Link>
     </h2>
     <p>{yymmdd(date)}</p>
-    <div style={{ position: "relative", padding: "30% 45%" }}>
-      <iframe
-        style={{
-          position: "absolute",
-          width: "100%",
-          height: "100%",
-          left: "0",
-          top: "0",
-        }}
-        src={url + "&high_quality=1"}
-        scrolling="no"
-        data-border="0"
-        data-frameborder="no"
-        data-framespacing="0"
-        data-allowfullscreen="true"
-      ></iframe>
+    <div>
+      <Stream controls src={url} />
     </div>
   </article>
 );
@@ -62,7 +49,7 @@ export default function ({ data }: PageProps<Queries.VideosQuery>) {
         category: properties!.Category!,
         description: properties!.Description!,
         suite: properties!.Suite !== null ? properties!.Suite : undefined,
-        url: properties?.Bilibili_URL!,
+        url: properties?.UID!,
       };
     }
   );
@@ -89,7 +76,7 @@ export const query = graphql`
           Category
           Suite
           Description
-          Bilibili_URL
+          UID
         }
       }
     }

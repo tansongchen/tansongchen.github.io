@@ -1,25 +1,11 @@
-import React, { Component, useEffect } from "react";
+import React from "react";
 import { graphql, PageProps } from "gatsby";
 import Layout from "../components/Layout";
 import Commenter from "../components/Commenter";
-import katex from "katex";
 import Meta from "../components/Meta";
 import { basename } from "../utils/metadata";
 
 export default function ({ data }: PageProps<Queries.ArticleQuery>) {
-  useEffect(() => {
-    for (let display of document.getElementsByClassName("math-display")) {
-      katex.render(display.textContent || "", display as HTMLElement, {
-        throwOnError: false,
-        displayMode: true,
-      });
-    }
-    for (let inline of document.getElementsByClassName("math-inline")) {
-      katex.render(inline.textContent || "", inline as HTMLElement, {
-        throwOnError: false,
-      });
-    }
-  });
   const { fileAbsolutePath, frontmatter, html } = data.markdownRemark || {
     fileAbsolutePath: "",
     frontmatter: {},
@@ -75,7 +61,7 @@ export const query = graphql`
 export const Head = ({ data }: { data: any }) => {
   return (
     <>
-      <Meta title={data.mdx.frontmatter.title} />
+      <Meta title={data.markdownRemark.frontmatter.title} />
       <link
         rel="stylesheet"
         href="https://cdn.jsdelivr.net/npm/katex@0.16.3/dist/katex.min.css"
