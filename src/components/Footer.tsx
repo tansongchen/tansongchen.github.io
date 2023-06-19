@@ -12,9 +12,9 @@ const Contact = () => (
       </a>
     </p>
     <p>
-      <a href="mailto:songchen@mit.edu">
+      <a href="mailto:i@tansongchen.com">
         <FaEnvelope />
-        &nbsp;&nbsp;songchen@mit.edu
+        &nbsp;&nbsp;i@tansongchen.com
       </a>
     </p>
   </section>

@@ -512,6 +512,26 @@ const Code = () => (
 export default function () {
   return (
     <Layout slug="">
+      <aside className="h-card" style={{display: "none"}}>
+        <span className="p-name">谭淞宸</span>
+        {/* <span className="p-honorific-prefix">猫猫</span> */}
+        <span className="p-given-name">淞宸</span>
+        <span className="p-family-name">谭</span>
+        <span className="p-honorific-suffix">猫猫</span>
+        <div className="p-org">Massachusetts Institute of Technology</div>
+        <img className="u-photo" src="http://example.com/sk.jpg"/>
+        <a className="u-url" href="https://tansongchen.com/static/5d6c52433924c9488d1b7def2b63c17c/2d160/mitao.webp"></a>
+        <a className="u-email" href="mailto:i@tansongchen.com"></a>
+        <div className="p-tel">+1 (857) 298-9702</div>
+        <div className="p-street-address">70 Pacific St</div>
+        <span className="p-locality">Cambridge</span>
+        <abbr className="p-region" title="Massachusetts">MA</abbr>
+        <span className="p-postal-code">02139</span>
+        <div className="p-country-name">U.S.A</div>
+        <time className="dt-bday">2000-09-21</time>
+        <div className="p-category">cat</div>
+        <div className="p-note">一只可爱的猫猫。</div>
+      </aside>
       <main>
         <Introduction />
         <hr />
