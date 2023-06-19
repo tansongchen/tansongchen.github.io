@@ -11,7 +11,7 @@ import {
 } from "react-icons/fa";
 import { IExifImage } from "../components/ExifImage";
 
-interface Piece {
+export interface Piece {
   name: string;
   date: Date;
   category: string;
@@ -20,7 +20,7 @@ interface Piece {
 }
 
 export interface Article extends Piece {
-  image: IGatsbyImageData;
+  cover: string;
 }
 
 export interface Dress extends Piece {
@@ -33,7 +33,7 @@ export interface Photo extends Piece {
 }
 
 export interface Video extends Piece {
-  url: string;
+  uid: string;
 }
 
 export interface Music extends Piece {
@@ -45,7 +45,6 @@ export interface Music extends Piece {
 }
 
 export interface Recipe extends Piece {
-  image: IGatsbyImageData;
   rating: string;
 }
 
@@ -63,6 +62,7 @@ export interface Art {
 }
 
 export const title = "众妙斋";
+export const site = "https://tansongchen.com";
 export const endpoint = "https://www.tansongchen.workers.dev";
 
 export const yymmdd = (d: Date) =>

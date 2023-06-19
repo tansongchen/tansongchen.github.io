@@ -5,6 +5,7 @@ import Layout from "../components/Layout";
 import { createDate, Music, yymmdd } from "../utils/metadata";
 import Commenter from "../components/Commenter";
 import slugify from "../utils/slugify";
+import EntryLayout from "../components/EntryLayout";
 
 interface DownloadItemProps {
   name: string;
@@ -36,16 +37,7 @@ export default function ({ data }: PageProps<Queries.MusicQuery>) {
     lilypond: lilypondURL,
     score: scoreURL,
   } = data.notionPage!;
-  const {
-    name,
-    category,
-    description,
-    opus,
-    number,
-    lilypond,
-    score,
-    url,
-  }: Music = {
+  const music: Music = {
     name: title!,
     date: createDate(properties!.Date!.start!),
     category: properties!.Category!,
@@ -59,35 +51,16 @@ export default function ({ data }: PageProps<Queries.MusicQuery>) {
       properties!.Bilibili_URL !== null ? properties!.Bilibili_URL : undefined,
   };
   return (
-    <Layout slug="music/op1no5">
-      <section
-        className="section"
-        style={{
-          backgroundImage:
-            "linear-gradient(to bottom, rgba(220,230,255,0.5), rgba(255,255,255,0.5))",
-        }}
-      >
-        <article className="container content is-max-desktop">
-          <div className="has-text-centered">
-            <h1>
-              Op. {opus}（{category}）
-            </h1>
-            <h2>
-              No. {number}，「{name}」
-            </h2>
-          </div>
-          <p>{description}</p>
-        </article>
-      </section>
-      <section className="section">
+    <EntryLayout art="music" slug={slugify(music.name)} {...music}>
+      <section className="section e-content">
         <div className="container is-max-desktop">
           <div className="columns">
             {/* <DownloadItem name={"音频"} url={"/op1no5.mp3"} icon={<FaMusic />}/> */}
-            <DownloadItem name={"乐谱"} url={score} icon={<FaStickyNote />} />
-            <DownloadItem name={"源码"} url={lilypond} icon={<FaCode />} />
+            <DownloadItem name={"乐谱"} url={music.score} icon={<FaStickyNote />} />
+            <DownloadItem name={"源码"} url={music.lilypond} icon={<FaCode />} />
           </div>
         </div>
-        {url ? (
+        {music.url ? (
           <article className="container content is-max-desktop">
             <div style={{ position: "relative", padding: "30% 45%" }}>
               <iframe
@@ -98,7 +71,7 @@ export default function ({ data }: PageProps<Queries.MusicQuery>) {
                   left: "0",
                   top: "0",
                 }}
-                src={url + "&high_quality=1"}
+                src={music.url + "&high_quality=1"}
                 scrolling="no"
                 data-border="0"
                 data-frameborder="no"
@@ -110,9 +83,8 @@ export default function ({ data }: PageProps<Queries.MusicQuery>) {
         ) : (
           <div></div>
         )}
-        <Commenter art="dresses" slug={slugify(name)} />
       </section>
-    </Layout>
+    </EntryLayout>
   );
 }
 

@@ -2,41 +2,31 @@ import React from "react";
 import { graphql, PageProps } from "gatsby";
 import Layout from "../components/Layout";
 import slugify from "../utils/slugify";
-import { createDate, yymmdd } from "../utils/metadata";
+import { createDate, Recipe, yymmdd } from "../utils/metadata";
 import Commenter from "../components/Commenter";
+import EntryLayout from "../components/EntryLayout";
 
 export default function ({ data }: PageProps<Queries.RecipeQuery>) {
   const { title, properties, childMarkdownRemark, image } = data.notionPage!;
   const date = createDate(
     image!.childImageSharp!.fields!.exif!.exif!.DateTimeOriginal!
   );
+  const recipe: Recipe = {
+    name: title!,
+    date: date,
+    category: properties!.Category!,
+    rating: properties!.Rating!,
+    description: ""
+  };
   return (
-    <Layout slug={`cuisine/${slugify(title!)}`}>
-      <section
-        className="section"
-        style={{ backgroundColor: "rgba(230, 240, 255, 0.5)" }}
-      >
-        <div className="content has-text-centered">
-          <h2>{title!}</h2>
-          <p>{properties!.Rating!}</p>
-          <p>{yymmdd(date)}</p>
-          <div className="tags" style={{ justifyContent: "center" }}>
-            {
-              <span className="tag is-medium is-info">
-                {properties!.Category!}
-              </span>
-            }
-          </div>
-        </div>
-      </section>
-      <main className="section">
-        <div
+    <EntryLayout art="cuisine" slug={slugify(recipe.name)} {...recipe}>
+      <section className="section e-content">
+        <article
           className="container is-max-desktop content"
           dangerouslySetInnerHTML={{ __html: childMarkdownRemark!.html! }}
-        ></div>
-      </main>
-      <Commenter art="recipes" slug={slugify(title!)} />
-    </Layout>
+        ></article>
+      </section>
+    </EntryLayout>
   );
 }
 

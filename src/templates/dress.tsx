@@ -1,15 +1,15 @@
 import React from "react";
 import { graphql, PageProps } from "gatsby";
 import { GatsbyImage, IGatsbyImageData } from "gatsby-plugin-image";
-import Layout from "../components/Layout";
 import slugify from "../utils/slugify";
 import ExifImage, { IExifImage, preprocessExif } from "../components/ExifImage";
-import Commenter from "../components/Commenter";
+import EntryLayout from "../components/EntryLayout";
+import { Dress } from "../utils/metadata";
 
 export default function ({ data }: PageProps<Queries.DressQuery>) {
   const { title, properties, image } = data.notionPage!;
   const exif = preprocessExif(image!.childImageSharp!.fields!.exif!);
-  const { name, date, category, description, photographer, suite, exifImage } =
+  const dress: Dress =
     {
       name: title!,
       date: exif.datetime,
@@ -24,25 +24,11 @@ export default function ({ data }: PageProps<Queries.DressQuery>) {
       },
     };
   return (
-    <Layout slug={`dresses/${slugify(name)}`}>
-      <section
-        className="section"
-        style={{ backgroundColor: "rgba(230, 240, 255, 0.5)" }}
-      >
-        <div className="content has-text-centered">
-          <h2>{name}</h2>
-          <p>
-            <span key={category} className="tag is-medium is-info is-light">
-              {category}
-            </span>
-          </p>
-          <p>摄影师：{photographer}</p>
-        </div>
-      </section>
-      <ExifImage {...exifImage} alt={name} />
-      <hr />
-      <Commenter art="dresses" slug={slugify(name)} />
-    </Layout>
+    <EntryLayout art="dresses" slug={slugify(dress.name)} {...dress}>
+      <div className="e-content">
+        <ExifImage {...dress.exifImage} alt={dress.name} />
+      </div>
+    </EntryLayout>
   );
 }
 
