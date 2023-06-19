@@ -1,5 +1,5 @@
 import slugify from "./slugify";
-import { arts, createDate } from "./metadata";
+import { arts, createDate, basename } from "./metadata";
 
 interface Item {
   title: string;
@@ -24,10 +24,10 @@ interface RSSPage {
 
 const feeds = [
   {
-    serialize: ({ query: { allNotionDatabase, allMdx, site } }: any) => {
+    serialize: ({ query: { allNotionDatabase, allMarkdownRemark, site } }: any) => {
       const result: Item[] = [];
-      for (const mdx of allMdx.nodes) {
-        const { slug, frontmatter } = mdx;
+      for (const md of allMarkdownRemark.nodes) {
+        const { fileAbsolutePath, frontmatter } = md;
         const { title, date, cover, abstract } = frontmatter;
         result.push({
           title: title,
@@ -36,7 +36,7 @@ const feeds = [
             url: cover,
           },
           description: abstract,
-          url: `${site.siteMetadata.siteUrl}/${slug}`,
+          url: `${site.siteMetadata.siteUrl}/articles/${basename(fileAbsolutePath)}`,
         });
       }
       for (const database of allNotionDatabase.nodes) {
@@ -68,9 +68,9 @@ const feeds = [
     },
     query: `
       query RSS {
-        allMdx(filter: {slug: {ne: null}}) {
+        allMarkdownRemark(filter: { fileAbsolutePath: { ne: null } }) {
           nodes {
-            slug
+            fileAbsolutePath
             frontmatter {
               title
               date
@@ -117,7 +117,7 @@ const feeds = [
     image_url: "https://tansongchen.com/favicon-32x32.png",
     managingEditor: "谭淞宸",
     webMaster: "谭淞宸",
-    copyright: "谭淞宸 2017 - 2022",
+    copyright: "谭淞宸 2017 - 2023",
     languages: "zh",
   },
 ];

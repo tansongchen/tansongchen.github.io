@@ -7,8 +7,7 @@ import {
   FaCheck,
 } from "react-icons/fa";
 import { endpoint, yymmdd } from "../utils/metadata";
-import { get, put } from "../utils/client";
-import useSWR from "swr";
+import { put } from "../utils/client";
 import useSWRImmutable from "swr/immutable";
 
 interface FormState {
