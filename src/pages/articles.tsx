@@ -183,13 +183,6 @@ const Article = ({
   </article>
 );
 
-interface MainState {
-  sortMethod: SortMethod;
-  intervalStart: Date;
-  intervalEnd: Date;
-  activeTag?: string;
-}
-
 interface MainProps {
   nodes: ArticleProps[];
 }

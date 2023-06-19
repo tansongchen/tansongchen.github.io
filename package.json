@@ -25,6 +25,7 @@
     "gatsby": "^5.11.0",
     "gatsby-plugin-feed": "^5.11.0",
     "gatsby-plugin-image": "^3.11.0",
+    "gatsby-plugin-indieweb": "^1.0.3",
     "gatsby-plugin-manifest": "^5.11.0",
     "gatsby-plugin-purgecss": "^6.2.1",
     "gatsby-plugin-sass": "^6.11.0",

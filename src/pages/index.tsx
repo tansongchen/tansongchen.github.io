@@ -1,7 +1,7 @@
 import React, { Fragment, ReactElement } from "react";
 import { Link } from "gatsby";
 import { StaticImage } from "gatsby-plugin-image";
-import Repository, { RepositoryProps } from "../components/Repository";
+import Repository from "../components/Repository";
 import {
   FaCalendar,
   FaCheckCircle,
@@ -474,7 +474,7 @@ const Experience = () => (
   </section>
 );
 
-const repositories: RepositoryProps[] = [
+const repositories: { name: string, owner: string }[] = [
   { name: "tansongchen.github.io", owner: "tansongchen" },
   { name: "julia", owner: "JuliaLang" },
   { name: "TaylorDiff.jl", owner: "JuliaDiff" },
@@ -527,4 +527,8 @@ export default function () {
   );
 }
 
-export const Head = () => <Meta title="众妙斋" />;
+export const Head = () => <>
+  <Meta title="众妙斋" />
+  <link href="https://github.com/tansongchen" rel="me" />
+  <link href="mailto:i@tansongchen.com" rel="me" />
+</>;

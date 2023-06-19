@@ -1,5 +1,5 @@
 import { Link } from "gatsby";
-import React, { Component, Fragment, ReactElement } from "react";
+import React, { ReactElement } from "react";
 import summary, { title } from "../utils/metadata";
 
 interface NavItemProps {
@@ -20,14 +20,7 @@ const NavItem = ({ icon, name, slug, current }: NavItemProps) => (
   </Link>
 );
 
-interface NavProps {
-  slug: string;
-}
-interface NavState {
-  expand: boolean;
-}
-
-function Header({ slug }: NavProps) {
+function Header({ slug }: Record<string, string>) {
   const [expand, setExpand] = React.useState(false);
   return (
     <nav
@@ -73,9 +66,6 @@ function Header({ slug }: NavProps) {
                 <Link to="/rss.xml" className="button is-info">
                   <strong>订阅</strong>
                 </Link>
-                {/* <a className="button is-light">
-                Log in
-              </a> */}
               </div>
             </div>
           </div>
