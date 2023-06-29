@@ -2,6 +2,7 @@ import React, { PropsWithChildren } from "react";
 import Layout from "./Layout";
 import Commenter from "./Commenter";
 import { Piece, site, yymmdd } from "../utils/metadata";
+import WebMention from "./WebMention";
 
 export default function ({
   art,
@@ -11,7 +12,7 @@ export default function ({
   category,
   description,
   children,
-}: PropsWithChildren<{ art: string, slug: string } & Piece>) {
+}: PropsWithChildren<{ art: string; slug: string } & Piece>) {
   const path = art + "/" + slug;
   const url = site + "/" + path;
   return (
@@ -23,14 +24,24 @@ export default function ({
         >
           <div className="content has-text-centered">
             <h2 className="p-name">{name}</h2>
-            <a className="p-author h-card" href="https://tansongchen.com" style={{display: "none"}}>谭淞宸</a>
-            <a className="u-url" href={url} style={{display: "none"}}></a>
+            <a
+              className="p-author h-card"
+              href="https://tansongchen.com"
+              style={{ display: "none" }}
+            >
+              谭淞宸
+            </a>
+            <a className="u-url" href={url} style={{ display: "none" }}></a>
             <p>
-              <span className="tag is-medium is-info is-light p-category">{category}</span>
+              <span className="tag is-medium is-info is-light p-category">
+                {category}
+              </span>
             </p>
             <p className="p-summary">{description}</p>
             <p>
-              <time className="dt-published" dateTime={date.toISOString()}>{yymmdd(date)}</time>
+              <time className="dt-published" dateTime={date.toISOString()}>
+                {yymmdd(date)}
+              </time>
             </p>
           </div>
         </section>
@@ -38,6 +49,8 @@ export default function ({
       </main>
       <hr />
       <Commenter art={art} slug={slug} />
+      <hr />
+      <WebMention art={art} slug={slug} />
     </Layout>
   );
 }

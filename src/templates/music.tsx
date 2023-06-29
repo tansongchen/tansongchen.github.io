@@ -1,11 +1,10 @@
-import React, { Fragment, ReactElement } from "react";
+import React, { ReactElement } from "react";
 import { graphql, PageProps } from "gatsby";
 import { FaCode, FaMusic, FaStickyNote } from "react-icons/fa";
-import Layout from "../components/Layout";
 import { createDate, Music, yymmdd } from "../utils/metadata";
-import Commenter from "../components/Commenter";
 import slugify from "../utils/slugify";
 import EntryLayout from "../components/EntryLayout";
+import Meta from "../components/Meta";
 
 interface DownloadItemProps {
   name: string;
@@ -56,8 +55,16 @@ export default function ({ data }: PageProps<Queries.MusicQuery>) {
         <div className="container is-max-desktop">
           <div className="columns">
             {/* <DownloadItem name={"音频"} url={"/op1no5.mp3"} icon={<FaMusic />}/> */}
-            <DownloadItem name={"乐谱"} url={music.score} icon={<FaStickyNote />} />
-            <DownloadItem name={"源码"} url={music.lilypond} icon={<FaCode />} />
+            <DownloadItem
+              name={"乐谱"}
+              url={music.score}
+              icon={<FaStickyNote />}
+            />
+            <DownloadItem
+              name={"源码"}
+              url={music.lilypond}
+              icon={<FaCode />}
+            />
           </div>
         </div>
         {music.url ? (
@@ -112,3 +119,7 @@ export const query = graphql`
     }
   }
 `;
+
+export const Head = ({ data }: { data: any }) => (
+  <Meta title={data.notionPage.title} />
+);

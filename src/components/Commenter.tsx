@@ -153,7 +153,9 @@ function Commenter({ art, slug }: Record<string, string>) {
     data: rawComments,
     error,
     mutate,
-  } = useSWRImmutable(key, (key) => fetch(endpoint + key).then((res) => res.json()));
+  } = useSWRImmutable(key, (key) =>
+    fetch(endpoint + key).then((res) => res.json())
+  );
 
   if (!rawComments || error)
     return (
@@ -181,15 +183,20 @@ function Commenter({ art, slug }: Record<string, string>) {
       await put("/comment", comment);
       return optimisticData;
     };
-    mutate(updateFn, { optimisticData, populateCache: true, revalidate: false });
+    mutate(updateFn, {
+      optimisticData,
+      populateCache: true,
+      revalidate: false,
+    });
   };
 
   return (
     <section className="section">
       <div className="container is-max-desktop">
+        <h1 className="title">站内评论</h1>
         <Form submit={onSubmitComment} submitting={submitting} />
         <hr />
-        {comments.map(Comment)}
+        {comments.length ? comments.map(Comment) : <p>暂无站内评论</p>}
       </div>
     </section>
   );

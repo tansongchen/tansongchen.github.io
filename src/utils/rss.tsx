@@ -24,7 +24,9 @@ interface RSSPage {
 
 const feeds = [
   {
-    serialize: ({ query: { allNotionDatabase, allMarkdownRemark, site } }: any) => {
+    serialize: ({
+      query: { allNotionDatabase, allMarkdownRemark, site },
+    }: any) => {
       const result: Item[] = [];
       for (const md of allMarkdownRemark.nodes) {
         const { fileAbsolutePath, frontmatter } = md;
@@ -36,7 +38,9 @@ const feeds = [
             url: cover,
           },
           description: abstract,
-          url: `${site.siteMetadata.siteUrl}/articles/${basename(fileAbsolutePath)}`,
+          url: `${site.siteMetadata.siteUrl}/articles/${basename(
+            fileAbsolutePath
+          )}`,
         });
       }
       for (const database of allNotionDatabase.nodes) {

@@ -1,7 +1,7 @@
 import React, { useState, useContext } from "react";
 import { graphql, Link, PageProps } from "gatsby";
 import { GatsbyImage, IGatsbyImageData } from "gatsby-plugin-image";
-import Layout from "../components/Layout";
+import PageLayout from "../components/PageLayout";
 import { createDate, Recipe } from "../utils/metadata";
 import slugify from "../utils/slugify";
 import Meta from "../components/Meta";
@@ -410,11 +410,11 @@ export default function ({ data }: PageProps<Queries.RecipesQuery>) {
       });
   });
   return (
-    <Layout slug="recipes">
+    <PageLayout slug="recipes">
       <Introduction />
       <hr />
       <Menu nodes={nodes} />
-    </Layout>
+    </PageLayout>
   );
 }
 

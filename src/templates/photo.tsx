@@ -5,6 +5,7 @@ import slugify from "../utils/slugify";
 import ExifImage, { IExifImage, preprocessExif } from "../components/ExifImage";
 import EntryLayout from "../components/EntryLayout";
 import { Photo } from "../utils/metadata";
+import Meta from "../components/Meta";
 
 export default function ({ data }: PageProps<Queries.PhotoQuery>) {
   const { title, properties, image } = data.notionPage!;
@@ -69,3 +70,7 @@ export const query = graphql`
     }
   }
 `;
+
+export const Head = ({ data }: { data: any }) => (
+  <Meta title={data.notionPage.title} />
+);

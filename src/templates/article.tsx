@@ -18,7 +18,7 @@ export default function ({ data }: PageProps<Queries.ArticleQuery>) {
     category: tags![0] || "Default Category",
     description: abstract || "Default Description",
     cover: cover || "",
-  }
+  };
   return (
     <EntryLayout art="articles" slug={slug} {...article}>
       <section className="section e-content">

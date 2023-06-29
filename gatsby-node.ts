@@ -80,17 +80,16 @@ export const createPages: GatsbyNode["createPages"] = async ({
   `);
   data!.allNotionDatabase!.nodes!.forEach((database) => {
     const { title, childrenNotionPage } = database;
-    const art = arts.find((x) => x.name === title);
-    art &&
-      childrenNotionPage!.forEach((page) => {
-        page &&
-          page.title &&
-          actions.createPage({
-            path: `${art.slug}/${slugify(page.title)}`,
-            component: resolve(`./src/templates/${art.single}.tsx`),
-            context: { id: page.id },
-          });
+    const art = arts.find((x) => x.name === title)!;
+    childrenNotionPage!.forEach((page) => {
+      if (!page || !page.title) return;
+      const slug = `${art.slug}/${slugify(page.title)}`;
+      actions.createPage({
+        path: slug,
+        component: resolve(`./src/templates/${art.single}.tsx`),
+        context: { id: page.id },
       });
+    });
   });
 };
 

@@ -1,9 +1,9 @@
 import React, { Component, useState } from "react";
-import Layout from "../components/Layout";
 import Dropdown from "../components/Dropdown";
 import { graphql, Link, PageProps } from "gatsby";
 import Meta from "../components/Meta";
 import { basename } from "../utils/metadata";
+import PageLayout from "../components/PageLayout";
 
 enum SortMethod {
   FromNewestToOldest,
@@ -288,9 +288,9 @@ export default function ({ data }: PageProps<Queries.ArticlesQuery>) {
     }
   );
   return (
-    <Layout slug="articles">
+    <PageLayout slug="articles">
       <Main nodes={nodes} />
-    </Layout>
+    </PageLayout>
   );
 }
 

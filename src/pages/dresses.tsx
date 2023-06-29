@@ -1,7 +1,7 @@
 import React from "react";
 import { graphql, Link, PageProps } from "gatsby";
 import { GatsbyImage, IGatsbyImageData } from "gatsby-plugin-image";
-import Layout from "../components/Layout";
+import PageLayout from "../components/PageLayout";
 import { Dress } from "../utils/metadata";
 import ExifImage, { IExifImage, preprocessExif } from "../components/ExifImage";
 import slugify from "../utils/slugify";
@@ -97,11 +97,11 @@ export default function ({ data }: PageProps<Queries.DressesQuery>) {
     }
   );
   return (
-    <Layout slug="dresses">
+    <PageLayout slug="dresses">
       <Introduction />
       <hr />
       <Main nodes={nodes} />
-    </Layout>
+    </PageLayout>
   );
 }
 

@@ -1,11 +1,10 @@
 import React from "react";
 import { graphql, PageProps } from "gatsby";
-import Layout from "../components/Layout";
 import slugify from "../utils/slugify";
-import Commenter from "../components/Commenter";
 import { createDate, Video, yymmdd } from "../utils/metadata";
 import { Stream } from "@cloudflare/stream-react";
 import EntryLayout from "../components/EntryLayout";
+import Meta from "../components/Meta";
 
 export default function ({ data }: PageProps<Queries.VideoQuery>) {
   const { title, properties } = data.notionPage!;
@@ -46,3 +45,7 @@ export const query = graphql`
     }
   }
 `;
+
+export const Head = ({ data }: { data: any }) => (
+  <Meta title={data.notionPage.title} />
+);

@@ -8,7 +8,7 @@ import {
   FaMapMarker,
   FaPlayCircle,
 } from "react-icons/fa";
-import Layout from "../components/Layout";
+import PageLayout from "../components/PageLayout";
 import summary, { title, Art } from "../utils/metadata";
 import Meta from "../components/Meta";
 
@@ -474,7 +474,7 @@ const Experience = () => (
   </section>
 );
 
-const repositories: { name: string, owner: string }[] = [
+const repositories: { name: string; owner: string }[] = [
   { name: "tansongchen.github.io", owner: "tansongchen" },
   { name: "julia", owner: "JuliaLang" },
   { name: "TaylorDiff.jl", owner: "JuliaDiff" },
@@ -511,21 +511,26 @@ const Code = () => (
 
 export default function () {
   return (
-    <Layout slug="">
-      <aside className="h-card" style={{display: "none"}}>
+    <PageLayout slug="">
+      <aside className="h-card" style={{ display: "none" }}>
         <span className="p-name">谭淞宸</span>
         {/* <span className="p-honorific-prefix">猫猫</span> */}
         <span className="p-given-name">淞宸</span>
         <span className="p-family-name">谭</span>
         <span className="p-honorific-suffix">猫猫</span>
         <div className="p-org">Massachusetts Institute of Technology</div>
-        <img className="u-photo" src="http://example.com/sk.jpg"/>
-        <a className="u-url" href="https://tansongchen.com/static/5d6c52433924c9488d1b7def2b63c17c/2d160/mitao.webp"></a>
+        <img
+          className="u-photo"
+          src="https://tansongchen.com/static/5d6c52433924c9488d1b7def2b63c17c/2d160/mitao.webp"
+        />
+        <a className="u-url u-uid" href="https://tansongchen.com/"></a>
         <a className="u-email" href="mailto:i@tansongchen.com"></a>
         <div className="p-tel">+1 (857) 298-9702</div>
         <div className="p-street-address">70 Pacific St</div>
         <span className="p-locality">Cambridge</span>
-        <abbr className="p-region" title="Massachusetts">MA</abbr>
+        <abbr className="p-region" title="Massachusetts">
+          MA
+        </abbr>
         <span className="p-postal-code">02139</span>
         <div className="p-country-name">U.S.A</div>
         <time className="dt-bday">2000-09-21</time>
@@ -543,12 +548,14 @@ export default function () {
         <hr />
         <Code />
       </main>
-    </Layout>
+    </PageLayout>
   );
 }
 
-export const Head = () => <>
-  <Meta title="众妙斋" />
-  <link href="https://github.com/tansongchen" rel="me" />
-  <link href="mailto:i@tansongchen.com" rel="me" />
-</>;
+export const Head = () => (
+  <>
+    <Meta title="众妙斋" />
+    <link href="https://github.com/tansongchen" rel="me" />
+    <link href="mailto:i@tansongchen.com" rel="me" />
+  </>
+);

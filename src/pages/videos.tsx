@@ -1,6 +1,6 @@
 import React from "react";
 import { graphql, Link, PageProps } from "gatsby";
-import Layout from "../components/Layout";
+import PageLayout from "../components/PageLayout";
 import slugify from "../utils/slugify";
 import { createDate, Video, yymmdd } from "../utils/metadata";
 import Meta from "../components/Meta";
@@ -54,13 +54,13 @@ export default function ({ data }: PageProps<Queries.VideosQuery>) {
     }
   );
   return (
-    <Layout slug="videos">
+    <PageLayout slug="videos">
       <main>
         <Introduction />
         <hr />
         <Display nodes={nodes} />
       </main>
-    </Layout>
+    </PageLayout>
   );
 }
 

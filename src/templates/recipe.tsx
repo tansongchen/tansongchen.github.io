@@ -1,10 +1,9 @@
 import React from "react";
 import { graphql, PageProps } from "gatsby";
-import Layout from "../components/Layout";
 import slugify from "../utils/slugify";
 import { createDate, Recipe, yymmdd } from "../utils/metadata";
-import Commenter from "../components/Commenter";
 import EntryLayout from "../components/EntryLayout";
+import Meta from "../components/Meta";
 
 export default function ({ data }: PageProps<Queries.RecipeQuery>) {
   const { title, properties, childMarkdownRemark, image } = data.notionPage!;
@@ -16,7 +15,7 @@ export default function ({ data }: PageProps<Queries.RecipeQuery>) {
     date: date,
     category: properties!.Category!,
     rating: properties!.Rating!,
-    description: ""
+    description: "",
   };
   return (
     <EntryLayout art="cuisine" slug={slugify(recipe.name)} {...recipe}>
@@ -55,3 +54,7 @@ export const query = graphql`
     }
   }
 `;
+
+export const Head = ({ data }: { data: any }) => (
+  <Meta title={data.notionPage.title} />
+);

@@ -1,6 +1,6 @@
 import React from "react";
 import { graphql, PageProps, Link } from "gatsby";
-import Layout from "../components/Layout";
+import PageLayout from "../components/PageLayout";
 import { Photo } from "../utils/metadata";
 import { IExifImage, preprocessExif } from "../components/ExifImage";
 import { GatsbyImage, IGatsbyImageData } from "gatsby-plugin-image";
@@ -94,11 +94,11 @@ export default function ({ data }: PageProps<Queries.PhotosQuery>) {
     }
   );
   return (
-    <Layout slug="photos">
+    <PageLayout slug="photos">
       <Introduction />
       <hr />
       <Gallery nodes={nodes} />
-    </Layout>
+    </PageLayout>
   );
 }
 

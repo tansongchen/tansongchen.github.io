@@ -1,6 +1,6 @@
 import React from "react";
 import { graphql, Link, PageProps } from "gatsby";
-import Layout from "../components/Layout";
+import PageLayout from "../components/PageLayout";
 import slugify from "../utils/slugify";
 import { createDate, yymmdd, Music } from "../utils/metadata";
 import Meta from "../components/Meta";
@@ -60,13 +60,13 @@ export default function ({ data }: PageProps<Queries.MusicsQuery>) {
     }
   );
   return (
-    <Layout slug="musics">
+    <PageLayout slug="musics">
       <main>
         <Introduction />
         <hr />
         <Display nodes={nodes} />
       </main>
-    </Layout>
+    </PageLayout>
   );
 }
 
