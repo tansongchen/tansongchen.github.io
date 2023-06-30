@@ -474,19 +474,19 @@ const Experience = () => (
   </section>
 );
 
-const repositories: { name: string; owner: string }[] = [
-  { name: "tansongchen.github.io", owner: "tansongchen" },
-  { name: "julia", owner: "JuliaLang" },
-  { name: "TaylorDiff.jl", owner: "JuliaDiff" },
-  { name: "Enzyme", owner: "EnzymeAD" },
-  { name: "lammps", owner: "lammps" },
-  { name: "deepks-kit", owner: "deepmodeling" },
-  { name: "abacus-develop", owner: "deepmodeling" },
-  { name: "PIMD.jl", owner: "tansongchen" },
-  { name: "dppl-project", owner: "tansongchen" },
-  { name: "AwesomeBig2Agent", owner: "tansongchen" },
-  { name: "AwesomeLandlordBot", owner: "tansongchen" },
-  { name: "GRE3000", owner: "tansongchen" },
+const repositories: { repo: string; owner: string }[] = [
+  { repo: "tansongchen.github.io", owner: "tansongchen" },
+  { repo: "julia", owner: "JuliaLang" },
+  { repo: "TaylorDiff.jl", owner: "JuliaDiff" },
+  { repo: "Enzyme", owner: "EnzymeAD" },
+  { repo: "lammps", owner: "lammps" },
+  { repo: "deepks-kit", owner: "deepmodeling" },
+  { repo: "abacus-develop", owner: "deepmodeling" },
+  { repo: "PIMD.jl", owner: "tansongchen" },
+  { repo: "dppl-project", owner: "tansongchen" },
+  { repo: "AwesomeBig2Agent", owner: "tansongchen" },
+  { repo: "AwesomeLandlordBot", owner: "tansongchen" },
+  { repo: "GRE3000", owner: "tansongchen" },
 ];
 
 const codePreface = {
@@ -502,7 +502,7 @@ const Code = () => (
     <div className="container is-max-desktop">
       <div className="columns is-multiline">
         {repositories.map((x) => (
-          <Repository key={x.name} {...x} />
+          <Repository key={x.repo} {...x} />
         ))}
       </div>
     </div>

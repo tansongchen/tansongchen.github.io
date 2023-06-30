@@ -161,7 +161,10 @@ function Commenter({ art, slug }: Record<string, string>) {
     return (
       <section className="section">
         <div className="container is-max-desktop">
-          <p>评论系统出现故障</p>
+          <h1 className="title">站内评论</h1>
+          <Form submit={() => {}} submitting={submitting} />
+          <hr />
+          <p>站内评论加载中……</p>
         </div>
       </section>
     );

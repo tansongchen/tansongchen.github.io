@@ -43,16 +43,22 @@ function Mention({ type, author, url, published, content }: MentionData) {
 function WebMention({ art, slug }: Record<string, string>) {
   const target = `${site}/${art}/${slug}`;
   const token = `GevpnlAkAbTXHes6nLWnLw`;
-  const query = (target: string) => `https://webmention.io/api/mentions.jf2?target=${target}&token=${token}`;
+  const query = (target: string) =>
+    `https://webmention.io/api/mentions.jf2?target=${target}&token=${token}`;
   const { data, error } = useSWR<WebMentionFeed>(target, (target) =>
     fetch(query(target)).then((res) => res.json())
   );
-  if (!data || error) return <div></div>;
   return (
     <section className="section">
       <article className="container is-max-desktop">
         <h1 className="title">站外评论</h1>
-        {data.children.length ? data.children.map(Mention) : <p>暂无站外评论</p>}
+        {!data || error ? (
+          <p>站外评论加载中……</p>
+        ) : data.children.length ? (
+          data.children.map(Mention)
+        ) : (
+          <p>暂无站外评论</p>
+        )}
       </article>
     </section>
   );

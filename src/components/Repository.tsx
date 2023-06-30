@@ -1,12 +1,13 @@
 import React from "react";
 import { request } from "@octokit/request";
 import { FaCodeBranch, FaEye, FaStar } from "react-icons/fa";
-import useSWR from "swr";
+import useSWRImmutable from "swr/immutable";
 
 function Repository({ owner, repo }: Record<string, string>) {
-  const { data, error } = useSWR(
+  const { data, error } = useSWRImmutable(
     ["GET /repos/{owner}/{repo}", { owner, repo }],
-    ([route, options]) => request(route, options).then((res) => res.data)
+    ([route, options]) => request(route, options).then((res) => res.data),
+    { shouldRetryOnError: false }
   );
   if (!data || error) return <div></div>;
   const {
