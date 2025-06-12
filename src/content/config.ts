@@ -1,3 +1,4 @@
+import { glob } from "astro/loaders";
 import { defineCollection } from "astro:content";
 import { notionLoader } from "notion-astro-loader";
 
@@ -13,4 +14,9 @@ const database = defineCollection({
   }),
 });
 
-export const collections = { database };
+const articles = defineCollection({
+  loader: glob({ pattern: "**/*.md", base: "./articles" }),
+  // schema: /* ... */
+});
+
+export const collections = { database, articles };

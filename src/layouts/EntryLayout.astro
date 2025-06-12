@@ -1,0 +1,48 @@
+---
+// import Commenter from "./Commenter";
+import { type Piece, site, yymmdd } from "../utils/metadata";
+// import WebMention from "./WebMention";
+import Layout from "./Layout.astro";
+
+const { art, slug, name, date, category, description } = Astro.props;
+
+const path = art + "/" + slug;
+const url = site + "/" + path;
+---
+
+<Layout slug={path}>
+  <main class="h-entry">
+    <section
+      class="section"
+      style={{ backgroundColor: "rgba(230, 240, 255, 0.5)" }}
+    >
+      <div class="content has-text-centered">
+        <h2 class="p-name">{name}</h2>
+        <a
+          class="p-author h-card"
+          href="https://tansongchen.com"
+          style={{ display: "none" }}
+        >
+          谭淞宸
+        </a>
+        <a class="u-url" href={url} style={{ display: "none" }}></a>
+        <p>
+          <span class="tag is-medium is-info is-light p-category">
+            {category}
+          </span>
+        </p>
+        <p class="p-summary">{description}</p>
+        <p>
+          <time class="dt-published" datetime={date.toISOString()}>
+            {yymmdd(date)}
+          </time>
+        </p>
+      </div>
+    </section>
+    <slot />
+  </main>
+  <hr />
+  <!-- <Commenter art={art} slug={slug} />
+  <hr />
+  <WebMention art={art} slug={slug} /> -->
+</Layout>

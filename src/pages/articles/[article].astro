@@ -1,0 +1,22 @@
+---
+import { render } from "astro:content";
+import { getEntry } from "astro:content";
+import { getCollection } from "astro:content";
+import EntryLayout from "../../layouts/EntryLayout.astro";
+export async function getStaticPaths() {
+  const articles = await getCollection("articles");
+  return articles.map(({ id }) => ({ params: { article: id } }));
+}
+
+const { article } = Astro.params;
+const content = await getEntry("articles", article)!;
+const { Content } = await render(content);
+---
+
+<EntryLayout {...content.data}>
+  <section class="section e-content">
+    <article class="container is-max-desktop content">
+      <Content />
+    </article>
+  </section>
+</EntryLayout>
