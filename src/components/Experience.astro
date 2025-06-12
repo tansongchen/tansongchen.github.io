@@ -1,0 +1,81 @@
+---
+export interface Props {
+  title: string;
+  company: string;
+  companyUrl: string;
+  photo: string;
+  supervisor?: string;
+  description: string;
+  duration: string;
+  location: string;
+  isCurrent?: boolean;
+}
+
+const {
+  title,
+  company,
+  companyUrl,
+  photo,
+  supervisor,
+  description,
+  duration,
+  location,
+  isCurrent,
+}: Props = Astro.props;
+import { Icon } from "astro-icon/components";
+import "bulma-timeline/dist/css/bulma-timeline.min.css";
+import { Image } from "astro:assets";
+import type { ImageMetadata } from "astro";
+const images = import.meta.glob<{ default: ImageMetadata }>(
+  "/src/assets/experience/*.{jpeg,jpg,png,gif}"
+);
+---
+
+<article class="timeline-item">
+  <div class="timeline-marker is-icon">
+    {
+      isCurrent ? (
+        <Icon class="icon is-info" name="fa6-solid:circle-play" />
+      ) : (
+        <Icon class="icon is-info" name="fa6-solid:circle-check" />
+      )
+    }
+  </div>
+  <div class="timeline-content" style={{ width: "100%" }}>
+    <div class="columns">
+      <div class="column content" style={{ padding: "1rem 2rem" }}>
+        <div class="level">
+          <div class="level-item" style={{ display: "inline" }}>
+            <span style={{ fontSize: "1.5rem" }}>{title}</span>
+          </div>
+          <div class="level-item" style={{ display: "inline" }}>
+            <p>@ {company}</p>
+          </div>
+        </div>
+        <p>
+          <Icon class="icon is-small" name="fa6-solid:calendar" />
+          &nbsp;&nbsp;{duration}
+        </p>
+        <p>
+          <Icon class="icon is-small" name="fa6-solid:location-dot" />
+          &nbsp;&nbsp;{location}
+        </p>
+        {description}
+      </div>
+      <div
+        class="column box"
+        style={{
+          textAlign: "center",
+          padding: 0,
+          overflow: "hidden",
+          position: "relative",
+          zIndex: 0,
+        }}
+      >
+        <a href={companyUrl}>
+          <Image class="fit" src={images[photo]()} alt={photo} />
+        </a>
+      </div>
+    </div>
+  </div>
+</article>

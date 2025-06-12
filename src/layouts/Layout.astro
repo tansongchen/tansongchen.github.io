@@ -1,3 +1,9 @@
+---
+import Footer from "../components/Footer.astro"
+import Header from "../components/Header.astro"
+import "../styles/index.scss"
+---
+
 <!doctype html>
 <html lang="en">
 	<head>
@@ -5,10 +11,12 @@
 		<meta name="viewport" content="width=device-width" />
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 		<meta name="generator" content={Astro.generator} />
-		<title>Astro Basics</title>
+		<title>众妙斋</title>
 	</head>
 	<body>
+		<Header />
 		<slot />
+		<Footer />
 	</body>
 </html>
 

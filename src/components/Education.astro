@@ -1,0 +1,81 @@
+---
+export interface Props {
+  photo: string;
+  institutionName: string;
+  institutionUrl: string;
+  degrees: string[][];
+  duration: string;
+  location: string;
+  description: string;
+}
+
+const {
+  photo,
+  institutionName,
+  institutionUrl,
+  degrees,
+  duration,
+  location,
+  description,
+} = Astro.props;
+import { Icon } from "astro-icon/components";
+import { Image } from "astro:assets";
+import type { ImageMetadata } from "astro";
+const images = import.meta.glob<{ default: ImageMetadata }>(
+  "/src/assets/education/*.{jpeg,jpg,png,gif}"
+);
+---
+
+<article class="section container is-max-desktop">
+  <div
+    class="box columns"
+    style={{
+      padding: 0,
+      overflow: "hidden",
+      position: "relative",
+      zIndex: 0,
+    }}
+  >
+    <div class="column" style={{ padding: 0 }}>
+      <a href={institutionUrl}>
+        <Image class="fit" src={images[photo]()} alt={photo} />
+      </a>
+    </div>
+    <div class="column content" style={{ padding: "2rem" }}>
+      <h3 class="has-text-centered">{institutionName}</h3>
+      <div class="has-text-centered" style={{ margin: "1.5rem auto" }}>
+        {
+          degrees.map(([degree, departmentUrl]) => (
+            <Fragment key={degree}>
+              <a href={departmentUrl}>{degree}</a>
+              <br />
+            </Fragment>
+          ))
+        }
+      </div>
+      <div class="columns">
+        <div class="column" style={{ margin: "0 2%", padding: ".5rem" }}>
+          <Icon
+            class="icon is-small"
+            name="fa6-solid:calendar"
+            style={{ width: "10%" }}
+          />
+          <p class="has-text-centered" style={{ display: "inline-block" }}>
+            &nbsp; &nbsp; {duration}
+          </p>
+        </div>
+        <div class="column" style={{ margin: "0 2%", padding: ".5rem" }}>
+          <Icon
+            class="icon is-small"
+            name="fa6-solid:location-dot"
+            style={{ width: "10%" }}
+          />
+          <p class="has-text-centered" style={{ display: "inline-block" }}>
+            &nbsp; &nbsp; {location}
+          </p>
+        </div>
+      </div>
+      <p>{description}</p>
+    </div>
+  </div>
+</article>

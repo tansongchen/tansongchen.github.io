@@ -1,0 +1,15 @@
+---
+export interface Props {
+  title: string;
+  quote: string;
+  description: string;
+}
+
+const { title, quote, description }: Props = Astro.props;
+---
+
+<div class="container content is-medium has-text-centered">
+  <h2>{title}</h2>
+  <blockquote class="quote">{quote}</blockquote>
+  <p>{description}</p>
+</div>

@@ -1,0 +1,69 @@
+---
+import { Icon } from "astro-icon/components";
+import summary, { title } from "../utils/metadata";
+---
+
+<script>
+  function handleClick() {
+    const navbarMenu = document.getElementById("navbarControl");
+    if (navbarMenu) {
+      navbarMenu.classList.toggle("is-active");
+    }
+  }
+</script>
+
+<nav class="navbar is-fixed-top" role="navigation" aria-label="main navigation">
+  <div class="content is-medium container">
+    <div class="navbar-brand">
+      <a
+        class="navbar-item"
+        style={{ fontSize: "1.5rem", padding: "0 1.5rem" }}
+        href="/"
+      >
+        🍭️ {title}
+      </a>
+
+      <a
+        role="button"
+        class="navbar-burger"
+        aria-label="menu"
+        aria-expanded="false"
+        data-target="navbarBasicExample"
+        onclick="handleClick"
+      >
+        <span aria-hidden="true"></span>
+        <span aria-hidden="true"></span>
+        <span aria-hidden="true"></span>
+      </a>
+    </div>
+    <div class="navbar-menu">
+      <div
+        class="navbar-start"
+        style={{ justifyContent: "center", marginLeft: "auto" }}
+      >
+        {
+          summary.map(({ slug, name, icon }) => (
+            <a
+              href={`/${slug}/`.replace("//", "/")}
+              class={
+                "navbar-item" + (slug === "" ? " navbar-item-current" : "")
+              }
+            >
+              <Icon name={icon} />
+              <span>&nbsp;&nbsp;{name}</span>
+            </a>
+          ))
+        }
+      </div>
+      <div class="navbar-end">
+        <div class="navbar-item">
+          <div class="buttons">
+            <a href="/rss.xml" class="button is-info">
+              <strong>订阅</strong>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</nav>

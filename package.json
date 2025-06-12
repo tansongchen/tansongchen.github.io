@@ -9,6 +9,23 @@
     "astro": "astro"
   },
   "dependencies": {
-    "astro": "^5.8.2"
+    "@astrojs/react": "^4.3.0",
+    "@octokit/request": "^10.0.2",
+    "@types/react": "^19.1.6",
+    "@types/react-dom": "^19.1.6",
+    "astro": "^5.8.2",
+    "astro-icon": "^1.1.5",
+    "bulma": "^1.0.4",
+    "bulma-timeline": "^3.0.5",
+    "fast-exif": "^2.0.1",
+    "notion-astro-loader": "^0.4.0",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0",
+    "react-icons": "^5.5.0",
+    "sass": "^1.89.2",
+    "swr": "^2.3.3"
+  },
+  "devDependencies": {
+    "@iconify-json/fa6-solid": "^1.2.3"
   }
 }

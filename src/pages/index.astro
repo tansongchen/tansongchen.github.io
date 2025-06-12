@@ -1,11 +1,193 @@
 ---
-import Welcome from '../components/Welcome.astro';
-import Layout from '../layouts/Layout.astro';
+// import { getCollection } from "astro:content";
+import HCard from "../components/HCard.astro";
+import Layout from "../layouts/Layout.astro";
+import Introduction from "../components/Introduction.astro";
+import Preface, {
+  type Props as PrefaceProps,
+} from "../components/Preface.astro";
+import Education, {
+  type Props as EducationProps,
+} from "../components/Education.astro";
+import Experience, {
+  type Props as ExperienceProps,
+} from "../components/Experience.astro";
+import DateTag from "../components/DateTag.astro";
+import Repository from "../islands/Repository";
+// const allNotion = await getCollection("database");
 
-// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
-// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
+const educationPreface: PrefaceProps = {
+  title: "教育经历",
+  quote: "恰同学少年，风华正茂；书生意气，挥斥方遒",
+  description: "",
+};
+
+const experiencePreface: PrefaceProps = {
+  title: "学术与职业经历",
+  quote: "曾记否，到中流击水，浪遏飞舟",
+  description: "",
+};
+
+const codePreface = {
+  title: "项目经历",
+  quote:
+    "编程非常有趣，在于它不仅满足了我们内心深处进行创造的渴望，而且还愉悦了每个人内在的情感。",
+  description: "",
+};
+
+const mit: EducationProps = {
+  photo: "/src/assets/education/mit.jpg",
+  institutionName: "麻省理工学院",
+  institutionUrl: "https://mit.edu",
+  degrees: [["理学博士，数学与计算科学", "https://math.mit.edu"],["理学硕士，计算科学与工程", "https://cse.mit.edu"]],
+  location: "Cambridge, MA",
+  duration: "2021 - 2026",
+  description:
+    "作为计算科学与工程中心开设的研究型硕士项目，我在这里接受高质量的计算相关课程的训练，并与来自全校各系的教授和学生共同以跨学科的方式探讨计算问题。",
+};
+
+const ucla: EducationProps = {
+  photo: "/src/assets/education/ucla.jpg",
+  institutionName: "加州大学洛杉矶分校",
+  institutionUrl: "https://ucla.edu",
+  degrees: [["学期交换", "https://chemistry.ucla.edu"]],
+  location: "Los Angeles, CA",
+  duration: "2019 - 2019",
+  description:
+    "大三时，我赴加州大学洛杉矶分校进行一学期的交换。沐浴在加州的暖阳中，我与校园吉祥物加州棕熊 Bruin 共同感受校园的学术氛围。",
+};
+
+const pku: EducationProps = {
+  photo: "/src/assets/education/pku.jpg",
+  institutionName: "北京大学",
+  institutionUrl: "https://pku.edu.cn",
+  degrees: [
+    ["理学学士，化学", "https://chem.pku.edu.cn"],
+    ["理学学士，物理", "https://phy.pku.edu.cn"],
+  ],
+  location: "北京市",
+  duration: "2017 - 2021",
+  description:
+    "未名湖畔、博雅塔下，细推物理须行乐，何用浮名绊此身。四年间，我在化学和物理双学位中取得 GPA 3.86 / 4，并在毕业时获未名学士荣誉。",
+};
+
+const rdfz: EducationProps = {
+  photo: "/src/assets/education/rdfz.jpg",
+  institutionName: "中国人民大学附属中学",
+  institutionUrl: "http://www.rdfz.cn/",
+  degrees: [["初中、高中，早培班项目", "http://www.rdfz.cn/"]],
+  location: "北京市",
+  duration: "2011 - 2017",
+  description:
+    "海淀黄庄的路口承载了我快乐的少年时光；我曾随合唱团出国交流演出，也曾参与食虫植物温室的建设。高一时在第 29 届化学奥林匹克决赛中取得金牌，并提前一年毕业。",
+};
+
+const nvidia: ExperienceProps = {
+  title: "深度学习编译器实习生",
+  company: "NVIDIA",
+  companyUrl: "https://nvidia.com",
+  photo: "/src/assets/experience/nvidia.jpg",
+  description:
+    "在 NVIDIA 深度学习编译器团队，我探究了深度神经网络编译过程中的层融合（fusion）优化，提高了自动调优的效果并提升了编译效率。",
+  duration: "2022 年 5 月至 2022 年 8 月",
+  location: "Santa Clara, CA",
+  isCurrent: false,
+};
+
+const julia: ExperienceProps = {
+  title: "研究助理",
+  company: "麻省理工学院 Julia 实验室",
+  companyUrl: "https://julia.mit.edu",
+  photo: "/src/assets/experience/stata.jpg",
+  description:
+    "在 Julia 实验室，我们利用 Julia 语言的一系列编译基础设施（元编程、IR 反射和 LLVM 代码生成）研究如何将高级语言表达的抽象语义有效地编译为并行计算、异构计算等高性能场景下的机器代码",
+  duration: "2021 年 8 月至今",
+  location: "Cambridge, MA",
+  isCurrent: true,
+};
+
+const dptech: ExperienceProps = {
+  title: "算法工程师实习",
+  company: "北京深势科技有限公司",
+  companyUrl: "https://dp.tech/index.html",
+  photo: "/src/assets/experience/dptech.jpg",
+  description:
+    "在深势科技，我们利用 DeePKS 方法构建参数化的密度泛函模型，并设计有效的训练方案来系统改善这样的模型；我们还将模型部署到 ABACUS 等开源密度泛函软件上实现高效的推理。",
+  duration: "2021 年 3 月至 2021 年 7 月",
+  location: "北京市",
+};
+
+const binz: ExperienceProps = {
+  title: "研究助理实习",
+  company: "麻省理工学院",
+  companyUrl: "https://zhanggroup.mit.edu",
+  photo: "/src/assets/experience/chemistry.jpg",
+  description:
+    "在 Zhang 组，我们利用深度生成模型对 DNA 体系进行粗粒化建模，并利用噪声对比学习进行优化，相较于传统的 force-matching 方法在统计量的准确性上得到了较大的提升。",
+  duration: "2020 年 6 月至 2020 年 10 月",
+  location: "Cambridge, MA (Remote)",
+};
+
+const thg: ExperienceProps = {
+  title: "访问学者",
+  company: "加州大学伯克利分校",
+  companyUrl: "https://thglab.berkeley.edu",
+  photo: "/src/assets/experience/stanley.jpg",
+  description:
+    "在 Head-Gordon 组，我们发展了一种利用扩展 Langrange 量对经典电荷平衡模型进行近似模拟的方法，并基于 MPI 高效地在大规模分子体系中实现了这一方法。该方法已加入了开源分子动力学软件 LAMMPS。",
+  duration: "2019 年 12 月至 2020 年 3 月",
+  location: "Berkeley, CA",
+};
+
+const repositories: { repo: string; owner: string }[] = [
+  { repo: "tansongchen.github.io", owner: "tansongchen" },
+  { repo: "julia", owner: "JuliaLang" },
+  { repo: "TaylorDiff.jl", owner: "JuliaDiff" },
+  { repo: "Enzyme", owner: "EnzymeAD" },
+  { repo: "lammps", owner: "lammps" },
+  { repo: "deepks-kit", owner: "deepmodeling" },
+  { repo: "abacus-develop", owner: "deepmodeling" },
+  { repo: "PIMD.jl", owner: "tansongchen" },
+  { repo: "dppl-project", owner: "tansongchen" },
+  { repo: "AwesomeBig2Agent", owner: "tansongchen" },
+  { repo: "AwesomeLandlordBot", owner: "tansongchen" },
+  { repo: "GRE3000", owner: "tansongchen" },
+];
 ---
 
 <Layout>
-	<Welcome />
+  <main>
+    <Introduction />
+    <section class="section">
+      <Preface {...educationPreface} />
+      <Education {...mit} />
+      <Education {...ucla} />
+      <Education {...pku} />
+      <Education {...rdfz} />
+    </section>
+    <section class="section">
+      <Preface {...experiencePreface} />
+      <div class="timeline container is-max-desktop">
+        <DateTag date="..." />
+        <Experience {...julia} />
+        <Experience {...nvidia} />
+        <DateTag date="2022" />
+        <Experience {...dptech} />
+        <DateTag date="2021" />
+        <Experience {...binz} />
+        <DateTag date="2020" />
+        <Experience {...thg} />
+        <DateTag date="2019" />
+      </div>
+    </section>
+  </main>
+  <section class="section">
+    <Preface {...codePreface} />
+    <div class="container is-max-desktop">
+      <div class="columns is-multiline">
+        {repositories.map((x) => <Repository key={x.repo} {...x} client:only/>)}
+      </div>
+    </div>
+  </section>
+  <HCard />
 </Layout>

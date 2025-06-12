@@ -1,0 +1,78 @@
+@charset "utf-8";
+
+@use "bulma/sass" with ($navbar-height: 4rem,
+    $content-heading-weight: 400,
+    $dropdown-menu-min-width: 1rem,
+
+    $footer-padding: 3rem 1.5rem 4rem);
+
+// @use "bulma-timeline" with ($timeline-marker-color: white,
+// );
+
+.navbar-item {
+    padding: 0.5rem 1rem;
+}
+
+.navbar-item-current {
+    background-color: #fafafa;
+}
+
+.image.is-4by3 .gatsby-image-wrapper {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+}
+
+.fit {
+    height: 100%;
+    object-fit: cover;
+}
+
+.quote {
+    margin: 2rem auto;
+    padding: 0 2rem;
+    max-width: 700px;
+    line-height: 1.8;
+    border: none;
+    color: #888;
+}
+
+.quote::before {
+    content: "“ ";
+    color: #555555;
+    font-size: 4em;
+    font-family: Arial, serif;
+    line-height: 1em;
+    font-weight: 700;
+}
+
+figure.is-4by3 img,
+figure.is-2by1 img,
+figure.is-128x128 img {
+    object-fit: cover;
+    object-position: center;
+    height: 100%;
+}
+
+.content img {
+    display: block;
+    margin: 0 auto;
+    // padding: 0 10%;
+}
+
+.content em {
+    font-style: normal;
+    font-weight: 600;
+}
+
+.math-display {
+    text-align: center;
+    margin: 1em;
+    overflow: scroll;
+}
+
+a {
+    word-wrap: break-word;
+}
