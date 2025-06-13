@@ -1,30 +1,36 @@
 ---
-import Footer from "../components/Footer.astro"
-import Header from "../components/Header.astro"
-import "../styles/index.scss"
+import Footer from "../components/Footer.astro";
+import Header from "../components/Header.astro";
+import "../styles/index.scss";
 ---
 
 <!doctype html>
 <html lang="en">
-	<head>
-		<meta charset="UTF-8" />
-		<meta name="viewport" content="width=device-width" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<meta name="generator" content={Astro.generator} />
-		<title>众妙斋</title>
-	</head>
-	<body class="has-navbar-fixed-top">
-		<Header />
-		<slot />
-		<Footer />
-	</body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="description" content="谭淞宸的个人网站" />
+    <link
+      rel="webmention"
+      href="https://webmention.io/tansongchen.com/webmention"
+    />
+    <link rel="pingback" href="https://webmention.io/tansongchen.com/xmlrpc" />
+    <meta name="viewport" content="width=device-width" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="generator" content={Astro.generator} />
+    <title>众妙斋</title>
+  </head>
+  <body class="has-navbar-fixed-top">
+    <Header />
+    <slot />
+    <Footer />
+  </body>
 </html>
 
 <style>
-	html,
-	body {
-		margin: 0;
-		width: 100%;
-		height: 100%;
-	}
+  html,
+  body {
+    margin: 0;
+    width: 100%;
+    height: 100%;
+  }
 </style>

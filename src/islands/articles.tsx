@@ -1,7 +1,5 @@
-import React, { Component, useState } from "react";
+import { useState } from "react";
 import Dropdown from "../islands/Dropdown";
-import { basename } from "../utils/metadata";
-import PageLayout from "../layouts/PageLayout.astro";
 
 enum SortMethod {
   FromNewestToOldest,
@@ -9,17 +7,8 @@ enum SortMethod {
 }
 
 const Introduction = () => (
-  <section
-    className="section"
-    style={{
-      backgroundImage:
-        "linear-gradient(to bottom, rgba(255,230,230,0.5), rgba(255,255,255,0.5))",
-    }}
-  >
-    <div
-      className="container content is-max-desktop"
-      style={{ fontSize: "125%" }}
-    >
+  <section className="section introduction-articles">
+    <div className="container content is-max-desktop">
       <p>文以载道，文以会友。</p>
       <p>
         我喜欢用文字表达自我，无论是技术科普、成长感悟还是指点江山。写作其实是与自己对话：工作中理不清的概念写着写着就明白了，生活中缠绕的心结写着写着就解开了，还有那不吐不快的情感写着写着就释怀了。如果你有兴趣阅读更多我的文章，欢迎点击右上角用
@@ -114,7 +103,7 @@ const Selector = ({
             current={intervalStart}
             display={getYear}
           />
-          <div style={{ padding: ".5rem", display: "inline-flex" }}>至</div>
+          <div>至</div>
           <Dropdown<Date>
             options={[
               new Date("2019-12-31T23:59:59"),
@@ -125,7 +114,6 @@ const Selector = ({
             current={intervalEnd}
             display={getYear}
           />
-          <div style={{ padding: ".5rem .8rem", display: "inline-flex" }}></div>
           <Dropdown<SortMethod>
             options={[
               SortMethod.FromNewestToOldest,
@@ -163,12 +151,11 @@ const Article = ({
         <div className="column content" style={{ padding: "1.5rem" }}>
           <h3>{title}</h3>
           <p>{format(date)}</p>
-          <p>
+          <p className="level-left">
             {tags.map((tag) => (
               <span
                 key={tag}
-                className="tag is-info is-light is-medium"
-                style={{ margin: "0 3px" }}
+                className="tag is-info is-light is-medium level-item"
               >
                 {tag}
               </span>
@@ -249,7 +236,6 @@ export default function Main({ nodes }: MainProps) {
   return (
     <main>
       <Introduction />
-      <hr />
       <Selector
         sortMethod={sortMethod}
         changeSortMethod={changeSortMethod}

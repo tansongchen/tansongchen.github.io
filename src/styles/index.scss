@@ -3,11 +3,39 @@
 @use "bulma/sass" with ($navbar-height: 4rem,
     $content-heading-weight: 400,
     $dropdown-menu-min-width: 1rem,
-
     $footer-padding: 3rem 1.5rem 4rem);
 
 // @use "bulma-timeline" with ($timeline-marker-color: white,
 // );
+
+:root {
+    --home-gradient: linear-gradient(to bottom, hsl(196, 100%, 89%), var(--bulma-body-background-color));
+    --articles-gradient: linear-gradient(to bottom, hsl(0, 100%, 95%), var(--bulma-body-background-color));
+    --recipes-gradient: linear-gradient(to bottom, hsl(180, 83%, 88%), var(--bulma-body-background-color));
+}
+
+.introduction-home {
+    background-image: var(--home-gradient);
+    font-size: 125%;
+}
+
+.introduction-articles {
+    background-image: var(--articles-gradient);
+    font-size: 125%;
+}
+
+.introduction-recipes {
+    background-image: var(--recipes-gradient);
+    font-size: 125%;
+}
+
+@media (prefers-color-scheme: dark) {
+    :root {
+        --home-gradient: linear-gradient(to bottom, hsl(196, 33%, 22%), var(--bulma-body-background-color));
+        --articles-gradient: linear-gradient(to bottom, hsl(0, 15%, 25%), var(--bulma-body-background-color));
+        --recipes-gradient: linear-gradient(to bottom, hsl(180, 40%, 20%), var(--bulma-body-background-color));
+    }
+}
 
 .navbar-item {
     padding: 0.5rem 1rem;
@@ -75,4 +103,8 @@ figure.is-128x128 img {
 
 a {
     word-wrap: break-word;
+}
+
+.level-left, .level-right {
+    flex-direction: row !important;
 }

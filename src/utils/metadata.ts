@@ -1,4 +1,5 @@
 import { type IExifImage } from "../islands/ExifImage";
+import { pinyin } from "pinyin-pro";
 
 export interface Piece {
   name: string;
@@ -34,6 +35,7 @@ export interface Music extends Piece {
 }
 
 export interface Recipe extends Piece {
+  image: string;
   rating: string;
 }
 
@@ -120,5 +122,13 @@ const dresses: Art = {
 };
 
 export const arts = [articles, photos, videos, musics, recipes, dresses];
+
+export function slugify(title: string) {
+  return pinyin(title, {
+    toneType: "none",
+    type: "array",
+    removeNonZh: true,
+  }).join("-");
+}
 
 export default arts.slice(0, -1);

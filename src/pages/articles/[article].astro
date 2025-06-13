@@ -11,9 +11,17 @@ export async function getStaticPaths() {
 const { article } = Astro.params;
 const content = await getEntry("articles", article)!;
 const { Content } = await render(content);
+const { title, date, tags, cover, abstract } = content.data;
 ---
 
-<EntryLayout {...content.data}>
+<EntryLayout
+  art="articles"
+  date={date}
+  slug={content.id}
+  category={tags[0]!}
+  name={title}
+  description={abstract}
+>
   <section class="section e-content">
     <article class="container is-max-desktop content">
       <Content />

@@ -1,0 +1,51 @@
+---
+import { getCollection } from "astro:content";
+import PageLayout from "../../layouts/PageLayout.astro";
+import Menu from "../../islands/recipes";
+import type { Recipe } from "../../utils/metadata";
+import { fileToUrl } from "notion-astro-loader";
+
+const recipes = await getCollection("recipes");
+const nodes: Recipe[] = recipes.map((x) => {
+  return {
+    name: x.data.properties.Name,
+    date: new Date(),
+    description: "",
+    image: fileToUrl(x.data.cover!),
+    rating: x.data.properties.Rating.select!.name,
+    category: x.data.properties.Category.select!.name,
+  };
+});
+// export default function ({ data }: PageProps<Queries.RecipesQuery>) {
+//   const nodes: Recipe[] = [];
+//   data.notionDatabase!.childrenNotionPage!.forEach((page) => {
+//     const { title, properties, image } = page!;
+//     title &&
+//       nodes.push({
+//         name: title,
+//         category: properties!.Category!,
+//         date: createDate(
+//           image!.childImageSharp!.fields!.exif!.exif!.DateTimeOriginal!
+//         ),
+//         description: properties!.Description!,
+//         rating: properties!.Rating!,
+//         image: image!.childImageSharp!
+//           .gatsbyImageData as any as IGatsbyImageData,
+//       });
+//   });
+---
+
+<PageLayout slug="recipes">
+  <section class="section introduction-recipes">
+    <div class="container content is-max-desktop">
+      <p>唯爱与美食不可辜负。</p>
+      <p>
+        生于山东烟台，齐鲁大地的丰饶物产培育了我对鲁菜简单的热爱；长于北京海淀，来自五湖四海的珍馐美馔又激发着我对它们真实的好奇。然则一身长居远邦，佳肴难得，自己下厨丰衣足食也就成为了必然。所幸身边有不少厨艺高手与饕餮客，探寻美食的同时也可以广结良友。
+      </p>
+      <p>
+        您可以在下方查看我近期做过的菜品，选择几味您感兴趣的并预约时间登门品尝；您也可以只预约时间而不指定菜品，我将会根据当日可得的食材即兴发挥。
+      </p>
+    </div>
+  </section>
+  <Menu nodes={nodes} client:only />
+</PageLayout>

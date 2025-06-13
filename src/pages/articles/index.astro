@@ -1,11 +1,11 @@
 ---
 import PageLayout from "../../layouts/PageLayout.astro";
-import Articles from "../../islands/articles.tsx";
+import Articles from "../../islands/articles";
 import { getCollection } from "astro:content";
 
 const articles = await getCollection("articles");
 ---
 
 <PageLayout slug="articles">
-  <Articles nodes={articles.map((x) => ({ ...x.data, slug: `articles/${x.id}` }))} />
+  <Articles nodes={articles.map((x) => ({ ...x.data, slug: `articles/${x.id}` }))} client:only />
 </PageLayout>

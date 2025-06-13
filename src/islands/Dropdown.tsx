@@ -15,37 +15,35 @@ function Dropdown<T>({
 }: DropdownProps<T>) {
   const [active, setActive] = useState(false);
   return (
-    <Fragment>
-      <div className={"dropdown" + (active ? " is-active" : "")}>
-        <div className="dropdown-trigger">
-          <button
-            className="button"
-            style={{ minWidth: "73px" }}
-            aria-haspopup="true"
-            aria-controls="dropdown-menu"
-            onClick={() => setActive(!active)}
-          >
-            <span>{display(current)}</span>
-          </button>
-        </div>
-        <div className="dropdown-menu" id="dropdown-menu">
-          <div className="dropdown-content">
-            {options.map((value) => (
-              <a
-                onClick={() => {
-                  setActive(false);
-                  callback(value);
-                }}
-                className="dropdown-item"
-                key={(value as any).toString()}
-              >
-                {display(value)}
-              </a>
-            ))}
-          </div>
+    <div className={"level-item dropdown" + (active ? " is-active" : "")}>
+      <div className="dropdown-trigger">
+        <button
+          className="button"
+          style={{ minWidth: "73px" }}
+          aria-haspopup="true"
+          aria-controls="dropdown-menu"
+          onClick={() => setActive(!active)}
+        >
+          <span>{display(current)}</span>
+        </button>
+      </div>
+      <div className="dropdown-menu" id="dropdown-menu">
+        <div className="dropdown-content">
+          {options.map((value) => (
+            <a
+              onClick={() => {
+                setActive(false);
+                callback(value);
+              }}
+              className="dropdown-item"
+              key={(value as any).toString()}
+            >
+              {display(value)}
+            </a>
+          ))}
         </div>
       </div>
-    </Fragment>
+    </div>
   );
 }
 

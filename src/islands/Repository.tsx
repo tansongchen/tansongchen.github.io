@@ -1,4 +1,3 @@
-import React, { useEffect, type FC } from "react";
 import { request } from "@octokit/request";
 import { FaCodeBranch, FaEye, FaStar } from "react-icons/fa";
 import useSWRImmutable from "swr/immutable";

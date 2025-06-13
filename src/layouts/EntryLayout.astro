@@ -1,8 +1,17 @@
 ---
-// import Commenter from "./Commenter";
+import Commenter from "../islands/Commenter";
 import { type Piece, site, yymmdd } from "../utils/metadata";
-// import WebMention from "./WebMention";
+import WebMention from "../islands/WebMention";
 import Layout from "./Layout.astro";
+
+interface Props {
+  art: string;
+  slug: string;
+  name: string;
+  date: Date;
+  category: string;
+  description: string;
+}
 
 const { art, slug, name, date, category, description } = Astro.props;
 
@@ -42,7 +51,7 @@ const url = site + "/" + path;
     <slot />
   </main>
   <hr />
-  <!-- <Commenter art={art} slug={slug} />
+  <Commenter art={art} slug={slug} />
   <hr />
-  <WebMention art={art} slug={slug} /> -->
+  <WebMention art={art} slug={slug} />
 </Layout>
