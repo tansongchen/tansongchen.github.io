@@ -1,9 +1,9 @@
 ---
 title: 闪光少女：请对世界温柔以待
 date: 2020-06-27
-tags: [杂感]
+categories: [杂感]
 cover: https://images.tansongchen.com/our-shining-days.webp
-abstract: 一个普通人对另一个普通人最大的温柔就是搞明白对方的追求是什么、为什么、怎么做，然后尽己所能互相成就。
+description: 一个普通人对另一个普通人最大的温柔就是搞明白对方的追求是什么、为什么、怎么做，然后尽己所能互相成就。
 ---
 
 ## 一、闪光少女

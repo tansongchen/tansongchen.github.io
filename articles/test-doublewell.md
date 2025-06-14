@@ -1,9 +1,9 @@
 ---
 title: 双势阱体系的测试
 date: 2019-07-26
-tags: [物理, 化学]
+categories: [物理, 化学]
 cover: https://images.tansongchen.com/double-well.webp
-abstract: Jarzynski 等式的后续
+description: Jarzynski 等式的后续
 ---
 
 # 一个简单而不平凡的体系

@@ -1,9 +1,9 @@
 ---
 title: MIT CSE MS 项目介绍
 date: 2021-09-29
-tags: [杂感]
+categories: [杂感]
 cover: https://images.tansongchen.com/mit.webp
-abstract: 来技校一个半月了，在各种学校活动中感受到我们项目实在是低调到没存在感，于是来发帖宣传一波，希望有更多人可以了解这个项目。
+description: 来技校一个半月了，在各种学校活动中感受到我们项目实在是低调到没存在感，于是来发帖宣传一波，希望有更多人可以了解这个项目。
 ---
 
 # 整体

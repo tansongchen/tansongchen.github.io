@@ -1,27 +1,25 @@
 ---
 import { render } from "astro:content";
-import { getEntry } from "astro:content";
 import { getCollection } from "astro:content";
 import EntryLayout from "../../layouts/EntryLayout.astro";
+import { slugify } from "../..";
+
 export async function getStaticPaths() {
   const articles = await getCollection("articles");
-  return articles.map(({ id }) => ({ params: { article: id } }));
+  return articles.map(({ data }) => ({
+    params: { article: slugify(data.title) },
+  }));
 }
-
 const { article } = Astro.params;
-const content = await getEntry("articles", article)!;
+const contents = await getCollection(
+  "articles",
+  (e) => slugify(e.data.title) == article
+);
+const content = contents[0]!;
 const { Content } = await render(content);
-const { title, date, tags, cover, abstract } = content.data;
 ---
 
-<EntryLayout
-  art="articles"
-  date={date}
-  slug={content.id}
-  category={tags[0]!}
-  name={title}
-  description={abstract}
->
+<EntryLayout collection="articles" {...content.data}>
   <section class="section e-content">
     <article class="container is-max-desktop content">
       <Content />

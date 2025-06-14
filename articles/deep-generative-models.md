@@ -1,9 +1,9 @@
 ---
 title: 深度生成模型
 date: 2020-05-03
-tags: [数学, 计算机]
+categories: [数学, 计算机]
 cover: https://images.tansongchen.com/deep-learning.webp
-abstract: 本质上是高维概率分布的有效建模
+description: 本质上是高维概率分布的有效建模
 ---
 
 本文节选整合自深度学习「花书」（*Deep Learning*, Ian Goodfellow *et al.*）第三部分的读书总结。花书可以在[英文版网站](https://www.deeplearningbook.org/)或[中文版翻译仓库](https://github.com/exacity/deeplearningbook-chinese)上取得。

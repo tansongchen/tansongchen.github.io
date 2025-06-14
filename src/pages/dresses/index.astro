@@ -1,0 +1,75 @@
+---
+import { Image } from "astro:assets";
+import CollectionLayout from "../../layouts/CollectionLayout.astro";
+import { slugify, type Dress } from "../..";
+import { getCollection } from "astro:content";
+import Introduction from "../../components/Introduction.astro";
+import { preprocessDress } from "../../content/config";
+
+const dresses = await getCollection("dresses");
+const nodes: Dress[] = await Promise.all(dresses.map(preprocessDress));
+const map = new Map<string, Dress[]>();
+for (const dress of nodes) {
+  map.set(
+    dress.categories[0],
+    (map.get(dress.categories[0]) || []).concat([dress])
+  );
+}
+const groups: { name: string; data: Dress[] }[] = [
+  { name: "Lolita", data: map.get("Lolita")! },
+];
+---
+
+<CollectionLayout collection="dresses">
+  <Introduction collection="dresses">
+    <p>我想成为美少女！！！</p>
+    <p>本页面正在建设中，过一段时间回来看看会发现更多内容哦～</p>
+  </Introduction>
+  <section class="section">
+    {
+      groups.map(({ name, data }: { name: string; data: Dress[] }) => {
+        return (
+          <article class="columns">
+            <div class="column is-one-quarter has-text-centered">
+              <div class="content">
+                <h3 style={{ margin: "1.5rem 0 .5rem 0" }}>{name}</h3>
+              </div>
+            </div>
+            <div
+              class="column"
+              style={{
+                display: "flex",
+                flexWrap: "wrap",
+                justifyContent: "center",
+                padding: 0,
+              }}
+            >
+              {data.map(({ image, title }: Dress) => (
+                <div
+                  class="box"
+                  style={{
+                    padding: 0,
+                    overflow: "hidden",
+                    zIndex: 0,
+                    position: "relative",
+                    margin: "2rem",
+                  }}
+                >
+                  <a href={slugify(title)}>
+                    <Image
+                      class="photo-gallery"
+                      src={image}
+                      alt={title}
+                      width={300}
+                      height={300}
+                    />
+                  </a>
+                </div>
+              ))}
+            </div>
+          </article>
+        );
+      })
+    }
+  </section>;
+</CollectionLayout>

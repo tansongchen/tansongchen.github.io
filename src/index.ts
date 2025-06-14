@@ -1,32 +1,28 @@
-import { type IExifImage } from "../islands/ExifImage";
 import { pinyin } from "pinyin-pro";
+import type { ExifData } from "./components/ExifImage.astro";
 
-export interface Piece {
-  name: string;
+export interface Entry {
+  title: string;
   date: Date;
-  category: string;
+  categories: string[];
   description: string;
   suite?: string;
 }
 
-export interface Article extends Piece {
+export interface Article extends Entry {
   cover: string;
 }
 
-export interface Dress extends Piece {
-  photographer: string;
-  exifImage: IExifImage;
+export interface Photo extends Entry {
+  image: string;
+  exif: ExifData;
 }
 
-export interface Photo extends Piece {
-  exifImage: IExifImage;
-}
-
-export interface Video extends Piece {
+export interface Video extends Entry {
   uid: string;
 }
 
-export interface Music extends Piece {
+export interface Music extends Entry {
   opus: number;
   number: number;
   lilypond: string;
@@ -34,22 +30,26 @@ export interface Music extends Piece {
   url?: string;
 }
 
-export interface Recipe extends Piece {
+export interface Recipe extends Entry {
   image: string;
   rating: string;
 }
 
-export interface Suite<T extends Piece> {
+export interface Dress extends Entry {
+  photographer: string;
+  image: string;
+  exif: ExifData;
+}
+
+export interface Suite<T extends Entry> {
   name: string;
 }
 
-export interface Art {
-  slug: string;
+export interface Collection {
   image: string;
   name: string;
   icon: string;
   description: string;
-  single: string;
 }
 
 export const title = "众妙斋";
@@ -72,56 +72,44 @@ export const createDate = (s: string) => {
   );
 };
 
-const articles: Art = {
-  slug: "articles",
-  single: "article",
+const articles: Collection = {
   image: "../images/index/articles.jpg",
   name: "文章",
   icon: "fa6-solid:pen",
   description: "阅读我笔下的文字",
 };
-const photos: Art = {
-  slug: "photos",
-  single: "photo",
+const photos: Collection = {
   image: "../images/index/photos.jpg",
   name: "照片",
   icon: "fa6-solid:image",
   description: "欣赏我拍的照片",
 };
-const videos: Art = {
-  slug: "videos",
-  single: "video",
+const videos: Collection = {
   image: "../images/index/videos.jpg",
   name: "视频",
   icon: "fa6-solid:video",
   description: "观看我拍的视频",
 };
-const musics: Art = {
-  slug: "musics",
-  single: "music",
+const musics: Collection = {
   image: "../images/index/musics.jpg",
   name: "音乐",
   icon: "fa6-solid:music",
   description: "聆听我写的音乐",
 };
-const recipes: Art = {
-  slug: "recipes",
-  single: "recipe",
+const recipes: Collection = {
   image: "../images/index/recipes.jpg",
   name: "菜谱",
   icon: "fa6-solid:utensils",
   description: "品尝我做的佳肴",
 };
-const dresses: Art = {
-  slug: "dresses",
-  single: "dress",
+const dresses: Collection = {
   image: "../images/index/recipes.jpg",
   name: "女装",
   icon: "fa6-solid:female",
   description: "好耶，是女装！",
 };
 
-export const arts = [articles, photos, videos, musics, recipes, dresses];
+export default { articles, photos, videos, musics, recipes, dresses };
 
 export function slugify(title: string) {
   return pinyin(title, {
@@ -131,4 +119,32 @@ export function slugify(title: string) {
   }).join("-");
 }
 
-export default arts.slice(0, -1);
+export async function get(
+  route: string,
+  query: Record<string, string>
+): Promise<any | void> {
+  try {
+    const url = `${endpoint}${route}?${Object.entries(query)
+      .map(([key, value]) => `${key}=${value}`)
+      .join("&")}`;
+    const response = await fetch(url);
+    return await response.json();
+  } catch (error) {}
+}
+
+export async function put(route: string, data: any): Promise<any | void> {
+  try {
+    const response = await fetch(endpoint + route, {
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      method: "PUT",
+      body: JSON.stringify(data),
+    });
+    window.alert("提交成功！");
+    return response.json();
+  } catch (error) {
+    window.alert("提交失败！");
+  }
+}

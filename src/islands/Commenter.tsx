@@ -1,4 +1,4 @@
-import React, { Component, useState } from "react";
+import { useState } from "react";
 import {
   FaUser,
   FaEnvelope,
@@ -6,8 +6,7 @@ import {
   FaClock,
   FaCheck,
 } from "react-icons/fa";
-import { endpoint, yymmdd } from "../utils/metadata";
-import { put } from "../utils/client";
+import { endpoint, yymmdd, put } from "..";
 import useSWRImmutable from "swr/immutable";
 
 interface FormState {
@@ -21,108 +20,96 @@ interface FormProps {
   submitting: boolean;
 }
 
-class Form extends Component<FormProps, FormState> {
-  state: FormState = {
-    name: "",
-    email: "",
-    content: "",
-  };
-  render() {
-    const isEmailValid =
-      this.state.email === ""
-        ? 0
-        : /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(this.state.email)
-        ? 1
-        : -1;
-    const classSuffix =
-      isEmailValid === 0
-        ? ""
-        : isEmailValid === 1
-        ? " is-success"
-        : " is-danger";
-    const buttonSuffix =
-      isEmailValid === -1
-        ? " is-disabled"
-        : this.props.submitting
-        ? " is-loading"
-        : "";
-    return (
-      <article style={{ margin: "2rem" }}>
-        <div className="columns" style={{ marginBottom: 0 }}>
-          <div className="column field">
-            <div className="control has-icons-left has-icons-right">
-              <input
-                className="input"
-                type="text"
-                placeholder="您的昵称（可选）"
-                value={this.state.name}
-                onChange={(e) => this.setState({ name: e.target.value })}
-              />
-              <span className="icon is-small is-left">
-                <FaUser />
-              </span>
-            </div>
-          </div>
-
-          <div className="column field">
-            <div className="control has-icons-left has-icons-right">
-              <input
-                className={"input" + classSuffix}
-                type="email"
-                placeholder="您的邮箱（可选）"
-                value={this.state.email}
-                onChange={(e) => this.setState({ email: e.target.value })}
-              />
-              <span className="icon is-small is-left">
-                <FaEnvelope />
-              </span>
-              <span className="icon is-small is-right">
-                {isEmailValid === 1 ? (
-                  <FaCheck />
-                ) : isEmailValid === 0 ? (
-                  <FaClock />
-                ) : (
-                  <FaExclamationTriangle />
-                )}
-              </span>
-            </div>
-            <p className={"help" + classSuffix}>
-              {isEmailValid >= 0
-                ? "邮箱仅用于回复提醒，不会公开展示"
-                : "这不是一个正确的邮箱地址"}
-            </p>
+function Form({ submit, submitting }: FormProps) {
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [content, setContent] = useState("");
+  const isEmailValid =
+    email === ""
+      ? 0
+      : /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email)
+      ? 1
+      : -1;
+  const classSuffix =
+    isEmailValid === 0 ? "" : isEmailValid === 1 ? " is-success" : " is-danger";
+  const buttonSuffix =
+    isEmailValid === -1 ? " is-disabled" : submitting ? " is-loading" : "";
+  return (
+    <article style={{ margin: "2rem" }}>
+      <div className="columns" style={{ marginBottom: 0 }}>
+        <div className="column field">
+          <div className="control has-icons-left has-icons-right">
+            <input
+              className="input"
+              type="text"
+              placeholder="您的昵称（可选）"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+            />
+            <span className="icon is-small is-left">
+              <FaUser />
+            </span>
           </div>
         </div>
 
-        <div className="columns field" style={{ marginTop: 0 }}>
-          <div className="column">
-            <div className="control">
-              <textarea
-                className="textarea"
-                placeholder="评论内容"
-                value={this.state.content}
-                onChange={(e) => this.setState({ content: e.target.value })}
-              ></textarea>
-            </div>
+        <div className="column field">
+          <div className="control has-icons-left has-icons-right">
+            <input
+              className={"input" + classSuffix}
+              type="email"
+              placeholder="您的邮箱（可选）"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+            />
+            <span className="icon is-small is-left">
+              <FaEnvelope />
+            </span>
+            <span className="icon is-small is-right">
+              {isEmailValid === 1 ? (
+                <FaCheck />
+              ) : isEmailValid === 0 ? (
+                <FaClock />
+              ) : (
+                <FaExclamationTriangle />
+              )}
+            </span>
           </div>
+          <p className={"help" + classSuffix}>
+            {isEmailValid >= 0
+              ? "邮箱仅用于回复提醒，不会公开展示"
+              : "这不是一个正确的邮箱地址"}
+          </p>
         </div>
+      </div>
 
-        <div
-          className="column field is-grouped"
-          style={{ justifyContent: "center" }}
-        >
+      <div className="columns field" style={{ marginTop: 0 }}>
+        <div className="column">
           <div className="control">
-            <button
-              className={"button is-link" + buttonSuffix}
-              onClick={() => this.props.submit(this.state)}
-            >
-              提交
-            </button>
+            <textarea
+              className="textarea"
+              placeholder="评论内容"
+              value={content}
+              onChange={(e) => setContent(e.target.value)}
+            ></textarea>
           </div>
         </div>
-      </article>
-    );
-  }
+      </div>
+
+      <div
+        className="column field is-grouped"
+        style={{ justifyContent: "center" }}
+      >
+        <div className="control">
+          <button
+            className={"button is-link" + buttonSuffix}
+            onClick={() => submit({ name, email, content })}
+          >
+            提交
+          </button>
+        </div>
+      </div>
+    </article>
+  );
 }
 
 interface CommentProps extends FormState {
@@ -146,9 +133,9 @@ const Comment = ({ id, name, datetime, content }: CommentProps) => {
   );
 };
 
-function Commenter({ art, slug }: Record<string, string>) {
+function Commenter({ collection, slug }: Record<string, string>) {
   const [submitting, setSubmitting] = useState(false);
-  const key = `/comment?art=${art}&slug=${slug}`;
+  const key = `/comment?art=${collection}&slug=${slug}`;
   const {
     data: rawComments,
     error,
@@ -179,7 +166,7 @@ function Commenter({ art, slug }: Record<string, string>) {
       id: datetime.getTime().toString(),
       datetime,
       slug: slug,
-      art: art,
+      art: collection,
     };
     const optimisticData = [...comments, comment];
     const updateFn = async () => {

@@ -1,0 +1,109 @@
+---
+import { FaCamera, FaCalendar, FaLocationArrow } from "react-icons/fa";
+import { RiCameraLensFill } from "react-icons/ri";
+import { MdTune } from "react-icons/md";
+import { createDate, yymmdd } from "..";
+
+export interface ExifData {
+  DateTimeOriginal: string;
+  LensMake: string;
+  LensModel: string;
+  FocalLength: number;
+  ISO: number;
+  FNumber: number;
+  ExposureTime: number;
+  ExposureBiasValue: number;
+  GPSLatitudeRef: string;
+  GPSLatitude: [number, number, number];
+  GPSLongitudeRef: string;
+  GPSLongitude: [number, number, number];
+  Make: string;
+  Model: string;
+}
+
+const localize = (s: string) => {
+  return s.replace("back dual wide camera", "广角相机");
+};
+
+interface Props {
+  exif: ExifData;
+  image: string;
+}
+
+const renderCoordinate = (d: number, m: number, s: number, ref: string) =>
+  `${d}°${m}′${Math.round(s)}″${ref}`;
+
+const { exif, image } = Astro.props;
+
+function toggleActive() {
+  document.getElementById("image-modal")?.classList.toggle("is-active");
+}
+---
+
+<section class="section">
+  <div class="container is-max-desktop content">
+    <img src={image} alt={image} aria-haspopup="true" onclick="toggleActive" />
+  </div>
+  <div id="image-modal" class={"modal"}>
+    <div class="modal-background"></div>
+    <div class="modal-content content has-text-centered">
+      <img src={image} alt={image} />
+    </div>
+    <button
+      class="modal-close is-large"
+      aria-label="close"
+      onclick="toggleActive"
+    >
+    </button>
+  </div>
+</section>
+<section class="section">
+  <div class="container is-max-desktop content">
+    <div class="columns">
+      <div class="column">
+        <p>
+          <FaCalendar />
+          &nbsp; &nbsp; {yymmdd(createDate(exif.DateTimeOriginal))}
+        </p>
+      </div>
+      <div class="column">
+        <p>
+          <FaLocationArrow />
+          &nbsp; &nbsp;
+          {renderCoordinate(...exif.GPSLatitude, exif.GPSLatitudeRef)}
+          &nbsp; &nbsp;
+          {renderCoordinate(...exif.GPSLongitude, exif.GPSLongitudeRef)}
+        </p>
+      </div>
+    </div>
+    <div class="columns">
+      <div class="column">
+        <p>
+          <FaCamera />
+          &nbsp; &nbsp; {exif.Make}
+          {exif.Model}
+        </p>
+      </div>
+      <div class="column">
+        <p>
+          <RiCameraLensFill />
+          &nbsp; &nbsp; {localize(exif.LensModel)}
+        </p>
+      </div>
+      <div class="column">
+        <p>
+          <MdTune />
+          &nbsp; &nbsp;
+          {exif.FocalLength}mm&nbsp; &nbsp; ƒ/{exif.FNumber}
+          &nbsp; &nbsp;
+          {
+            exif.ExposureTime >= 1
+              ? `${exif.ExposureTime}`
+              : `1/${Math.round(1 / exif.ExposureTime)}`
+          }
+          s&nbsp; &nbsp; ISO {exif.ISO}
+        </p>
+      </div>
+    </div>
+  </div>
+</section>

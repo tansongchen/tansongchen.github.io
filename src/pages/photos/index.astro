@@ -1,0 +1,56 @@
+---
+import CollectionLayout from "../../layouts/CollectionLayout.astro";
+import { getCollection } from "astro:content";
+import { slugify, type Photo } from "../..";
+import { Image } from "astro:assets";
+import Introduction from "../../components/Introduction.astro";
+import { preprocessPhoto } from "../../content/config";
+
+const photos = await getCollection("photos");
+const nodes: Photo[] = await Promise.all(photos.map(preprocessPhoto));
+---
+
+<CollectionLayout collection="photos">
+  <Introduction collection="photos">
+    <p>一千人眼中有一千种风景，一千张照片背后有一千个故事。</p>
+  </Introduction>
+  <section class="section">
+    <div class="container is-max-widescreen">
+      <div
+        class="column"
+        style={{
+          display: "flex",
+          flexWrap: "wrap",
+          padding: "0",
+          justifyContent: "center",
+          gap: "2rem",
+        }}
+      >
+        {
+          nodes.map(({ title, image }: Photo) => {
+            return (
+              <div
+                class="box"
+                style={{
+                  padding: 0,
+                  margin: 0,
+                  overflow: "hidden",
+                }}
+              >
+                <a href={slugify(title)}>
+                  <Image
+                    class="photo-gallery"
+                    src={image}
+                    alt={title}
+                    width={300}
+                    height={300}
+                  />
+                </a>
+              </div>
+            );
+          })
+        }
+      </div>
+    </div>
+  </section>
+</CollectionLayout>

@@ -1,6 +1,5 @@
 ---
 import HCard from "../components/HCard.astro";
-import Layout from "../layouts/Layout.astro";
 import Introduction from "../components/Introduction.astro";
 import Preface, {
   type Props as PrefaceProps,
@@ -13,6 +12,9 @@ import Experience, {
 } from "../components/Experience.astro";
 import DateTag from "../components/DateTag.astro";
 import Repository from "../islands/Repository";
+import { Image } from "astro:assets";
+import mitao from "../assets/mitao.gif";
+import CollectionLayout from "../layouts/CollectionLayout.astro";
 
 const educationPreface: PrefaceProps = {
   title: "教育经历",
@@ -37,7 +39,10 @@ const mit: EducationProps = {
   photo: "/src/assets/education/mit.jpg",
   institutionName: "麻省理工学院",
   institutionUrl: "https://mit.edu",
-  degrees: [["理学博士，数学与计算科学", "https://math.mit.edu"],["理学硕士，计算科学与工程", "https://cse.mit.edu"]],
+  degrees: [
+    ["理学博士，数学与计算科学", "https://math.mit.edu"],
+    ["理学硕士，计算科学与工程", "https://cse.mit.edu"],
+  ],
   location: "Cambridge, MA",
   duration: "2021 - 2026",
   description:
@@ -153,39 +158,64 @@ const repositories: { repo: string; owner: string }[] = [
 ];
 ---
 
-<Layout>
-  <main>
-    <Introduction />
-    <section class="section">
-      <Preface {...educationPreface} />
-      <Education {...mit} />
-      <Education {...ucla} />
-      <Education {...pku} />
-      <Education {...rdfz} />
-    </section>
-    <section class="section">
-      <Preface {...experiencePreface} />
-      <div class="timeline container is-max-desktop">
-        <DateTag date="..." />
-        <Experience {...julia} />
-        <Experience {...nvidia} />
-        <DateTag date="2022" />
-        <Experience {...dptech} />
-        <DateTag date="2021" />
-        <Experience {...binz} />
-        <DateTag date="2020" />
-        <Experience {...thg} />
-        <DateTag date="2019" />
+<CollectionLayout>
+  <Introduction collection="home">
+    <div class="columns is-vcentered">
+      <div class="column is-one-third">
+        <Image src={mitao} alt="avatar" />
       </div>
-    </section>
-  </main>
+      <div class="column content">
+        <p>欢迎来到我的个人网站！我是谭淞宸。</p>
+        <p>
+          1974 年，Internet 一词第一次出现在 RFC
+          提案中，标志着世界各地的小型网络走向互联。1987 年 9 月 14
+          日，北京计算机应用技术研究所发出了中国第一封电子邮件：「
+          <i>Across the Great Wall we can reach every corner in the world.</i>
+          」。几十年后的今天，商业化的互联网中我们接收到的绝大多数信息来自科技公司的整合与推送，但是我们仍然可以以个人网站的形式保留并发出自己独立的声音。
+        </p>
+        <p>
+          我自诩为一位创造者，凡是将人类的心智外化于物、创造出本不属于这个世界的实体从而实现自我的活动都令我兴致勃勃，写文章、敲代码、玩音乐、拍视频……我想自古以来的文人墨客都要给自己的书斋、画室起个名号，我也不能免俗地依志趣把这个网站称作「
+          <span>众妙斋</span>」。您可以在导航栏中发现各个版块。祝您浏览愉快！
+        </p>
+        <p>
+          除此之外，本页面的下方区域还包含了我的经历的简单介绍，希望这些经历可以更好地让您了解我自己。另外，如果您认为我的专长可能对您有所帮助，欢迎您通过页面下方的联系方式与我联系。
+        </p>
+      </div>
+    </div>
+  </Introduction>
+  <section class="section">
+    <Preface {...educationPreface} />
+    <Education {...mit} />
+    <Education {...ucla} />
+    <Education {...pku} />
+    <Education {...rdfz} />
+  </section>
+  <section class="section">
+    <Preface {...experiencePreface} />
+    <div class="timeline container is-max-desktop">
+      <DateTag date="..." />
+      <Experience {...julia} />
+      <Experience {...nvidia} />
+      <DateTag date="2022" />
+      <Experience {...dptech} />
+      <DateTag date="2021" />
+      <Experience {...binz} />
+      <DateTag date="2020" />
+      <Experience {...thg} />
+      <DateTag date="2019" />
+    </div>
+  </section>
   <section class="section">
     <Preface {...codePreface} />
     <div class="container is-max-desktop">
       <div class="columns is-multiline">
-        {repositories.map((x) => <Repository key={x.repo} {...x} client:only/>)}
+        {
+          repositories.map((x) => (
+            <Repository key={x.repo} {...x} client:only />
+          ))
+        }
       </div>
     </div>
   </section>
   <HCard />
-</Layout>
+</CollectionLayout>

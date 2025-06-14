@@ -1,9 +1,9 @@
 ---
 title: 个人网站迁移小记
 date: 2021-11-20
-tags: [技术]
+categories: [技术]
 cover: https://images.tansongchen.com/lh.webp
-abstract: 兼论如何搭建一个快得吓人的网站
+description: 兼论如何搭建一个快得吓人的网站
 ---
 
 # 背景

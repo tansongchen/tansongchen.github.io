@@ -1,0 +1,20 @@
+---
+import Layout from "./Layout.astro";
+import Commenter from "../islands/Commenter";
+import WebMention from "../islands/WebMention";
+import index from "..";
+
+interface Props {
+  collection?: keyof typeof index;
+}
+
+const { collection } = Astro.props;
+---
+
+<Layout collection={collection}>
+  <slot />
+  <hr />
+  <Commenter collection={collection ?? ""} slug={""} />
+  <hr />
+  <WebMention collection={collection ?? ""} slug={""} />
+</Layout>

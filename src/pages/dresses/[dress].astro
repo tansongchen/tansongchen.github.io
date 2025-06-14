@@ -1,0 +1,23 @@
+---
+import ExifImage from "../../components/ExifImage.astro";
+import EntryLayout from "../../layouts/EntryLayout.astro";
+import { getCollection } from "astro:content";
+import { slugify, type Dress } from "../..";
+import { preprocessDress } from "../../content/config";
+export async function getStaticPaths() {
+  const dresses = await getCollection("dresses");
+  return dresses.map(({ data }) => ({
+    params: { dress: slugify(data.properties.Title) },
+  }));
+}
+
+const contents = await getCollection(
+  "dresses",
+  (e) => slugify(e.data.properties.Title) == Astro.params.dress
+);
+const dress: Dress = await preprocessDress(contents[0]!);
+---
+
+<EntryLayout collection="dresses" {...dress}>
+  <ExifImage image={dress.image} exif={dress.exif} />
+</EntryLayout>

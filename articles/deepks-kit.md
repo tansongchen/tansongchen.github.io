@@ -1,9 +1,9 @@
 ---
 title: DeePKS-kit：天梯亦可上，只要肯登攀
 date: 2021-05-15
-tags: [化学, 物理]
+categories: [化学, 物理]
 cover: https://images.tansongchen.com/deepks-kit.webp
-abstract: 机器学习帮助我们攀登密度泛函中的 Jacob 天梯
+description: 机器学习帮助我们攀登密度泛函中的 Jacob 天梯
 ---
 
 在电子结构性质的计算中，我们通常需要根据精度与效率的权衡来选择合适的方法。耦合簇方法（如 CCSD、CCSD(T)）被认为具有化学精度，但它的计算复杂度在 $O(N^7)$ 量级；另一方面，基于 Kohn-Sham 理论的各种密度泛函方法的计算复杂度可以控制在 $O(N^3)\sim O(N^4)$，但它们的精度常常不能令人满意。

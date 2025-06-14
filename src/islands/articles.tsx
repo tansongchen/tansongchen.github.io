@@ -1,30 +1,11 @@
 import { useState } from "react";
 import Dropdown from "../islands/Dropdown";
+import { slugify, yymmdd } from "..";
+import { type Article as ArticleProps } from "..";
 
 enum SortMethod {
   FromNewestToOldest,
   FromOldestToNewest,
-}
-
-const Introduction = () => (
-  <section className="section introduction-articles">
-    <div className="container content is-max-desktop">
-      <p>文以载道，文以会友。</p>
-      <p>
-        我喜欢用文字表达自我，无论是技术科普、成长感悟还是指点江山。写作其实是与自己对话：工作中理不清的概念写着写着就明白了，生活中缠绕的心结写着写着就解开了，还有那不吐不快的情感写着写着就释怀了。如果你有兴趣阅读更多我的文章，欢迎点击右上角用
-        RSS 订阅。
-      </p>
-    </div>
-  </section>
-);
-
-interface ArticleProps {
-  title: string;
-  date: Date;
-  tags: string[];
-  abstract: string;
-  cover: string;
-  slug: string;
 }
 
 interface TagProps {
@@ -129,19 +110,15 @@ const Selector = ({
   );
 };
 
-const format = (d: Date) =>
-  `${d.getFullYear()} 年 ${d.getMonth() + 1} 月 ${d.getDate()} 日`;
-
 const Article = ({
   title,
   date,
-  slug,
   cover,
-  tags,
-  abstract,
+  categories,
+  description,
 }: ArticleProps) => (
-  <article key={slug} className="container section">
-    <a href={`/${slug}/`}>
+  <article key={title} className="container section">
+    <a href={`/articles/${slugify(title)}/`}>
       <div className="box columns" style={{ padding: 0, overflow: "auto" }}>
         <div className="column" style={{ padding: 0 }}>
           <figure className="image is-2by1">
@@ -150,9 +127,9 @@ const Article = ({
         </div>
         <div className="column content" style={{ padding: "1.5rem" }}>
           <h3>{title}</h3>
-          <p>{format(date)}</p>
+          <p>{yymmdd(date)}</p>
           <p className="level-left">
-            {tags.map((tag) => (
+            {categories.map((tag) => (
               <span
                 key={tag}
                 className="tag is-info is-light is-medium level-item"
@@ -161,7 +138,7 @@ const Article = ({
               </span>
             ))}
           </p>
-          <p>{abstract}</p>
+          <p>{description}</p>
         </div>
       </div>
     </a>
@@ -193,7 +170,7 @@ const ArticleList = ({
         (blog: ArticleProps) =>
           intervalStart <= new Date(blog.date) &&
           new Date(blog.date) <= intervalEnd &&
-          blog.tags.includes(activeTag)
+          blog.categories.includes(activeTag)
       )
     : nodes.filter(
         (blog: ArticleProps) =>
@@ -227,15 +204,14 @@ export default function Main({ nodes }: MainProps) {
   const [activeTag, changeActiveTag] = useState(
     undefined as string | undefined
   );
-  const tagArrays = nodes.map((node) => node.tags);
+  const tagArrays = nodes.map((node) => node.categories);
   const tagArray = ([] as string[]).concat(...tagArrays);
   const allTags = Array.from(new Set(tagArray));
   const changeTag = (activeTag?: string, tag?: string) => {
     activeTag === tag ? changeActiveTag(undefined) : changeActiveTag(tag);
   };
   return (
-    <main>
-      <Introduction />
+    <>
       <Selector
         sortMethod={sortMethod}
         changeSortMethod={changeSortMethod}
@@ -254,6 +230,6 @@ export default function Main({ nodes }: MainProps) {
         activeTag={activeTag}
         nodes={nodes}
       />
-    </main>
+    </>
   );
 }

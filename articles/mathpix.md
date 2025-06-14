@@ -1,9 +1,9 @@
 ---
 title: 20 行代码实现薅羊毛
 date: 2019-11-01
-tags: [技术]
+categories: [技术]
 cover: https://images.tansongchen.com/mathpix.webp
-abstract: Life is short, you need Python.
+description: Life is short, you need Python.
 ---
 
 ###### 1

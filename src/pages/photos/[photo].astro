@@ -1,0 +1,23 @@
+---
+import ExifImage from "../../components/ExifImage.astro";
+import EntryLayout from "../../layouts/EntryLayout.astro";
+import { getCollection } from "astro:content";
+import { slugify, type Photo } from "../..";
+import { preprocessPhoto } from "../../content/config";
+export async function getStaticPaths() {
+  const photos = await getCollection("photos");
+  return photos.map(({ data }) => ({
+    params: { photo: slugify(data.properties.Title) },
+  }));
+}
+
+const contents = await getCollection(
+  "photos",
+  (e) => slugify(e.data.properties.Title) == Astro.params.photo
+);
+const photo: Photo = await preprocessPhoto(contents[0]!);
+---
+
+<EntryLayout collection="photos" {...photo}>
+  <ExifImage image={photo.image} exif={photo.exif} />
+</EntryLayout>

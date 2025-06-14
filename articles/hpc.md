@@ -1,9 +1,9 @@
 ---
 title: 数值线性代数简史
 date: 2019-08-22
-tags: [数学, 高性能计算]
+categories: [数学, 高性能计算]
 cover: https://images.tansongchen.com/hpc.webp
-abstract: 看看计算机上的线性代数在有计算机以来的七十多年是如何演化的。
+description: 看看计算机上的线性代数在有计算机以来的七十多年是如何演化的。
 ---
 
 即使没有听说过 LAPACK、Intel MKL 和 OpenBLAS 这些高性能计算库，你也一定会对 MATLAB，C++ 中的 Eigen，Python 中的 NumPy 等等强大的数值计算工具有所耳闻。不过，相比于它们的名气而言，它们的来历就鲜为人知了。例如，请你考虑以下两个有趣的问题：

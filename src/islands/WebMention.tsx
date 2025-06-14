@@ -1,5 +1,4 @@
-import React from "react";
-import { site, yymmdd } from "../utils/metadata";
+import { site, yymmdd } from "..";
 import useSWR from "swr";
 
 interface MentionData {
@@ -40,8 +39,8 @@ function Mention({ type, author, url, published, content }: MentionData) {
   );
 }
 
-function WebMention({ art, slug }: Record<string, string>) {
-  const target = `${site}/${art}/${slug}`;
+function WebMention({ collection, slug }: Record<string, string>) {
+  const target = `${site}/${collection}/${slug}`;
   const token = `GevpnlAkAbTXHes6nLWnLw`;
   const query = (target: string) =>
     `https://webmention.io/api/mentions.jf2?target=${target}&token=${token}`;

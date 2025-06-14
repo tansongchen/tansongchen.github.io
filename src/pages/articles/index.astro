@@ -1,11 +1,22 @@
 ---
-import PageLayout from "../../layouts/PageLayout.astro";
+import CollectionLayout from "../../layouts/CollectionLayout.astro";
 import Articles from "../../islands/articles";
 import { getCollection } from "astro:content";
+import Introduction from "../../components/Introduction.astro";
 
 const articles = await getCollection("articles");
 ---
 
-<PageLayout slug="articles">
-  <Articles nodes={articles.map((x) => ({ ...x.data, slug: `articles/${x.id}` }))} client:only />
-</PageLayout>
+<CollectionLayout collection="articles">
+  <Introduction collection="articles">
+    <p>文以载道，文以会友。</p>
+    <p>
+      我喜欢用文字表达自我，无论是技术科普、成长感悟还是指点江山。写作其实是与自己对话：工作中理不清的概念写着写着就明白了，生活中缠绕的心结写着写着就解开了，还有那不吐不快的情感写着写着就释怀了。如果你有兴趣阅读更多我的文章，欢迎点击右上角用
+      RSS 订阅。
+    </p>
+  </Introduction>
+  <Articles
+    nodes={articles.map((x) => ({ ...x.data, slug: `articles/${x.id}` }))}
+    client:only
+  />
+</CollectionLayout>

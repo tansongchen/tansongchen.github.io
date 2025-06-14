@@ -1,9 +1,9 @@
 ---
 title: 涨落定理简介
 date: 2019-08-13
-tags: [物理, 化学]
+categories: [物理, 化学]
 cover: https://images.tansongchen.com/fluctuation-theorems.webp
-abstract: It is causality which ultimately is responsible for breaking time reversal symmetry and which leads to the possibility of irreversible macroscopic behavior.
+description: It is causality which ultimately is responsible for breaking time reversal symmetry and which leads to the possibility of irreversible macroscopic behavior.
 ---
 
 # 时间反演与 Loschmidt 佯谬

@@ -1,9 +1,9 @@
 ---
 title: 在课题组中优雅地使用 PBS
 date: 2019-08-29
-tags: [技术]
+categories: [技术]
 cover: https://images.tansongchen.com/pbs.webp
-abstract: 截止 2019 年 9 月，课题组的计算集群上配备了由中科曙光提供的可移植批处理系统（Portable Batch System，下简称 PBS），可供大家提交计算任务使用。
+description: 截止 2019 年 9 月，课题组的计算集群上配备了由中科曙光提供的可移植批处理系统（Portable Batch System，下简称 PBS），可供大家提交计算任务使用。
 ---
 
 上篇：基本使用

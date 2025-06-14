@@ -1,9 +1,9 @@
 ---
 title: LilyPond 简介
 date: 2019-10-17
-tags: [音乐, 技术]
+categories: [音乐, 技术]
 cover: https://images.tansongchen.com/lilypond.webp
-abstract: 推荐一个乐谱制作的软件
+description: 推荐一个乐谱制作的软件
 ---
 
 你或许没有听说过 LilyPond，但你绝对听说过 LaTeX。LaTeX 通过将文档的排版工作封装为一个个简单的、描述式的命令，能够使得用户轻松排版出高质量的文章。

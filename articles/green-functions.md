@@ -1,9 +1,9 @@
 ---
 title: 格林函数的随机化方法
 date: 2019-11-18
-tags: [物理, 化学]
+categories: [物理, 化学]
 cover: https://images.tansongchen.com/green-functions.webp
-abstract: 适用于大体系的 O(N) GW 方法的推导
+description: 适用于大体系的 O(N) GW 方法的推导
 ---
 
 # 固体中的准粒子

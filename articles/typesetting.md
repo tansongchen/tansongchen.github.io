@@ -1,9 +1,9 @@
 ---
 title: 内容创作者应该如何排版
 date: 2019-10-23
-tags: [技术]
+categories: [技术]
 cover: https://images.tansongchen.com/markdown.webp
-abstract: 大多数人的内容质量还不足以让读者忍受糟糕的阅读体验。
+description: 大多数人的内容质量还不足以让读者忍受糟糕的阅读体验。
 ---
 
 ###### 1

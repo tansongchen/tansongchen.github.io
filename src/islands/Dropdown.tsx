@@ -1,4 +1,4 @@
-import React, { Component, Fragment, useState } from "react";
+import { useState } from "react";
 
 interface DropdownProps<T> {
   options: T[];

@@ -1,9 +1,9 @@
 ---
 title: 你们呀，不要想搞个大新闻
 date: 2019-11-30
-tags: [杂感, 数学]
+categories: [杂感, 数学]
 cover: https://images.tansongchen.com/big-news.webp
-abstract: 可能你已经看出来了，本文标题意在嘲讽近日某科普订阅号的神奇文章。
+description: 可能你已经看出来了，本文标题意在嘲讽近日某科普订阅号的神奇文章。
 ---
 
 可能你已经看出来了，本文标题意在嘲讽近日某科普订阅号的神奇文章。

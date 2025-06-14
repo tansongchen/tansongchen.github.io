@@ -1,9 +1,9 @@
 ---
 title: 加州大学交换项目简介
 date: 2019-11-11
-tags: [杂感]
+categories: [杂感]
 cover: https://images.tansongchen.com/ucla.webp
-abstract: 欢迎申请加州大学的交换项目！
+description: 欢迎申请加州大学的交换项目！
 ---
 
 前几天在北京大学国际合作部的主页上看到了今年校际交流项目的通知。一年了，时间过得真快～

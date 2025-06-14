@@ -1,9 +1,9 @@
 ---
 title: 线性系统的 Langevin 方程
 date: 2019-12-04
-tags: [物理, 数学]
+categories: [物理, 数学]
 cover: https://images.tansongchen.com/langevin-equations.webp
-abstract: 在线性极限下证明了 Langevin 运动方程给出了系统的正则分布。
+description: 在线性极限下证明了 Langevin 运动方程给出了系统的正则分布。
 ---
 
 ## 统计力学与分子动力学

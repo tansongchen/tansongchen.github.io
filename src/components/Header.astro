@@ -1,6 +1,9 @@
 ---
 import { Icon } from "astro-icon/components";
-import summary, { title } from "../utils/metadata";
+import collections, { title } from "..";
+interface Props {
+  collection?: string;
+}
 ---
 
 <script>
@@ -42,17 +45,20 @@ import summary, { title } from "../utils/metadata";
         style={{ justifyContent: "center", marginLeft: "auto" }}
       >
         {
-          summary.map(({ slug, name, icon }) => (
-            <a
-              href={`/${slug}/`.replace("//", "/")}
-              class={
-                "navbar-item" + (slug === "" ? " navbar-item-current" : "")
-              }
-            >
-              <Icon name={icon} />
-              <span>&nbsp;&nbsp;{name}</span>
-            </a>
-          ))
+          Object.entries(collections)
+            .filter(([x]) => x !== "dresses")
+            .map(([type, { name, icon }]) => (
+              <a
+                href={`/${type}/`}
+                class={
+                  "navbar-item" +
+                  (type === Astro.props.collection ? " is-selected" : "")
+                }
+              >
+                <Icon name={icon} />
+                <span>{name}</span>
+              </a>
+            ))
         }
       </div>
       <div class="navbar-end">

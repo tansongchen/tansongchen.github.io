@@ -1,9 +1,9 @@
 ---
 title: 数学建模竞赛的参赛体验
 date: 2019-10-01
-tags: [数学]
+categories: [数学]
 cover: https://images.tansongchen.com/cumcm.webp
-abstract: 也欢迎大家在 https://github.com/tansongchen/CUMCM2019 下载源码！
+description: 也欢迎大家在 https://github.com/tansongchen/CUMCM2019 下载源码！
 ---
 
 # cumcm2019

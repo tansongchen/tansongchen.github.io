@@ -1,9 +1,9 @@
 ---
 title: Monte Carlo 模拟：带你走遍位形空间
 date: 2019-07-29
-tags: [物理, 化学]
+categories: [物理, 化学]
 cover: https://images.tansongchen.com/monte-carlo.webp
-abstract: 最近对 Monte Carlo 方法的学习总结
+description: 最近对 Monte Carlo 方法的学习总结
 ---
 
 # 为什么 Monte Carlo 模拟能获得体系的宏观性质？

@@ -1,0 +1,34 @@
+---
+import { getCollection } from "astro:content";
+import CollectionLayout from "../../layouts/CollectionLayout.astro";
+import { type Video, yymmdd, slugify } from "../..";
+import { Stream } from "@cloudflare/stream-react";
+import Introduction from "../../components/Introduction.astro";
+import { preprocessVideo } from "../../content/config";
+
+const videos = await getCollection("videos");
+const nodes: Video[] = await Promise.all(videos.map(preprocessVideo));
+---
+
+<CollectionLayout collection="videos">
+  <Introduction collection="videos">
+    <p>记录生活的美好时刻。</p>
+  </Introduction>
+  <section class="section">
+    {
+      nodes.map(({ uid, title: name, date }) => {
+        return (
+          <article class="container content is-max-desktop">
+            <h2>
+              <a href={slugify(name)}>{name}</a>
+            </h2>
+            <p>{yymmdd(date)}</p>
+            <div>
+              <Stream controls src={uid} client:only />
+            </div>
+          </article>
+        );
+      })
+    }
+  </section>
+</CollectionLayout>

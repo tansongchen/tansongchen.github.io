@@ -2,32 +2,24 @@
 import { render } from "astro:content";
 import { getCollection } from "astro:content";
 import EntryLayout from "../../layouts/EntryLayout.astro";
-import { slugify } from "../../utils/metadata";
+import { slugify, type Recipe } from "../..";
+import { preprocessRecipe } from "../../content/config";
 export async function getStaticPaths() {
   const recipes = await getCollection("recipes");
   return recipes.map(({ data }) => ({
-    params: { recipe: slugify(data.properties.Name) },
+    params: { recipe: slugify(data.properties.Title) },
   }));
 }
 
-const { recipe } = Astro.params;
 const contents = await getCollection(
   "recipes",
-  (e) => slugify(e.data.properties.Name) == recipe
+  (e) => slugify(e.data.properties.Title) == Astro.params.recipe
 );
-const content = contents[0]!
-const { Content, headings } = await render(content);
-const { cover, properties } = content.data;
+const recipe: Recipe = await preprocessRecipe(contents[0]);
+const { Content } = await render(contents[0]);
 ---
 
-<EntryLayout
-  art="recipes"
-  date={new Date()}
-  slug={slugify(properties.Name)}
-  category={properties.Category.select!.name}
-  name={properties.Name}
-  description={""}
->
+<EntryLayout collection="recipes" {...recipe}>
   <section class="section e-content">
     <article class="container is-max-desktop content">
       <Content />

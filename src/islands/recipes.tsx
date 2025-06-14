@@ -1,5 +1,5 @@
-import React, { useState, useContext } from "react";
-import { createDate, type Recipe, slugify } from "../utils/metadata";
+import { useState, useContext, createContext } from "react";
+import { createDate, type Recipe, slugify } from "..";
 
 import {
   FaCheck,
@@ -8,8 +8,7 @@ import {
   FaExclamationTriangle,
   FaUser,
 } from "react-icons/fa";
-import { mmdd } from "../utils/metadata";
-import { put } from "../utils/client";
+import { mmdd, put } from "..";
 import Dropdown from "../islands/Dropdown";
 
 enum MealType {
@@ -104,14 +103,12 @@ function Form({ submit, submitting }: FormProps) {
           <div>品尝</div>
         </div>
       </div>
-      {shouldSelect ? (
+      {shouldSelect && (
         <ul className="block">
           {Object.keys(menu).map((x) => (
             <SummaryItem key={x} name={x} />
           ))}
         </ul>
-      ) : (
-        <div></div>
       )}
       <div className="columns">
         <div className="column field">
@@ -226,14 +223,20 @@ function Order() {
   );
 }
 
-export const MenuContext = React.createContext({
+export const MenuContext = createContext({
   menu: {} as Record<string, number>,
   update: (a: string, b: number) => {},
   shouldSelect: true,
   setShouldSelect: (b: boolean) => {},
 });
 
-const Dish = ({ name, date, image, category, rating }: Recipe) => {
+const Dish = ({
+  title: name,
+  date,
+  image,
+  categories: category,
+  rating,
+}: Recipe) => {
   const { menu, shouldSelect, update } = useContext(MenuContext);
   const count = menu[name];
   return (
@@ -301,7 +304,7 @@ const Submenu = ({ title, dishes }: SubmenuProps) => (
     </div>
     <div className="column is-flex is-flex-wrap-wrap is-justify-content-center">
       {dishes.map((x) => (
-        <Dish {...x} key={x.name} />
+        <Dish {...x} key={x.title} />
       ))}
     </div>
   </article>
@@ -317,7 +320,7 @@ export default function Menu({ nodes }: MenuProps) {
     })
   );
   for (const dish of nodes) {
-    groups.find((x) => x.title === dish.category)!.dishes.push(dish);
+    groups.find((x) => x.title === dish.categories[0])!.dishes.push(dish);
   }
   for (const { dishes } of groups) {
     dishes.sort((a, b) => b.rating.length - a.rating.length);

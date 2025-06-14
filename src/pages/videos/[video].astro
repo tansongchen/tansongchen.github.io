@@ -1,0 +1,29 @@
+---
+import { getCollection } from "astro:content";
+import EntryLayout from "../../layouts/EntryLayout.astro";
+import { slugify } from "../..";
+import { Stream } from "@cloudflare/stream-react";
+import { preprocessVideo } from "../../content/config";
+
+export async function getStaticPaths() {
+  const videos = await getCollection("videos");
+  return videos.map(({ data }) => ({
+    params: { video: slugify(data.properties.Title) },
+  }));
+}
+const contents = await getCollection(
+  "videos",
+  (e) => slugify(e.data.properties.Title) == Astro.params.video
+);
+const video = await preprocessVideo(contents[0]!);
+---
+
+<EntryLayout collection="videos" {...video}>
+  <section class="section e-content">
+    <article class="container is-max-desktop">
+      <div>
+        <Stream controls src={video.uid} client:only />
+      </div>
+    </article>
+  </section>
+</EntryLayout>

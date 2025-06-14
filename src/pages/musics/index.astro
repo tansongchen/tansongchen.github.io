@@ -1,0 +1,36 @@
+---
+import { getCollection } from "astro:content";
+import CollectionLayout from "../../layouts/CollectionLayout.astro";
+import { slugify, yymmdd, type Music } from "../..";
+import Introduction from "../../components/Introduction.astro";
+import { preprocessMusic } from "../../content/config";
+
+const musics = await getCollection("musics");
+const nodes: Music[] = await Promise.all(musics.map(preprocessMusic));
+---
+
+<CollectionLayout collection="musics">
+  <Introduction collection="musics">
+    <p>
+      德国哲学家莱布尼茨曾对音乐作过这样的阐释：「音乐是心灵的算术练习，心灵在听音乐时计算着自己而不自知。」
+    </p>
+    <p>本页面正在建设中，过一段时间回来看看会发现更多内容哦～</p>
+  </Introduction>
+  <section class="section">
+    {
+      nodes.map(
+        ({ title: name, date, opus, number, categories: category }: Music) => (
+          <article class="container content is-max-desktop">
+            <h2>
+              <a href={slugify(name)}>{name}</a>
+            </h2>
+            <p>
+              {category}，Op. {opus}, No. {number}
+            </p>
+            <p>{yymmdd(date)}</p>
+          </article>
+        )
+      )
+    }
+  </section>
+</CollectionLayout>

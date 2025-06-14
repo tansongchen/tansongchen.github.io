@@ -1,7 +1,16 @@
 ---
+import type { DataEntryMap } from "astro:content";
 import Footer from "../components/Footer.astro";
 import Header from "../components/Header.astro";
 import "../styles/index.scss";
+import collections from "..";
+
+interface Props {
+  collection?: keyof DataEntryMap;
+}
+
+const { collection } = Astro.props;
+const title = collection ? `众妙斋・${collections[collection].name}` : "众妙斋";
 ---
 
 <!doctype html>
@@ -17,11 +26,13 @@ import "../styles/index.scss";
     <meta name="viewport" content="width=device-width" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="generator" content={Astro.generator} />
-    <title>众妙斋</title>
+    <title>{title}</title>
   </head>
   <body class="has-navbar-fixed-top">
-    <Header />
-    <slot />
+    <Header collection={collection} />
+    <main>
+      <slot />
+    </main>
     <Footer />
   </body>
 </html>

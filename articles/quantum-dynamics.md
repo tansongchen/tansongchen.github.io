@@ -1,9 +1,9 @@
 ---
 title: 基于轨迹的量子动力学方法
 date: 2020-04-06
-tags: [物理, 化学]
+categories: [物理, 化学]
 cover: https://images.tansongchen.com/quantum-dynamics.webp
-abstract: 最近看的奇奇怪怪的文章的总结
+description: 最近看的奇奇怪怪的文章的总结
 ---
 
 2003 年，徐光宪院士在《大学化学》期刊上撰文《今日化学何去何从》，分析透彻、用语精辟，发人深思。徐光宪院士提出了 21 世纪化学领域的四个重大问题，其中第一个问题，也称「化学的第一根本规律」的即是：

@@ -1,32 +1,25 @@
 ---
 import Commenter from "../islands/Commenter";
-import { type Piece, site, yymmdd } from "../utils/metadata";
+import { type Entry, site, slugify, yymmdd } from "..";
 import WebMention from "../islands/WebMention";
 import Layout from "./Layout.astro";
+import type { DataEntryMap } from "astro:content";
 
-interface Props {
-  art: string;
-  slug: string;
-  name: string;
-  date: Date;
-  category: string;
-  description: string;
+interface Props extends Entry {
+  collection: keyof DataEntryMap;
 }
 
-const { art, slug, name, date, category, description } = Astro.props;
-
-const path = art + "/" + slug;
+const { collection, title, date, categories, description } = Astro.props;
+const slug = slugify(title);
+const path = collection + "/" + slug;
 const url = site + "/" + path;
 ---
 
-<Layout slug={path}>
+<Layout collection={collection}>
   <main class="h-entry">
-    <section
-      class="section"
-      style={{ backgroundColor: "rgba(230, 240, 255, 0.5)" }}
-    >
+    <section class="section entry-metadata">
       <div class="content has-text-centered">
-        <h2 class="p-name">{name}</h2>
+        <h2 class="p-name">{title}</h2>
         <a
           class="p-author h-card"
           href="https://tansongchen.com"
@@ -36,9 +29,13 @@ const url = site + "/" + path;
         </a>
         <a class="u-url" href={url} style={{ display: "none" }}></a>
         <p>
-          <span class="tag is-medium is-info is-light p-category">
-            {category}
-          </span>
+          {
+            categories.map((category) => (
+              <span class="tag is-medium is-info is-light p-category">
+                {category}
+              </span>
+            ))
+          }
         </p>
         <p class="p-summary">{description}</p>
         <p>
@@ -51,7 +48,7 @@ const url = site + "/" + path;
     <slot />
   </main>
   <hr />
-  <Commenter art={art} slug={slug} />
+  <Commenter collection={collection} slug={slug} />
   <hr />
-  <WebMention art={art} slug={slug} />
+  <WebMention collection={collection} slug={slug} />
 </Layout>

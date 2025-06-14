@@ -8,49 +8,75 @@
 // @use "bulma-timeline" with ($timeline-marker-color: white,
 // );
 
-:root {
-    --home-gradient: linear-gradient(to bottom, hsl(196, 100%, 89%), var(--bulma-body-background-color));
-    --articles-gradient: linear-gradient(to bottom, hsl(0, 100%, 95%), var(--bulma-body-background-color));
-    --recipes-gradient: linear-gradient(to bottom, hsl(180, 83%, 88%), var(--bulma-body-background-color));
-}
-
-.introduction-home {
-    background-image: var(--home-gradient);
+.introduction {
+    background-image: linear-gradient(to bottom, var(--gradient), var(--bulma-body-background-color));
     font-size: 125%;
 }
 
-.introduction-articles {
-    background-image: var(--articles-gradient);
-    font-size: 125%;
+.entry-metadata {
+    background-color: hsl(216, 100%, 95%);
 }
 
-.introduction-recipes {
-    background-image: var(--recipes-gradient);
-    font-size: 125%;
+.home {
+    --gradient: hsl(196, 100%, 89%);
+}
+
+.articles {
+    --gradient: hsl(0, 100%, 95%);
+}
+
+.photos {
+    --gradient: hsl(165, 80%, 88%);
+}
+
+.videos {
+    --gradient: hsl(260, 75%, 92%);
+}
+
+.musics {
+    --gradient: hsl(165, 57%, 86%);
+}
+
+.recipes {
+    --gradient: hsl(180, 83%, 88%);
+}
+
+.dresses {
+    --gradient: hsl(180, 83%, 88%);
 }
 
 @media (prefers-color-scheme: dark) {
-    :root {
-        --home-gradient: linear-gradient(to bottom, hsl(196, 33%, 22%), var(--bulma-body-background-color));
-        --articles-gradient: linear-gradient(to bottom, hsl(0, 15%, 25%), var(--bulma-body-background-color));
-        --recipes-gradient: linear-gradient(to bottom, hsl(180, 40%, 20%), var(--bulma-body-background-color));
+    .entry-metadata {
+        background-color: hsl(214, 21%, 24%);
     }
-}
 
-.navbar-item {
-    padding: 0.5rem 1rem;
-}
+    .home {
+        --gradient: hsl(196, 33%, 22%)
+    }
 
-.navbar-item-current {
-    background-color: #fafafa;
-}
+    .articles {
+        --gradient: hsl(0, 15%, 25%)
+    }
 
-.image.is-4by3 .gatsby-image-wrapper {
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    right: 0;
+    .photos {
+        --gradient: hsl(165, 40%, 20%)
+    }
+
+    .videos {
+        --gradient: hsl(260, 40%, 20%)
+    }
+
+    .musics {
+        --gradient: hsl(260, 40%, 20%)
+    }
+
+    .recipes {
+        --gradient: hsl(180, 40%, 20%)
+    }
+
+    .dresses {
+        --gradient: hsl(180, 40%, 20%)
+    }
 }
 
 .fit {
@@ -90,6 +116,13 @@ figure.is-128x128 img {
     // padding: 0 10%;
 }
 
+.photo-gallery {
+    display: block;
+    object-fit: cover;
+    object-position: center;
+    height: 300px !important;
+}
+
 .content em {
     font-style: normal;
     font-weight: 600;
@@ -105,6 +138,7 @@ a {
     word-wrap: break-word;
 }
 
-.level-left, .level-right {
+.level-left,
+.level-right {
     flex-direction: row !important;
 }

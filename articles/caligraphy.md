@@ -1,9 +1,9 @@
 ---
 title: 近期练字的一些体会
 date: 2020-01-23
-tags: [元技能]
+categories: [元技能]
 cover: https://images.tansongchen.com/caligraphy.webp
-abstract: 刻意练习原则的一个简单应用。
+description: 刻意练习原则的一个简单应用。
 ---
 
 ###### 1

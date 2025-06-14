@@ -20,5 +20,10 @@ export default defineConfig({
   markdown: {
     remarkPlugins: [remarkMath],
     rehypePlugins: [rehypeKatex],
+    shikiConfig: {
+      langAlias: {
+        fortran: "fortran-free-form"
+      }
+    }
   },
 });
