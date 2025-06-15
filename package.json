@@ -11,10 +11,14 @@
   "dependencies": {
     "@astrojs/react": "^4.3.0",
     "@astrojs/rss": "^4.0.12",
+    "@astrojs/sitemap": "^3.4.1",
     "@cloudflare/stream-react": "^1.9.3",
+    "@iconify-json/fa6-solid": "^1.2.3",
     "@octokit/request": "^10.0.2",
     "@types/react": "^19.1.6",
     "@types/react-dom": "^19.1.6",
+    "@vite-pwa/assets-generator": "^1.0.0",
+    "@vite-pwa/astro": "^1.1.0",
     "astro": "^5.9.3",
     "astro-icon": "^1.1.5",
     "bulma": "^1.0.4",
@@ -27,13 +31,9 @@
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
     "react-hook-form": "^7.57.0",
-    "react-icons": "^5.5.0",
     "rehype-katex": "^7.0.1",
     "remark-math": "^6.0.0",
     "sass": "^1.89.2",
     "swr": "^2.3.3"
-  },
-  "devDependencies": {
-    "@iconify-json/fa6-solid": "^1.2.3"
   }
 }

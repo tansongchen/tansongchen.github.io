@@ -1,7 +1,5 @@
 ---
-import { FaCamera, FaCalendar, FaLocationArrow } from "react-icons/fa";
-import { RiCameraLensFill } from "react-icons/ri";
-import { MdTune } from "react-icons/md";
+import { Icon } from "astro-icon/components";
 import { createDate, yymmdd } from "..";
 import { Image } from "astro:assets";
 
@@ -68,47 +66,43 @@ const { exif, image } = Astro.props;
   <div class="container is-max-desktop content">
     <div class="columns">
       <div class="column">
-        <p>
-          <FaCalendar />
-          &nbsp; &nbsp; {yymmdd(createDate(exif.DateTimeOriginal))}
+        <p class="is-flex gap-1">
+          <Icon name="fa6-solid:calendar" />
+          {yymmdd(createDate(exif.DateTimeOriginal))}
         </p>
       </div>
       <div class="column">
-        <p>
-          <FaLocationArrow />
-          &nbsp; &nbsp;
+        <p class="is-flex gap-1">
+          <Icon name="fa6-solid:location-arrow" />
           {renderCoordinate(...exif.GPSLatitude, exif.GPSLatitudeRef)}
-          &nbsp; &nbsp;
           {renderCoordinate(...exif.GPSLongitude, exif.GPSLongitudeRef)}
         </p>
       </div>
     </div>
     <div class="columns">
       <div class="column">
-        <p>
-          <FaCamera />
-          &nbsp; &nbsp; {exif.Make}
+        <p class="is-flex gap-1">
+          <Icon name="fa6-solid:camera" />
+          {exif.Make}
           {exif.Model}
         </p>
       </div>
       <div class="column">
-        <p>
-          <RiCameraLensFill />
-          &nbsp; &nbsp; {localize(exif.LensModel)}
+        <p class="is-flex gap-1">
+          <Icon name="fa6-solid:magnifying-glass" />
+          {localize(exif.LensModel)}
         </p>
       </div>
       <div class="column">
-        <p>
-          <MdTune />
-          &nbsp; &nbsp;
-          {exif.FocalLength}mm&nbsp; &nbsp; ƒ/{exif.FNumber}
-          &nbsp; &nbsp;
+        <p class="is-flex gap-1">
+          <Icon name="fa6-solid:bars" />
+          {exif.FocalLength}mm, ƒ/{exif.FNumber}
           {
             exif.ExposureTime >= 1
               ? `${exif.ExposureTime}`
               : `1/${Math.round(1 / exif.ExposureTime)}`
           }
-          s&nbsp; &nbsp; ISO {exif.ISO}
+          s, ISO {exif.ISO}
         </p>
       </div>
     </div>

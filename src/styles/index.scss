@@ -1,17 +1,27 @@
 @charset "utf-8";
 
-@use "bulma/sass" with ($navbar-height: 4rem,
-    $content-heading-weight: 400,
-    $dropdown-menu-min-width: 1rem,
-    $footer-padding: 3rem 1.5rem 4rem);
-
-// @use "bulma-timeline" with ($timeline-marker-color: white,
-// );
-
-.introduction {
-    background-image: linear-gradient(to bottom, var(--gradient), var(--bulma-body-background-color));
-    font-size: 125%;
-}
+@use "bulma/sass/utilities";
+@use "bulma/sass/base";
+@use "bulma/sass/components/card";
+@use "bulma/sass/components/modal";
+@use "bulma/sass/components/menu";
+@use "bulma/sass/components/navbar" with ($navbar-height: 4rem);
+@use "bulma/sass/elements/box";
+@use "bulma/sass/elements/button";
+@use "bulma/sass/elements/icon";
+@use "bulma/sass/elements/content" with ($content-heading-weight: 400);
+@use "bulma/sass/elements/tag";
+@use "bulma/sass/form";
+@use "bulma/sass/grid/columns";
+@use "bulma/sass/layout/container";
+@use "bulma/sass/layout/footer" with ($footer-padding: 3rem 1.5rem 4rem);
+@use "bulma/sass/layout/level";
+@use "bulma/sass/layout/section";
+@use "bulma/sass/helpers/flexbox";
+@use "bulma/sass/helpers/spacing";
+@use "bulma/sass/helpers/typography";
+@use "bulma/sass/helpers/visibility";
+@use "bulma/sass/themes";
 
 .entry-metadata {
     background-color: hsl(216, 100%, 95%);
@@ -79,6 +89,11 @@
     }
 }
 
+.introduction {
+    background-image: linear-gradient(to bottom, var(--gradient), var(--bulma-body-background-color));
+    font-size: 125%;
+}
+
 .fit {
     height: 100%;
     object-fit: cover;
@@ -90,12 +105,12 @@
     max-width: 700px;
     line-height: 1.8;
     border: none;
-    color: #888;
+    color: var(--bulma-text);
 }
 
 .quote::before {
     content: "“ ";
-    color: #555555;
+    color: var(--bulma-text);
     font-size: 4em;
     font-family: Arial, serif;
     line-height: 1em;
@@ -184,6 +199,10 @@ a {
     word-wrap: break-word;
 }
 
+a.in-paragraph {
+    text-decoration: underline !important;
+}
+
 .level-left,
 .level-right {
     flex-direction: row !important;
@@ -209,5 +228,11 @@ a {
         left: 0;
         width: 100%;
         height: 100%;
+    }
+}
+
+@media (max-width: 1024px) {
+    .navbar-menu {
+        text-align: center;
     }
 }

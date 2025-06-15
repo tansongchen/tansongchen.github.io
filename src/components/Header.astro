@@ -15,8 +15,8 @@ interface Props {
 
 <nav class="navbar is-fixed-top" role="navigation" aria-label="main navigation">
   <div class="content is-medium container">
-    <div class="navbar-brand px-4">
-      <a class="navbar-item is-size-4 px-1" href="/">
+    <div class="navbar-brand">
+      <a class="navbar-item" href="/">
         🍭️ {title}
       </a>
       <a
@@ -30,16 +30,22 @@ interface Props {
         <span aria-hidden="true"></span>
         <span aria-hidden="true"></span>
         <span aria-hidden="true"></span>
+        <span aria-hidden="true"></span>
       </a>
     </div>
     <div id="navbar-menu" class="navbar-menu">
-      <div class="navbar-start is-justify-content-center ml-auto mr-0">
+      <div class="navbar-start ml-auto mr-0">
         {
           Object.entries(collections)
             .filter(([x]) => x !== "dresses")
             .map(([type, { name, icon }]) => (
-              <a href={`/${type}/`} class="navbar-item">
-                <Icon name={icon} />
+              <a
+                href={`/${type}/`}
+                class="navbar-item is-flex is-align-items-center is-justify-content-center"
+              >
+                <span class="icon">
+                  <Icon name={icon} />
+                </span>
                 <span>{name}</span>
               </a>
             ))
@@ -47,11 +53,9 @@ interface Props {
       </div>
       <div class="navbar-end">
         <div class="navbar-item">
-          <div class="buttons">
-            <a href="/rss.xml" class="button is-info">
-              <strong>订阅</strong>
-            </a>
-          </div>
+          <a href="/rss.xml" class="button is-info">
+            <strong>订阅</strong>
+          </a>
         </div>
       </div>
     </div>

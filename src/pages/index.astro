@@ -11,7 +11,9 @@ import Experience, {
   type Props as ExperienceProps,
 } from "../components/Experience.astro";
 import DateTag from "../components/DateTag.astro";
-import Repository from "../islands/Repository";
+import Repository, {
+  type Props as RepositoryProps
+} from "../components/Repository.astro";
 import { Image } from "astro:assets";
 import mitao from "../assets/mitao.gif";
 import CollectionLayout from "../layouts/CollectionLayout.astro";
@@ -142,7 +144,7 @@ const thg: ExperienceProps = {
   location: "Berkeley, CA",
 };
 
-const repositories: { repo: string; owner: string }[] = [
+const repositories: RepositoryProps[] = [
   { repo: "tansongchen.github.io", owner: "tansongchen" },
   { repo: "julia", owner: "JuliaLang" },
   { repo: "TaylorDiff.jl", owner: "JuliaDiff" },
@@ -211,7 +213,7 @@ const repositories: { repo: string; owner: string }[] = [
       <div class="columns is-multiline">
         {
           repositories.map((x) => (
-            <Repository key={x.repo} {...x} client:only />
+            <Repository {...x} />
           ))
         }
       </div>

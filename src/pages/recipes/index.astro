@@ -48,7 +48,7 @@ for (const { dishes } of groups) {
               <div class="box dish">
                 <div class="dish-image">
                   <a href={slugify(title)}>
-                    <Image inferSize class="fit" src={image} alt={title} />
+                    <Image width={180} height={180} class="fit" src={image} alt={title} />
                   </a>
                 </div>
                 <div class="content">
@@ -64,7 +64,7 @@ for (const { dishes } of groups) {
     }
   </section>
   <section class="section">
-    <div class="container is-max-desktop">
+    <div class="container content is-max-desktop">
       <OrderForm client:only />
     </div>
   </section>

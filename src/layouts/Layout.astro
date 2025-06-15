@@ -4,6 +4,7 @@ import Footer from "../components/Footer.astro";
 import Header from "../components/Header.astro";
 import "../styles/index.scss";
 import collections from "..";
+import { pwaAssetsHead } from "virtual:pwa-assets/head";
 
 interface Props {
   collection?: keyof DataEntryMap;
@@ -16,17 +17,36 @@ const title = collection ? `众妙斋・${collections[collection].name}` : "众�
 <!doctype html>
 <html lang="en">
   <head>
+    <title>{title}</title>
     <meta charset="UTF-8" />
     <meta name="description" content="谭淞宸的个人网站" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="generator" content={Astro.generator} />
+    <meta
+      name="theme-color"
+      content="#ffffff"
+      media="(prefers-color-scheme: light)"
+    />
+    <meta
+      name="theme-color"
+      content="#1f2229"
+      media="(prefers-color-scheme: dark)"
+    />
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    {
+      pwaAssetsHead.themeColor && (
+        <meta name="theme-color" content={pwaAssetsHead.themeColor.content} />
+      )
+    }
+    {pwaAssetsHead.links.map((link) => <link {...link} />)}
+    <link rel="manifest" href="/manifest.webmanifest">
     <link
       rel="webmention"
       href="https://webmention.io/tansongchen.com/webmention"
     />
     <link rel="pingback" href="https://webmention.io/tansongchen.com/xmlrpc" />
-    <meta name="viewport" content="width=device-width" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <meta name="generator" content={Astro.generator} />
-    <title>{title}</title>
+    <script src="/src/pwa.ts"></script>
   </head>
   <body class="has-navbar-fixed-top">
     <Header collection={collection} />

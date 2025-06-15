@@ -1,10 +1,4 @@
 import { useState } from "react";
-import {
-  FaUser,
-  FaEnvelope,
-  FaExclamationTriangle,
-  FaCheck,
-} from "react-icons/fa";
 import { yymmdd, put, get, type Comment } from "..";
 import useSWRImmutable from "swr/immutable";
 import {
@@ -33,20 +27,17 @@ export function BaseForm(
     <>
       <div className="columns">
         <div className="column field">
-          <div className="control has-icons-left">
+          <div className="control">
             <input
               className="input"
               type="text"
               placeholder="您的昵称（可选）"
               {...register("name")}
             />
-            <span className="icon is-small is-left">
-              <FaUser />
-            </span>
           </div>
         </div>
         <div className="column field">
-          <div className="control has-icons-left has-icons-right">
+          <div className="control">
             <input
               className={clsx("input", errors.email && "is-danger")}
               type="email"
@@ -55,12 +46,6 @@ export function BaseForm(
                 pattern: /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/,
               })}
             />
-            <span className="icon is-small is-left">
-              <FaEnvelope />
-            </span>
-            <span className="icon is-small is-right">
-              {errors.email ? <FaExclamationTriangle /> : <FaCheck />}
-            </span>
           </div>
           <p className={"help"}>
             {errors.email
@@ -155,7 +140,7 @@ export default function Commenter({
 
   return (
     <section className="section">
-      <div className="container is-max-desktop">
+      <div className="container content is-max-desktop">
         <h1 className="title">站内评论</h1>
         <CommentForm submit={onSubmitComment} submitting={submitting} />
         <hr />

@@ -1,0 +1,62 @@
+---
+import { request } from "@octokit/request";
+import { Icon } from "astro-icon/components";
+
+export interface Props {
+  owner: string;
+  repo: string;
+}
+
+const { owner, repo } = Astro.props;
+const data = await request("GET /repos/{owner}/{repo}", {
+  owner,
+  repo,
+  headers: {
+    authorization: `token ${import.meta.env.GITHUB_PAT}`,
+  },
+}).then((res) => res.data);
+const {
+  stargazers_count,
+  forks_count,
+  subscribers_count,
+  description,
+  language,
+  html_url,
+  forks_url,
+  stargazers_url,
+  subscribers_url,
+} = data;
+---
+
+<div class="column is-half">
+  <article class="card">
+    <header class="card-header">
+      <p class="card-header-title">
+        <a href={html_url}>
+          <span class="has-text-weight-normal">{owner} /</span>
+          {repo}
+        </a>
+        <span class="tag is-link is-light has-text-weight-normal">
+          {language}
+        </span>
+      </p>
+    </header>
+    <div class="card-content">
+      <p class="content">{description}</p>
+    </div>
+    <footer class="card-footer">
+      <a href={subscribers_url} class="card-footer-item">
+        <Icon name="fa6-solid:eye" class="icon is-small" />
+        <span>{subscribers_count}</span>
+      </a>
+      <a href={stargazers_url} class="card-footer-item">
+        <Icon name="fa6-solid:star" class="icon is-small" />
+        <span>{stargazers_count}</span>
+      </a>
+      <a href={forks_url} class="card-footer-item">
+        <Icon name="fa6-solid:code-branch" class="icon is-small" />
+        <span>{forks_count}</span>
+      </a>
+    </footer>
+  </article>
+</div>

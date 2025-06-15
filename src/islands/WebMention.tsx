@@ -50,7 +50,7 @@ function WebMention({ collection, slug }: Record<string, string>) {
   );
   return (
     <section className="section">
-      <article className="container is-max-desktop">
+      <article className="container content is-max-desktop">
         <h1 className="title">站外评论</h1>
         {!data || error ? (
           <p>站外评论加载中……</p>

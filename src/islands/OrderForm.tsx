@@ -63,7 +63,7 @@ export default function OrderForm() {
         setSubmitting(false);
       })}
     >
-      <p className="title is-4">您的订单</p>
+      <h1>您的订单</h1>
       <div className="level">
         <div className="level-left is-mobile select">
           <div className="level-item">您希望</div>
