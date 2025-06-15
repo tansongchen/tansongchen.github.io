@@ -41,14 +41,14 @@ const images = import.meta.glob<{ default: ImageMetadata }>(
       )
     }
   </div>
-  <div class="timeline-content" style={{ width: "100%" }}>
+  <div class="timeline-content">
     <div class="columns">
-      <div class="column content" style={{ padding: "1rem 2rem" }}>
+      <div class="column content">
         <div class="level">
-          <div class="level-item" style={{ display: "inline" }}>
-            <span style={{ fontSize: "1.5rem" }}>{title}</span>
+          <div class="level-item">
+            <h3 class="my-0">{title}</h3>
           </div>
-          <div class="level-item" style={{ display: "inline" }}>
+          <div class="level-item">
             <p>@ {company}</p>
           </div>
         </div>
@@ -62,16 +62,7 @@ const images = import.meta.glob<{ default: ImageMetadata }>(
         </p>
         {description}
       </div>
-      <div
-        class="column box"
-        style={{
-          textAlign: "center",
-          padding: 0,
-          overflow: "hidden",
-          position: "relative",
-          zIndex: 0,
-        }}
-      >
+      <div class="column box p-0">
         <a href={companyUrl}>
           <Image class="fit" src={images[photo]()} alt={photo} />
         </a>

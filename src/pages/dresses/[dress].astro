@@ -7,13 +7,13 @@ import { preprocessDress } from "../../content/config";
 export async function getStaticPaths() {
   const dresses = await getCollection("dresses");
   return dresses.map(({ data }) => ({
-    params: { dress: slugify(data.properties.Title) },
+    params: { dress: slugify(data.properties.Name) },
   }));
 }
 
 const contents = await getCollection(
   "dresses",
-  (e) => slugify(e.data.properties.Title) == Astro.params.dress
+  (e) => slugify(e.data.properties.Name) == Astro.params.dress
 );
 const dress: Dress = await preprocessDress(contents[0]!);
 ---

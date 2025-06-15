@@ -17,26 +17,12 @@ const nodes: Photo[] = await Promise.all(photos.map(preprocessPhoto));
   <section class="section">
     <div class="container is-max-widescreen">
       <div
-        class="column"
-        style={{
-          display: "flex",
-          flexWrap: "wrap",
-          padding: "0",
-          justifyContent: "center",
-          gap: "2rem",
-        }}
+        class="column is-flex is-flex-wrap-wrap is-justify-content-center gap-1"
       >
         {
           nodes.map(({ title, image }: Photo) => {
             return (
-              <div
-                class="box"
-                style={{
-                  padding: 0,
-                  margin: 0,
-                  overflow: "hidden",
-                }}
-              >
+              <div class="box">
                 <a href={slugify(title)}>
                   <Image
                     class="photo-gallery"

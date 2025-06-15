@@ -54,7 +54,7 @@ export interface Collection {
 
 export const title = "众妙斋";
 export const site = "https://tansongchen.com";
-export const endpoint = "https://www.tansongchen.workers.dev";
+export const endpoint = "https://api.tansongchen.com";
 
 export const yymmdd = (d: Date) =>
   `${d.getFullYear()} 年 ${d.getMonth() + 1} 月 ${d.getDate()} 日`;
@@ -119,20 +119,12 @@ export function slugify(title: string) {
   }).join("-");
 }
 
-export async function get(
-  route: string,
-  query: Record<string, string>
-): Promise<any | void> {
-  try {
-    const url = `${endpoint}${route}?${Object.entries(query)
-      .map(([key, value]) => `${key}=${value}`)
-      .join("&")}`;
-    const response = await fetch(url);
-    return await response.json();
-  } catch (error) {}
+export async function get<T>(route: string): Promise<T> {
+  const response = await fetch(endpoint + route);
+  return await response.json();
 }
 
-export async function put(route: string, data: any): Promise<any | void> {
+export async function put<T>(route: string, data: T): Promise<any | void> {
   try {
     const response = await fetch(endpoint + route, {
       headers: {
@@ -147,4 +139,29 @@ export async function put(route: string, data: any): Promise<any | void> {
   } catch (error) {
     window.alert("提交失败！");
   }
+}
+
+
+// 用户交互
+
+export interface Message {
+  id: number;
+  name: string;
+  email: string;
+  content: string;
+  datetime: string;
+}
+
+export interface Comment extends Message {
+  collection: string;
+  entry: string;
+}
+
+type MealType = "早餐" | "午餐" | "晚餐";
+type OrderType = "提前选择菜品" | "请我即兴发挥";
+
+export interface Order extends Message {
+  mealtype: MealType;
+  ordertype: OrderType;
+  summary: string;
 }

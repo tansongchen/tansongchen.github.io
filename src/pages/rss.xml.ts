@@ -5,23 +5,24 @@ import collections, { slugify } from "..";
 async function generateItems() {
   const result: RSSFeedItem[] = [];
   for (const article of await getCollection("articles")) {
-    const { data, id } = article;
+    const { data } = article;
     result.push({
       title: data.title,
       pubDate: data.date,
       description: data.description,
-      link: `/articles/${id}`,
+      link: `/articles/${slugify(data.title)}`,
     });
   }
   for (const [type, collection] of Object.entries(collections)) {
+    if (type === "articles") continue;
     for (const { data } of await getCollection(
       type as Exclude<keyof DataEntryMap, "articles">
     )) {
-      const { Title, Description, Date } = data.properties;
+      const { Name, Description, Date } = data.properties;
       result.push({
-        title: Title,
+        title: Name,
         description: Description,
-        link: `/${type}/${slugify(Title)}`,
+        link: `/${type}/${slugify(Name)}`,
         pubDate: Date,
       });
     }

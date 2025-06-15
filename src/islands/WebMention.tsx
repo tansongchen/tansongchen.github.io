@@ -29,7 +29,7 @@ function Mention({ type, author, url, published, content }: MentionData) {
   return (
     <div className="content" key={url}>
       <p>
-        <span style={{ fontSize: "150%", marginRight: "1rem" }}>
+        <span>
           @{author.name || "无名氏"}
         </span>
         {yymmdd(new Date(published))}
@@ -44,8 +44,9 @@ function WebMention({ collection, slug }: Record<string, string>) {
   const token = `GevpnlAkAbTXHes6nLWnLw`;
   const query = (target: string) =>
     `https://webmention.io/api/mentions.jf2?target=${target}&token=${token}`;
-  const { data, error } = useSWR<WebMentionFeed>(target, (target) =>
-    fetch(query(target)).then((res) => res.json())
+  const { data, error } = useSWR<WebMentionFeed, any, string>(
+    target,
+    (target) => fetch(query(target)).then((res) => res.json())
   );
   return (
     <section className="section">

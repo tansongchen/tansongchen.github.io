@@ -8,12 +8,12 @@ import { preprocessMusic } from "../../content/config";
 export async function getStaticPaths() {
   const musics = await getCollection("musics");
   return musics.map(({ data }) => ({
-    params: { music: slugify(data.properties.Title) },
+    params: { music: slugify(data.properties.Name) },
   }));
 }
 const contents = await getCollection(
   "musics",
-  (e) => slugify(e.data.properties.Title) == Astro.params.music
+  (e) => slugify(e.data.properties.Name) == Astro.params.music
 );
 const music: Music = await preprocessMusic(contents[0]!);
 ---
@@ -33,17 +33,9 @@ const music: Music = await preprocessMusic(contents[0]!);
     {
       music.url && (
         <article class="container content is-max-desktop">
-          <div style={{ position: "relative", padding: "30% 45%" }}>
+          <div class="bilibili-wrapper">
             <iframe
-              style={{
-                position: "absolute",
-                width: "100%",
-                height: "100%",
-                left: "0",
-                top: "0",
-              }}
               src={music.url + "&high_quality=1"}
-              scrolling="no"
               data-border="0"
               data-frameborder="no"
               data-framespacing="0"

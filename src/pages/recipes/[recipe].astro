@@ -7,13 +7,13 @@ import { preprocessRecipe } from "../../content/config";
 export async function getStaticPaths() {
   const recipes = await getCollection("recipes");
   return recipes.map(({ data }) => ({
-    params: { recipe: slugify(data.properties.Title) },
+    params: { recipe: slugify(data.properties.Name) },
   }));
 }
 
 const contents = await getCollection(
   "recipes",
-  (e) => slugify(e.data.properties.Title) == Astro.params.recipe
+  (e) => slugify(e.data.properties.Name) == Astro.params.recipe
 );
 const recipe: Recipe = await preprocessRecipe(contents[0]);
 const { Content } = await render(contents[0]);

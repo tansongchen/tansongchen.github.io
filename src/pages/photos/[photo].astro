@@ -7,13 +7,13 @@ import { preprocessPhoto } from "../../content/config";
 export async function getStaticPaths() {
   const photos = await getCollection("photos");
   return photos.map(({ data }) => ({
-    params: { photo: slugify(data.properties.Title) },
+    params: { photo: slugify(data.properties.Name) },
   }));
 }
 
 const contents = await getCollection(
   "photos",
-  (e) => slugify(e.data.properties.Title) == Astro.params.photo
+  (e) => slugify(e.data.properties.Name) == Astro.params.photo
 );
 const photo: Photo = await preprocessPhoto(contents[0]!);
 ---

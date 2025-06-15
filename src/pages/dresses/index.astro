@@ -32,29 +32,12 @@ const groups: { name: string; data: Dress[] }[] = [
           <article class="columns">
             <div class="column is-one-quarter has-text-centered">
               <div class="content">
-                <h3 style={{ margin: "1.5rem 0 .5rem 0" }}>{name}</h3>
+                <h3>{name}</h3>
               </div>
             </div>
-            <div
-              class="column"
-              style={{
-                display: "flex",
-                flexWrap: "wrap",
-                justifyContent: "center",
-                padding: 0,
-              }}
-            >
+            <div class="column is-flex is-flex-wrap-wrap gap-1">
               {data.map(({ image, title }: Dress) => (
-                <div
-                  class="box"
-                  style={{
-                    padding: 0,
-                    overflow: "hidden",
-                    zIndex: 0,
-                    position: "relative",
-                    margin: "2rem",
-                  }}
-                >
+                <div class="box">
                   <a href={slugify(title)}>
                     <Image
                       class="photo-gallery"

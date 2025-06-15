@@ -8,12 +8,12 @@ import { preprocessVideo } from "../../content/config";
 export async function getStaticPaths() {
   const videos = await getCollection("videos");
   return videos.map(({ data }) => ({
-    params: { video: slugify(data.properties.Title) },
+    params: { video: slugify(data.properties.Name) },
   }));
 }
 const contents = await getCollection(
   "videos",
-  (e) => slugify(e.data.properties.Title) == Astro.params.video
+  (e) => slugify(e.data.properties.Name) == Astro.params.video
 );
 const video = await preprocessVideo(contents[0]!);
 ---

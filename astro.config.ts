@@ -10,10 +10,10 @@ export default defineConfig({
   site: "https://tansongchen.com",
   integrations: [react(), icon()],
   image: {
+    domains: ["**.amazonaws.com"],
     remotePatterns: [
       {
         protocol: "https",
-        hostname: "**.amazonaws.com",
       },
     ],
   },
@@ -22,8 +22,8 @@ export default defineConfig({
     rehypePlugins: [rehypeKatex],
     shikiConfig: {
       langAlias: {
-        fortran: "fortran-free-form"
-      }
-    }
+        fortran: "fortran-free-form",
+      },
+    },
   },
 });

@@ -2,7 +2,7 @@ import { glob } from "astro/loaders";
 import { z } from "astro/zod";
 import { defineCollection, type DataEntryMap } from "astro:content";
 import type { ZodRawShape } from "astro:schema";
-import { fileToUrl, notionLoader } from "notion-astro-loader";
+import { fileToImageAsset, fileToUrl, notionLoader } from "notion-astro-loader";
 import {
   notionPageSchema,
   propertySchema,
@@ -33,7 +33,7 @@ function defineNotionCollection<T extends ZodRawShape>(
     }),
     schema: notionPageSchema({
       properties: z.object({
-        Title: transformedPropertySchema.title,
+        Name: transformedPropertySchema.title,
         Date: transformedPropertySchema.date.transform((x) => x!.start),
         Categories: transformedPropertySchema.multi_select,
         Description: transformedPropertySchema.rich_text,
@@ -78,7 +78,7 @@ type NotionKey = Exclude<keyof DataEntryMap, "articles">;
 function preprocess(entry: Entry<NotionKey>) {
   const { properties } = entry.data;
   return {
-    title: properties.Title,
+    title: properties.Name,
     date: properties.Date,
     categories: properties.Categories,
     description: properties.Description,
@@ -89,7 +89,7 @@ export const preprocessPhoto = async (entry: Entry<"photos">) => {
   const image = fileToUrl(entry.data.cover!);
   return {
     ...preprocess(entry),
-    image,
+    image: image,
     exif: await exifr.parse(image, true),
   } satisfies Photo;
 };

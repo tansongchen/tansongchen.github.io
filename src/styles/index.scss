@@ -26,11 +26,11 @@
 }
 
 .photos {
-    --gradient: hsl(165, 80%, 88%);
+    --gradient: hsl(34, 80%, 88%);
 }
 
 .videos {
-    --gradient: hsl(260, 75%, 92%);
+    --gradient: hsl(54, 76%, 92%);
 }
 
 .musics {
@@ -42,7 +42,7 @@
 }
 
 .dresses {
-    --gradient: hsl(180, 83%, 88%);
+    --gradient: hsl(260, 75%, 92%);
 }
 
 @media (prefers-color-scheme: dark) {
@@ -51,31 +51,31 @@
     }
 
     .home {
-        --gradient: hsl(196, 33%, 22%)
+        --gradient: hsl(196, 33%, 22%);
     }
 
     .articles {
-        --gradient: hsl(0, 15%, 25%)
+        --gradient: hsl(0, 15%, 25%);
     }
 
     .photos {
-        --gradient: hsl(165, 40%, 20%)
+        --gradient: hsl(32, 39%, 20%);
     }
 
     .videos {
-        --gradient: hsl(260, 40%, 20%)
+        --gradient: hsl(53, 39%, 20%);
     }
 
     .musics {
-        --gradient: hsl(260, 40%, 20%)
+        --gradient: hsl(122, 39%, 20%);
     }
 
     .recipes {
-        --gradient: hsl(180, 40%, 20%)
+        --gradient: hsl(180, 40%, 20%);
     }
 
     .dresses {
-        --gradient: hsl(180, 40%, 20%)
+        --gradient: hsl(260, 39%, 20%);
     }
 }
 
@@ -102,12 +102,58 @@
     font-weight: 700;
 }
 
-figure.is-4by3 img,
-figure.is-2by1 img,
-figure.is-128x128 img {
+.box {
+    padding: 0;
+    overflow: hidden;
+}
+
+.box.columns {
+    .column {
+        padding: 0;
+    }
+
+    .column.content {
+        padding: 1.5rem;
+    }
+}
+
+.gap-1 {
+    gap: 1rem;
+}
+
+.dish {
+    width: 330px;
+    height: 180px;
+    padding: 0;
+    overflow: hidden;
+    display: flex;
+
+    .dish-image {
+        width: 180px;
+        height: 180px;
+
+        img {
+            display: block;
+            width: 100%;
+        }
+    }
+
+    .content {
+        width: 150px;
+        height: 180px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 0.5rem;
+    }
+}
+
+.card-left {
+    display: block;
     object-fit: cover;
     object-position: center;
-    height: 100%;
+    aspect-ratio: 2 / 1;
 }
 
 .content img {
@@ -141,4 +187,27 @@ a {
 .level-left,
 .level-right {
     flex-direction: row !important;
+}
+
+.card-footer-item,
+.card-header-title {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.date-tag {
+    min-width: 4rem;
+}
+
+.bilibili-wrapper {
+    position: relative;
+    padding: 30% 45%;
+
+    iframe {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+    }
 }

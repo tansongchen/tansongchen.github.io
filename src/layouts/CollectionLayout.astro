@@ -2,10 +2,10 @@
 import Layout from "./Layout.astro";
 import Commenter from "../islands/Commenter";
 import WebMention from "../islands/WebMention";
-import index from "..";
+import { type DataEntryMap } from "astro:content";
 
 interface Props {
-  collection?: keyof typeof index;
+  collection?: keyof DataEntryMap;
 }
 
 const { collection } = Astro.props;
@@ -14,7 +14,7 @@ const { collection } = Astro.props;
 <Layout collection={collection}>
   <slot />
   <hr />
-  <Commenter collection={collection ?? ""} slug={""} />
+  <Commenter collection={collection ?? ""} entry={""} client:only />
   <hr />
-  <WebMention collection={collection ?? ""} slug={""} />
+  <WebMention collection={collection ?? ""} entry={""} client:only />
 </Layout>

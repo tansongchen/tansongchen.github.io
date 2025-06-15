@@ -20,14 +20,10 @@ const url = site + "/" + path;
     <section class="section entry-metadata">
       <div class="content has-text-centered">
         <h2 class="p-name">{title}</h2>
-        <a
-          class="p-author h-card"
-          href="https://tansongchen.com"
-          style={{ display: "none" }}
-        >
+        <a class="p-author h-card is-hidden" href="https://tansongchen.com">
           谭淞宸
         </a>
-        <a class="u-url" href={url} style={{ display: "none" }}></a>
+        <a class="u-url is-hidden" href={url}></a>
         <p>
           {
             categories.map((category) => (
@@ -48,7 +44,7 @@ const url = site + "/" + path;
     <slot />
   </main>
   <hr />
-  <Commenter collection={collection} slug={slug} />
+  <Commenter collection={collection} entry={slug} client:only />
   <hr />
-  <WebMention collection={collection} slug={slug} />
+  <WebMention collection={collection} entry={slug} client:only />
 </Layout>

@@ -3,6 +3,7 @@ import { FaCamera, FaCalendar, FaLocationArrow } from "react-icons/fa";
 import { RiCameraLensFill } from "react-icons/ri";
 import { MdTune } from "react-icons/md";
 import { createDate, yymmdd } from "..";
+import { Image } from "astro:assets";
 
 export interface ExifData {
   DateTimeOriginal: string;
@@ -34,27 +35,33 @@ const renderCoordinate = (d: number, m: number, s: number, ref: string) =>
   `${d}°${m}′${Math.round(s)}″${ref}`;
 
 const { exif, image } = Astro.props;
-
-function toggleActive() {
-  document.getElementById("image-modal")?.classList.toggle("is-active");
-}
 ---
+
+<script>
+  for (const element of document.getElementsByClassName("modal-toggle")) {
+    element.addEventListener("click", () => {
+      document.getElementById("image-modal")?.classList.toggle("is-active");
+    });
+  }
+</script>
 
 <section class="section">
   <div class="container is-max-desktop content">
-    <img src={image} alt={image} aria-haspopup="true" onclick="toggleActive" />
+    <Image
+      class="modal-toggle"
+      inferSize
+      src={image}
+      alt=""
+      aria-haspopup="true"
+    />
   </div>
   <div id="image-modal" class={"modal"}>
     <div class="modal-background"></div>
     <div class="modal-content content has-text-centered">
-      <img src={image} alt={image} />
+      <Image inferSize src={image} alt="" />
     </div>
-    <button
-      class="modal-close is-large"
-      aria-label="close"
-      onclick="toggleActive"
-    >
-    </button>
+    <button class="modal-close is-large modal-toggle" aria-label="close"
+    ></button>
   </div>
 </section>
 <section class="section">

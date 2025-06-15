@@ -7,54 +7,38 @@ interface Props {
 ---
 
 <script>
-  function handleClick() {
-    const navbarMenu = document.getElementById("navbarControl");
-    if (navbarMenu) {
-      navbarMenu.classList.toggle("is-active");
-    }
-  }
+  document.getElementById("navbar-burger")?.addEventListener("click", () => {
+    document.getElementById("navbar-menu")?.classList.toggle("is-active");
+    document.getElementById("navbar-burger")?.classList.toggle("is-active");
+  });
 </script>
 
 <nav class="navbar is-fixed-top" role="navigation" aria-label="main navigation">
   <div class="content is-medium container">
-    <div class="navbar-brand">
-      <a
-        class="navbar-item"
-        style={{ fontSize: "1.5rem", padding: "0 1.5rem" }}
-        href="/"
-      >
+    <div class="navbar-brand px-4">
+      <a class="navbar-item is-size-4 px-1" href="/">
         🍭️ {title}
       </a>
-
       <a
         role="button"
+        id="navbar-burger"
         class="navbar-burger"
         aria-label="menu"
         aria-expanded="false"
         data-target="navbarBasicExample"
-        onclick="handleClick"
       >
         <span aria-hidden="true"></span>
         <span aria-hidden="true"></span>
         <span aria-hidden="true"></span>
       </a>
     </div>
-    <div class="navbar-menu">
-      <div
-        class="navbar-start"
-        style={{ justifyContent: "center", marginLeft: "auto" }}
-      >
+    <div id="navbar-menu" class="navbar-menu">
+      <div class="navbar-start is-justify-content-center ml-auto mr-0">
         {
           Object.entries(collections)
             .filter(([x]) => x !== "dresses")
             .map(([type, { name, icon }]) => (
-              <a
-                href={`/${type}/`}
-                class={
-                  "navbar-item" +
-                  (type === Astro.props.collection ? " is-selected" : "")
-                }
-              >
+              <a href={`/${type}/`} class="navbar-item">
                 <Icon name={icon} />
                 <span>{name}</span>
               </a>

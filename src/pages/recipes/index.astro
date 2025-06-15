@@ -1,13 +1,27 @@
 ---
 import { getCollection } from "astro:content";
 import CollectionLayout from "../../layouts/CollectionLayout.astro";
-import Menu from "../../islands/recipes";
-import type { Recipe } from "../..";
+import Dish from "../../islands/Dish";
+import { slugify, type Recipe } from "../..";
 import Introduction from "../../components/Introduction.astro";
 import { preprocessRecipe } from "../../content/config";
+import OrderForm from "../../islands/OrderForm";
+import { Image } from "astro:assets";
 
 const recipes = await getCollection("recipes");
 const nodes: Recipe[] = await Promise.all(recipes.map(preprocessRecipe));
+const groups = ["鲁菜", "川菜", "粤菜", "淮扬菜", "面点", "异域风情"].map(
+  (k) => ({
+    title: k,
+    dishes: [] as Recipe[],
+  })
+);
+for (const dish of nodes) {
+  groups.find((x) => x.title === dish.categories[0])!.dishes.push(dish);
+}
+for (const { dishes } of groups) {
+  dishes.sort((a, b) => b.rating.length - a.rating.length);
+}
 ---
 
 <CollectionLayout collection="recipes">
@@ -20,5 +34,38 @@ const nodes: Recipe[] = await Promise.all(recipes.map(preprocessRecipe));
       您可以在下方查看我近期做过的菜品，选择几味您感兴趣的并预约时间登门品尝；您也可以只预约时间而不指定菜品，我将会根据当日可得的食材即兴发挥。
     </p>
   </Introduction>
-  <Menu nodes={nodes} client:only />
+  <section class="section">
+    {
+      groups.map(({ title, dishes }) => (
+        <article class="columns">
+          <div class="column is-one-quarter has-text-centered">
+            <div class="content">
+              <h3>{title}</h3>
+            </div>
+          </div>
+          <div class="column is-flex is-flex-wrap-wrap is-justify-content-center gap-1">
+            {dishes.map(({ title, image, rating }) => (
+              <div class="box dish">
+                <div class="dish-image">
+                  <a href={slugify(title)}>
+                    <Image inferSize class="fit" src={image} alt={title} />
+                  </a>
+                </div>
+                <div class="content">
+                  <p class="is-medium">{title}</p>
+                  <p class="is-small">{rating}</p>
+                  <Dish title={title} client:only/>
+                </div>
+              </div>
+            ))}
+          </div>
+        </article>
+      ))
+    }
+  </section>
+  <section class="section">
+    <div class="container is-max-desktop">
+      <OrderForm client:only />
+    </div>
+  </section>
 </CollectionLayout>

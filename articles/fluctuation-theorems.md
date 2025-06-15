@@ -124,7 +124,7 @@ $$
 $$
 \begin{aligned}
 \lim_{t/\tau\to\infty}&\frac1t\ln\frac{p(\Omega(t>\tau)=A)}{p(\Omega(t>\tau)=-A)}\\
-= &\frac1t\ln\frac{p(\Omega=A)}{p(\Omega=-A)}=A\\
+= &\frac1t\ln\frac{p(\Omega=A)}{p(\Omega=-A)}=A
 \end{aligned}
 $$
 

@@ -1,40 +1,17 @@
 import { useState } from "react";
-import Dropdown from "../islands/Dropdown";
 import { slugify, yymmdd } from "..";
 import { type Article as ArticleProps } from "..";
+import clsx from "clsx";
 
-enum SortMethod {
-  FromNewestToOldest,
-  FromOldestToNewest,
-}
-
-interface TagProps {
-  tag: string;
-  activeTag?: string;
-  changeTag: (activeTag?: string, tag?: string) => void;
-}
-
-const Tag = ({ tag, activeTag, changeTag }: TagProps) => {
-  const className =
-    "tag is-medium is-info" + (tag === activeTag ? "" : " is-light");
-  return (
-    <div
-      key={tag}
-      className={className}
-      onClick={() => changeTag(activeTag, tag)}
-    >
-      {tag}
-    </div>
-  );
-};
+type SortMethod = "从新到旧" | "从旧到新";
 
 interface SelectorProps {
   sortMethod: SortMethod;
   changeSortMethod: (sortMethod: SortMethod) => void;
-  intervalStart: Date;
-  changeIntervalStart: (intervalStart: Date) => void;
-  intervalEnd: Date;
-  changeIntervalEnd: (intervalEnd: Date) => void;
+  intervalStart: number;
+  changeIntervalStart: (intervalStart: number) => void;
+  intervalEnd: number;
+  changeIntervalEnd: (intervalEnd: number) => void;
   activeTag?: string;
   changeTag: (activeTag?: string, tag?: string) => void;
   allTags: string[];
@@ -51,59 +28,65 @@ const Selector = ({
   changeTag,
   allTags,
 }: SelectorProps) => {
-  const getYear = (d: Date) => d.getFullYear().toString();
-  const getSortMethod = (s: SortMethod) =>
-    s === SortMethod.FromNewestToOldest
-      ? "从新到旧"
-      : s === SortMethod.FromOldestToNewest
-      ? "从旧到新"
-      : "";
   return (
     <section className="section">
       <div className="level container is-max-widescreen is-vcentered">
         <div className="level-left">
           <div className="tags">
             {allTags.map((tag) => (
-              <Tag
-                tag={tag}
-                activeTag={activeTag}
-                changeTag={changeTag}
+              <div
                 key={tag}
-              />
+                className={clsx(
+                  "tag",
+                  "is-medium",
+                  "is-link",
+                  tag !== activeTag && "is-light"
+                )}
+                onClick={() => changeTag(activeTag, tag)}
+              >
+                {tag}
+              </div>
             ))}
           </div>
         </div>
         <div className="level-right is-vcentered">
-          <Dropdown<Date>
-            options={[
-              new Date("2019-01-01T00:00:00"),
-              new Date("2020-01-01T00:00:00"),
-              new Date("2021-01-01T00:00:00"),
-            ]}
-            callback={changeIntervalStart}
-            current={intervalStart}
-            display={getYear}
-          />
+          <div className="select">
+            <select
+              title="Sort by"
+              value={intervalStart}
+              onChange={(e) => changeIntervalStart(parseInt(e.target.value))}
+            >
+              {[2019, 2020, 2021, 2022, 2023, 2024, 2025].map((year) => (
+                <option key={year} value={year}>
+                  {year}
+                </option>
+              ))}
+            </select>
+          </div>
           <div>至</div>
-          <Dropdown<Date>
-            options={[
-              new Date("2019-12-31T23:59:59"),
-              new Date("2020-12-31T23:59:59"),
-              new Date("2021-12-31T23:59:59"),
-            ]}
-            callback={changeIntervalEnd}
-            current={intervalEnd}
-            display={getYear}
-          />
-          <Dropdown<SortMethod>
-            options={[
-              SortMethod.FromNewestToOldest,
-              SortMethod.FromOldestToNewest,
-            ]}
-            callback={changeSortMethod}
-            current={sortMethod}
-            display={getSortMethod}
-          />
+          <div className="select">
+            <select
+              title="Sort by"
+              value={intervalEnd}
+              onChange={(e) => changeIntervalEnd(parseInt(e.target.value))}
+            >
+              {[2019, 2020, 2021, 2022, 2023, 2024, 2025].map((year) => (
+                <option key={year} value={year}>
+                  {year}
+                </option>
+              ))}
+            </select>
+          </div>
+          <div className="select">
+            <select
+              title="Sort by"
+              value={sortMethod}
+              onChange={(e) => changeSortMethod(e.target.value as SortMethod)}
+            >
+              <option>从新到旧</option>
+              <option>从旧到新</option>
+            </select>
+          </div>
         </div>
       </div>
     </section>
@@ -119,13 +102,11 @@ const Article = ({
 }: ArticleProps) => (
   <article key={title} className="container section">
     <a href={`/articles/${slugify(title)}/`}>
-      <div className="box columns" style={{ padding: 0, overflow: "auto" }}>
-        <div className="column" style={{ padding: 0 }}>
-          <figure className="image is-2by1">
-            <img src={cover} alt={cover} />
-          </figure>
+      <div className="box columns">
+        <div className="column">
+          <img className="card-left" src={cover} alt={cover} />
         </div>
-        <div className="column content" style={{ padding: "1.5rem" }}>
+        <div className="column content">
           <h3>{title}</h3>
           <p>{yymmdd(date)}</p>
           <p className="level-left">
@@ -151,8 +132,8 @@ interface MainProps {
 
 interface ArticleListProps {
   sortMethod: SortMethod;
-  intervalStart: Date;
-  intervalEnd: Date;
+  intervalStart: number;
+  intervalEnd: number;
   activeTag?: string;
   nodes: ArticleProps[];
 }
@@ -164,23 +145,22 @@ const ArticleList = ({
   activeTag,
   nodes,
 }: ArticleListProps) => {
-  let dt = (blog: ArticleProps) => new Date(blog.date);
   let filteredArticles = activeTag
     ? nodes.filter(
-        (blog: ArticleProps) =>
-          intervalStart <= new Date(blog.date) &&
-          new Date(blog.date) <= intervalEnd &&
-          blog.categories.includes(activeTag)
+        ({ date, categories }: ArticleProps) =>
+          intervalStart <= date.getFullYear() &&
+          date.getFullYear() <= intervalEnd &&
+          categories.includes(activeTag)
       )
     : nodes.filter(
-        (blog: ArticleProps) =>
-          intervalStart <= new Date(blog.date) &&
-          new Date(blog.date) <= intervalEnd
+        ({ date, categories }: ArticleProps) =>
+          intervalStart <= date.getFullYear() &&
+          date.getFullYear() <= intervalEnd
       );
-  if (sort == SortMethod.FromNewestToOldest) {
-    filteredArticles.sort((a, b) => dt(b).getTime() - dt(a).getTime());
+  if (sort == "从新到旧") {
+    filteredArticles.sort((a, b) => b.date.getTime() - a.date.getTime());
   } else {
-    filteredArticles.sort((a, b) => dt(a).getTime() - dt(b).getTime());
+    filteredArticles.sort((a, b) => a.date.getTime() - b.date.getTime());
   }
   return (
     <section className="section">
@@ -192,15 +172,9 @@ const ArticleList = ({
 };
 
 export default function Main({ nodes }: MainProps) {
-  const [sortMethod, changeSortMethod] = useState(
-    SortMethod.FromNewestToOldest
-  );
-  const [intervalStart, changeIntervalStart] = useState(
-    new Date("2019-01-01T00:00:00")
-  );
-  const [intervalEnd, changeIntervalEnd] = useState(
-    new Date("2021-12-31T23:59:59")
-  );
+  const [sortMethod, changeSortMethod] = useState("从新到旧" as SortMethod);
+  const [intervalStart, changeIntervalStart] = useState(2019);
+  const [intervalEnd, changeIntervalEnd] = useState(new Date().getFullYear());
   const [activeTag, changeActiveTag] = useState(
     undefined as string | undefined
   );

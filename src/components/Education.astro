@@ -27,23 +27,15 @@ const images = import.meta.glob<{ default: ImageMetadata }>(
 ---
 
 <article class="section container is-max-desktop">
-  <div
-    class="box columns"
-    style={{
-      padding: 0,
-      overflow: "hidden",
-      position: "relative",
-      zIndex: 0,
-    }}
-  >
-    <div class="column" style={{ padding: 0 }}>
+  <div class="box columns">
+    <div class="column">
       <a href={institutionUrl}>
         <Image class="fit" src={images[photo]()} alt={photo} />
       </a>
     </div>
-    <div class="column content" style={{ padding: "2rem" }}>
+    <div class="column content">
       <h3 class="has-text-centered">{institutionName}</h3>
-      <div class="has-text-centered" style={{ margin: "1.5rem auto" }}>
+      <p class="has-text-centered">
         {
           degrees.map(([degree, departmentUrl]) => (
             <Fragment key={degree}>
@@ -52,27 +44,19 @@ const images = import.meta.glob<{ default: ImageMetadata }>(
             </Fragment>
           ))
         }
-      </div>
+      </p>
       <div class="columns">
-        <div class="column" style={{ margin: "0 2%", padding: ".5rem" }}>
-          <Icon
-            class="icon is-small"
-            name="fa6-solid:calendar"
-            style={{ width: "10%" }}
-          />
-          <p class="has-text-centered" style={{ display: "inline-block" }}>
-            &nbsp; &nbsp; {duration}
-          </p>
+        <div
+          class="column is-flex is-justify-content-center is-align-items-center gap-1"
+        >
+          <Icon class="icon is-small" name="fa6-solid:calendar" />
+          <p>{duration}</p>
         </div>
-        <div class="column" style={{ margin: "0 2%", padding: ".5rem" }}>
-          <Icon
-            class="icon is-small"
-            name="fa6-solid:location-dot"
-            style={{ width: "10%" }}
-          />
-          <p class="has-text-centered" style={{ display: "inline-block" }}>
-            &nbsp; &nbsp; {location}
-          </p>
+        <div
+          class="column is-flex is-justify-content-center is-align-items-center gap-1"
+        >
+          <Icon class="icon is-small" name="fa6-solid:location-dot" />
+          <p>{location}</p>
         </div>
       </div>
       <p>{description}</p>
