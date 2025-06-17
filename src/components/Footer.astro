@@ -1,5 +1,6 @@
 ---
 import { Icon } from "astro-icon/components";
+import { email } from "..";
 ---
 
 <footer class="footer">
@@ -27,7 +28,7 @@ import { Icon } from "astro-icon/components";
         </p>
         <p>
           <Icon name="fa6-solid:envelope" />
-          <a href="mailto:i@tansongchen.com">i@tansongchen.com</a>
+          <a href=`mailto:${email}`>{email}</a>
         </p>
       </section>
       <section class="column has-text-centered content">

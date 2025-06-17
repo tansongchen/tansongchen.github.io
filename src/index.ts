@@ -53,7 +53,9 @@ export interface Collection {
 }
 
 export const title = "众妙斋";
+export const description = "谭淞宸的个人网站";
 export const site = "https://tansongchen.com";
+export const email = "i@tansongchen.com";
 export const endpoint = "https://api.tansongchen.com";
 
 export const yymmdd = (d: Date) =>

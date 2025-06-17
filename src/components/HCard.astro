@@ -1,3 +1,7 @@
+---
+import { email, site } from "..";
+---
+
 <aside class="h-card is-hidden">
   <span class="p-name">谭淞宸</span>
   {/* <span class="p-honorific-prefix">猫猫</span> */}
@@ -9,8 +13,8 @@
     class="u-photo"
     src="https://tansongchen.com/static/5d6c52433924c9488d1b7def2b63c17c/2d160/mitao.webp"
   />
-  <a class="u-url u-uid" href="https://tansongchen.com/"></a>
-  <a class="u-email" href="mailto:i@tansongchen.com"></a>
+  <a class="u-url u-uid" href={site}></a>
+  <a class="u-email" href=`mailto:${email}`></a>
   <div class="p-tel">+1 (857) 298-9702</div>
   <div class="p-street-address">70 Pacific St</div>
   <span class="p-locality">Cambridge</span>

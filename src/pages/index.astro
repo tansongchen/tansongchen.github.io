@@ -12,11 +12,12 @@ import Experience, {
 } from "../components/Experience.astro";
 import DateTag from "../components/DateTag.astro";
 import Repository, {
-  type Props as RepositoryProps
+  type Props as RepositoryProps,
 } from "../components/Repository.astro";
 import { Image } from "astro:assets";
 import mitao from "../assets/mitao.gif";
 import CollectionLayout from "../layouts/CollectionLayout.astro";
+import { title } from "..";
 
 const educationPreface: PrefaceProps = {
   title: "教育经历",
@@ -176,8 +177,9 @@ const repositories: RepositoryProps[] = [
           」。几十年后的今天，商业化的互联网中我们接收到的绝大多数信息来自科技公司的整合与推送，但是我们仍然可以以个人网站的形式保留并发出自己独立的声音。
         </p>
         <p>
-          我自诩为一位创造者，凡是将人类的心智外化于物、创造出本不属于这个世界的实体从而实现自我的活动都令我兴致勃勃，写文章、敲代码、玩音乐、拍视频……我想自古以来的文人墨客都要给自己的书斋、画室起个名号，我也不能免俗地依志趣把这个网站称作「
-          <span>众妙斋</span>」。您可以在导航栏中发现各个版块。祝您浏览愉快！
+          我自诩为一位创造者，凡是将人类的心智外化于物、创造出本不属于这个世界的实体从而实现自我的活动都令我兴致勃勃，写文章、敲代码、玩音乐、拍视频……我想自古以来的文人墨客都要给自己的书斋、画室起个名号，我也不能免俗地依志趣把这个网站称作「<span
+            >{title}</span
+          >」。您可以在导航栏中发现各个版块。祝您浏览愉快！
         </p>
         <p>
           除此之外，本页面的下方区域还包含了我的经历的简单介绍，希望这些经历可以更好地让您了解我自己。另外，如果您认为我的专长可能对您有所帮助，欢迎您通过页面下方的联系方式与我联系。
@@ -211,11 +213,7 @@ const repositories: RepositoryProps[] = [
     <Preface {...codePreface} />
     <div class="container is-max-desktop">
       <div class="columns is-multiline">
-        {
-          repositories.map((x) => (
-            <Repository {...x} />
-          ))
-        }
+        {repositories.map((x) => <Repository {...x} />)}
       </div>
     </div>
   </section>

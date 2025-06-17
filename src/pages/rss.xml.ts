@@ -1,6 +1,10 @@
 import rss, { type RSSFeedItem } from "@astrojs/rss";
 import { getCollection, type DataEntryMap } from "astro:content";
-import collections, { slugify } from "..";
+import collections, { description, email, slugify, title } from "..";
+import { preprocessAll } from "../content/config";
+import sanitizeHtml from "sanitize-html";
+import MarkdownIt from "markdown-it";
+const parser = new MarkdownIt();
 
 async function generateItems() {
   const result: RSSFeedItem[] = [];
@@ -11,19 +15,29 @@ async function generateItems() {
       pubDate: data.date,
       description: data.description,
       link: `/articles/${slugify(data.title)}`,
+      enclosure: undefined, // TODO: add enclosure for articles
     });
   }
-  for (const [type, collection] of Object.entries(collections)) {
+  for (const type of Object.keys(collections) as (keyof DataEntryMap)[]) {
     if (type === "articles") continue;
-    for (const { data } of await getCollection(
-      type as Exclude<keyof DataEntryMap, "articles">
-    )) {
-      const { Name, Description, Date } = data.properties;
+    for (const raw of await getCollection(type)) {
+      const data = await preprocessAll(type, raw);
+      const { title, date, description, categories } = data;
+      const link = `/${type}/${slugify(title)}`;
       result.push({
-        title: Name,
-        description: Description,
-        link: `/${type}/${slugify(Name)}`,
-        pubDate: Date,
+        title,
+        link,
+        description,
+        categories,
+        pubDate: date,
+        content: raw.body
+          ? sanitizeHtml(parser.render(raw.body), {
+              allowedTags: sanitizeHtml.defaults.allowedTags.concat(["img"]),
+            })
+          : undefined,
+        author: email,
+        commentsUrl: link,
+        enclosure: undefined, // TODO: add enclosure for photos, recipes, dresses
       });
     }
   }
@@ -35,9 +49,10 @@ const items = await generateItems();
 
 export function GET(context: any) {
   return rss({
-    title: "众妙斋",
-    description: "让您可以在您喜爱的 RSS 阅读器上获取众妙斋的更新",
+    title,
+    description,
     site: context.site,
     items,
+    stylesheet: "/pretty-feed-v3.xsl",
   });
 }

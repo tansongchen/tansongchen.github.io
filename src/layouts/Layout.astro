@@ -3,7 +3,7 @@ import type { DataEntryMap } from "astro:content";
 import Footer from "../components/Footer.astro";
 import Header from "../components/Header.astro";
 import "../styles/index.scss";
-import collections from "..";
+import collections, { description, title } from "..";
 import { pwaAssetsHead } from "virtual:pwa-assets/head";
 
 interface Props {
@@ -11,15 +11,17 @@ interface Props {
 }
 
 const { collection } = Astro.props;
-const title = collection ? `众妙斋・${collections[collection].name}` : "众妙斋";
+const pageTitle = collection
+  ? `${title}・${collections[collection].name}`
+  : title;
 ---
 
 <!doctype html>
 <html lang="en">
   <head>
-    <title>{title}</title>
+    <title>{pageTitle}</title>
     <meta charset="UTF-8" />
-    <meta name="description" content="谭淞宸的个人网站" />
+    <meta name="description" content={description} />
     <meta name="viewport" content="width=device-width" />
     <meta name="generator" content={Astro.generator} />
     <meta
@@ -32,15 +34,21 @@ const title = collection ? `众妙斋・${collections[collection].name}` : "众�
       content="#1f2229"
       media="(prefers-color-scheme: dark)"
     />
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black" />
     {
       pwaAssetsHead.themeColor && (
         <meta name="theme-color" content={pwaAssetsHead.themeColor.content} />
       )
     }
     {pwaAssetsHead.links.map((link) => <link {...link} />)}
-    <link rel="manifest" href="/manifest.webmanifest">
+    <link rel="manifest" href="/manifest.webmanifest" />
+    <link
+      rel="alternate"
+      type="application/rss+xml"
+      title={title}
+      href={new URL("rss.xml", Astro.site)}
+    />
     <link
       rel="webmention"
       href="https://webmention.io/tansongchen.com/webmention"

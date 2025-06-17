@@ -5,9 +5,10 @@ import icon from "astro-icon";
 import AstroPWA from "@vite-pwa/astro";
 import sitemap from "@astrojs/sitemap";
 import react from "@astrojs/react";
+import { description, site, title } from "./src";
 
 export default defineConfig({
-  site: "https://tansongchen.com",
+  site,
   integrations: [
     react(),
     icon(),
@@ -18,9 +19,9 @@ export default defineConfig({
       includeAssets: ["favicon.svg"],
       registerType: "autoUpdate",
       manifest: {
-        name: "众妙斋",
-        short_name: "众妙斋",
-        description: "谭淞宸的个人网站",
+        name: title,
+        short_name: title,
+        description: description,
         theme_color: "#ffffff",
       },
       pwaAssets: {
@@ -28,7 +29,8 @@ export default defineConfig({
       },
       workbox: {
         navigateFallback: "/404",
-        globPatterns: ["**/*.{css,js,html,svg,png,ico,txt}"],
+        globPatterns: ["**/*.{css,js,html,xml,svg,png,webp,gif,ico,txt}"],
+        maximumFileSizeToCacheInBytes: 10000000
       },
       experimental: {
         directoryAndTrailingSlashHandler: true,

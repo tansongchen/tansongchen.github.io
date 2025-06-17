@@ -10,6 +10,7 @@ import {
 } from "notion-astro-loader/schemas";
 import type { Dress, Music, Photo, Recipe, Video } from "..";
 import exifr from "exifr";
+import type { ExifData } from "../components/ExifImage.astro";
 
 const articles = defineCollection({
   loader: glob({ pattern: "**/*.md", base: "./articles" }),
@@ -87,10 +88,12 @@ function preprocess(entry: Entry<NotionKey>) {
 
 export const preprocessPhoto = async (entry: Entry<"photos">) => {
   const image = fileToUrl(entry.data.cover!);
+  const exif: ExifData = await exifr.parse(image, true);
   return {
     ...preprocess(entry),
-    image: image,
-    exif: await exifr.parse(image, true),
+    image,
+    exif,
+    date: new Date(exif.DateTimeOriginal),
   } satisfies Photo;
 };
 
@@ -114,19 +117,34 @@ export const preprocessMusic = async (entry: Entry<"musics">) => {
 
 export const preprocessRecipe = async (entry: Entry<"recipes">) => {
   const image = fileToUrl(entry.data.cover!);
+  const exif: ExifData = await exifr.parse(image, true);
   return {
+    ...preprocess(entry),
     rating: entry.data.properties.Rating,
     image,
-    ...preprocess(entry),
+    date: new Date(exif.DateTimeOriginal),
   } satisfies Recipe;
 };
 
 export const preprocessDress = async (entry: Entry<"dresses">) => {
   const image = fileToUrl(entry.data.cover!);
+  const exif: ExifData = await exifr.parse(image, true);
   return {
     ...preprocess(entry),
     photographer: entry.data.properties.Photographer,
     image,
-    exif: await exifr.parse(image, true),
+    exif,
+    date: new Date(exif.DateTimeOriginal),
   } satisfies Dress;
+};
+
+export const preprocessAll = async (
+  key: Exclude<keyof DataEntryMap, "articles">,
+  entry: any
+) => {
+  if (key === "photos") return await preprocessPhoto(entry);
+  if (key === "videos") return await preprocessVideo(entry);
+  if (key === "musics") return await preprocessMusic(entry);
+  if (key === "recipes") return await preprocessRecipe(entry);
+  return await preprocessDress(entry);
 };
